@@ -7,7 +7,7 @@ const { startServer } = require('./server');
 const args = process.argv.slice(2);
 
 if (args.length === 0) {
-  console.error('Usage: agentscope <path-to-logs.jsonl|folder>');
+  console.error('Usage: agenticlens <path-to-logs.jsonl|folder>');
   process.exit(1);
 }
 
@@ -31,5 +31,5 @@ if (stat && stat.isFile()) {
   }
 }
 
-console.log(`AgentScope: Loading ${inputPath}`);
+console.log(`Agenticlens: Loading ${inputPath}`);
 startServer(inputPath);

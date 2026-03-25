@@ -1,127 +1,145 @@
-# AgentScope
+# AgenticLens
 
-A local devtool to visualize Claude Agent SDK JSONL logs. Run it with a single command and get a rich, interactive UI in your browser.
+**See inside your AI agents.**
+
+AgenticLens is a devtool that helps you **visualize, debug, and understand AI agent workflows** from JSONL logs.
+
+It turns raw agent logs into an interactive UI with flow diagrams, timelines, replay, and insights — so you can quickly find what’s happening and what’s going wrong.
 
 ---
 
-## Quick Start
+## ✨ Why AgenticLens?
+
+Debugging AI agents is hard.
+
+- Logs are messy
+- Flows are invisible
+- Performance issues are hard to spot
+
+AgenticLens makes it easy to:
+
+- 🧠 Understand agent reasoning (thinking steps)
+- 🌊 Visualize full execution flow
+- ⏱ Identify slow steps and bottlenecks
+- 🔥 Detect high token usage
+- 🔍 Inspect every step in detail
+- ⏯ Replay agent execution step-by-step
+
+---
+
+## 🚀 Quick Start
 
 ```bash
-# 1. Install dependencies
+npx agenticlens path/to/logs.jsonl
+```
+
+Your browser will open automatically with the full visualization.
+
+---
+
+## 📂 Upload Mode (No CLI needed)
+
+You can also:
+
+- Upload a `.jsonl` file
+- Upload a folder with multiple sessions
+
+Then explore each session directly in the UI.
+
+---
+
+## 🧩 Features
+
+### 🌊 Flow View
+
+Visual graph of your agent execution — see how each step connects.
+
+### 🌳 Tree View
+
+Structured hierarchy of all events and sub-steps.
+
+### ⏱ Timeline View
+
+Understand latency and execution order at a glance.
+
+### 🔁 Replay Mode
+
+Step through execution like a debugger.
+
+### 📊 Session Summary
+
+See total time, tokens, steps, and detected issues instantly.
+
+### 🚨 Anomaly Detection
+
+- Slow steps
+- High token usage
+- Performance bottlenecks
+
+### 🔍 Inspector Panel
+
+Deep dive into any node:
+
+- metadata
+- tokens
+- raw JSON
+- timestamps
+
+---
+
+## 🎯 Supported Logs
+
+Currently supports:
+
+- Claude Agent SDK JSONL logs
+
+Coming soon:
+
+- OpenAI Agents
+- Custom agent frameworks
+- SDK-based integrations
+
+---
+
+## 🛠 Use Cases
+
+- Debugging agent workflows
+- Understanding reasoning and tool usage
+- Optimizing latency and cost
+- Comparing different runs
+- Building reliable AI systems
+
+---
+
+## 🔮 Roadmap
+
+- SDK integration (`agenticlens.init()`)
+- Chrome DevTools extension
+- Multi-provider support (OpenAI, others)
+- Run comparison
+- Cloud dashboard
+
+---
+
+## ⚡ Philosophy
+
+AI agents shouldn’t be a black box.
+
+AgenticLens helps you treat them like real systems —
+**observable, debuggable, and understandable.**
+
+---
+
+## 🧑‍💻 Development (optional)
+
+```bash
 npm install
-
-# 2. Build the web app
 npm run build
-
-# 3. Run against a JSONL file
-node cli/index.js path/to/logs.jsonl
-```
-
-> Once the server starts, your browser will open automatically at `http://localhost:3000`.
-
----
-
-## Project Structure
-
-```
-agentscope/
-├── cli/
-│   ├── index.js        — CLI entry point (validates file, calls server)
-│   └── server.js       — Express server (serves UI + /data endpoint)
-│
-└── web/
-    ├── index.html
-    ├── vite.config.js
-    ├── tailwind.config.js
-    ├── postcss.config.js
-    └── src/
-        ├── App.jsx             — Root component (data fetching + layout)
-        ├── main.jsx            — React entry point
-        ├── components/
-        │   ├── Toolbar.jsx     — Top bar (view toggle, collapse all)
-        │   ├── TreeView.jsx    — Hierarchical event tree
-        │   ├── TreeNode.jsx    — Recursive tree node
-        │   ├── TimelineView.jsx— Flat chronological list with deltas
-        │   └── InspectorPanel.jsx — Selected node detail + raw JSON
-        ├── store/
-        │   └── useAgentStore.js — Zustand store
-        ├── parser/
-        │   ├── parseJSONL.js   — JSONL → normalized node array
-        │   └── buildTree.js    — Flat nodes → hierarchical tree
-        └── styles/
-            └── tailwind.css    — Tailwind directives + scrollbar styles
-```
-
----
-
-## JSONL Format
-
-AgentScope understands Claude Agent SDK log lines. Each line should be valid JSON. Supported types:
-
-| Type          | Color  | Description                        |
-|---------------|--------|------------------------------------|
-| `user`        | Blue   | User message                       |
-| `assistant`   | Green  | Assistant response                 |
-| `thinking`    | Yellow | Internal reasoning block           |
-| `system`      | Purple | System prompt                      |
-| `tool_use`    | Orange | Tool call                          |
-| `tool_result` | Teal   | Result of a tool call              |
-| `progress`    | Cyan   | Progress event                     |
-| `result`      | Gray   | Final result with optional metrics |
-
-**Optional fields for richer UI:**
-
-```jsonl
-{ "uuid": "abc-123", "parentUuid": "xyz-000", "role": "assistant", "content": [...], "timestamp": "2024-01-01T00:00:00Z", "usage": { "input_tokens": 100, "output_tokens": 50 }, "model": "claude-3-5-sonnet-20241022" }
-```
-
-Fields:
-- `uuid` + `parentUuid` — enables parent-child tree linking
-- `timestamp` — enables timeline ordering + delta display
-- `usage` — shows token counts in Inspector
-- `model`, `duration_ms`, `stop_reason` — show in Inspector metadata
-
----
-
-## UI Features
-
-- **Tree View** — Hierarchical display of events. Click any node to inspect it.
-- **Timeline View** — Flat chronological list with time deltas between events.
-- **Inspector Panel** — Shows type, timestamp, metadata (tokens, cost, duration), and full raw JSON.
-- **Collapse / Expand** — Collapse or expand all tree nodes via the toolbar.
-
----
-
-## Development
-
-To run the web app in dev mode with hot reload (requires CLI server running separately):
-
-```bash
-# Terminal 1 — start CLI server
-node cli/index.js sample-logs.jsonl
-
-# Terminal 2 — start Vite dev server
-cd web && npm run dev
-```
-
-The Vite dev server proxies `/data` requests to `http://localhost:3000`.
-
----
-
-## Sample Logs
-
-A sample `sample-logs.jsonl` file is included for testing.
-
-```bash
 node cli/index.js sample-logs.jsonl
 ```
 
 ---
 
-## Tech Stack
+## 📜 License
 
-- **React 18** + **Vite** — fast frontend
-- **Tailwind CSS** — utility-first styling
-- **Zustand** — minimal state management
-- **Express** — lightweight Node.js server
-- **open** — cross-platform browser launcher
+MIT

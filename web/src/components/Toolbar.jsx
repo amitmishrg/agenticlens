@@ -28,7 +28,7 @@ export default function Toolbar() {
         <div className="w-5 h-5 rounded-md bg-indigo-600 flex items-center justify-center">
           <SparkleIcon size={11} color="#ffffff" weight="fill" />
         </div>
-        <span className="text-xs font-semibold text-indigo-400 tracking-wide">AgentScope</span>
+        <span className="text-xs font-semibold text-indigo-400 tracking-wide">Agenticlens</span>
       </div>
 
       {/* View switcher */}

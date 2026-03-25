@@ -81,7 +81,7 @@ async function startServer(inputPath) {
 
   app.listen(PORT, async () => {
     const url = `http://localhost:${PORT}`;
-    console.log(`AgentScope running at ${url}`);
+    console.log(`Agenticlens running at ${url}`);
     console.log('Press Ctrl+C to stop.');
 
     try {

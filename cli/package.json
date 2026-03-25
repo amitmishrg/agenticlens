@@ -1,10 +1,10 @@
 {
-  "name": "agentscope",
+  "name": "agenticlens",
   "version": "1.0.0",
   "description": "A local devtool to visualize Claude Agent SDK JSONL logs",
   "main": "index.js",
   "bin": {
-    "agentscope": "./index.js"
+    "agenticlens": "./index.js"
   },
   "scripts": {
     "start": "node index.js"
