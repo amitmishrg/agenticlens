@@ -1,0 +1,9 @@
+node_modules
+web/dist
+web/.vite
+coverage
+.cache
+*.tgz
+package-lock.json
+pnpm-lock.yaml
+yarn.lock

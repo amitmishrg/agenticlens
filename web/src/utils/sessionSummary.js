@@ -25,4 +25,3 @@ export function computeSessionSummary(steps) {
     anomalyCount,
   };
 }
-

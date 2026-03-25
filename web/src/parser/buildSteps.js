@@ -53,8 +53,8 @@ export function buildSteps(enrichedNodes) {
   }
 
   steps.sort((a, b) => {
-    const ta = a.startTime ? parseEventTime({ timestamp: a.startTime }) ?? 0 : 0;
-    const tb = b.startTime ? parseEventTime({ timestamp: b.startTime }) ?? 0 : 0;
+    const ta = a.startTime ? (parseEventTime({ timestamp: a.startTime }) ?? 0) : 0;
+    const tb = b.startTime ? (parseEventTime({ timestamp: b.startTime }) ?? 0) : 0;
     return ta - tb;
   });
 

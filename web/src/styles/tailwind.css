@@ -9,7 +9,9 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
   background-color: #111827;
   color: #f3f4f6;
 }
@@ -32,13 +34,19 @@ body {
 
 /* ─── Animated dash for connection lines (CardView) ─── */
 @keyframes dashFlow {
-  to { stroke-dashoffset: -20; }
+  to {
+    stroke-dashoffset: -20;
+  }
 }
 
 /* ─── FlowView: flowing dashes along edges ─── */
 @keyframes flowDash {
-  from { stroke-dashoffset: 60; }
-  to   { stroke-dashoffset: 0; }
+  from {
+    stroke-dashoffset: 60;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 /* ─── FlowView card entrance ─── */
@@ -58,8 +66,12 @@ body {
 }
 
 /* ─── React Flow dark theme overrides ─── */
-.react-flow__attribution { display: none; }
-.react-flow__handle { opacity: 0 !important; }
+.react-flow__attribution {
+  display: none;
+}
+.react-flow__handle {
+  opacity: 0 !important;
+}
 
 /* ─── Custom scrollbar for devtool feel ─── */
 ::-webkit-scrollbar {

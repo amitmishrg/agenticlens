@@ -43,7 +43,11 @@ export default function Toolbar() {
             className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium transition-all duration-200"
             style={
               view === v.id
-                ? { background: 'rgba(99,102,241,0.2)', color: '#818cf8', borderRight: '1px solid #1e1e2e' }
+                ? {
+                    background: 'rgba(99,102,241,0.2)',
+                    color: '#818cf8',
+                    borderRight: '1px solid #1e1e2e',
+                  }
                 : { color: '#44445a', borderRight: '1px solid #1e1e2e' }
             }
           >
@@ -75,7 +79,7 @@ export default function Toolbar() {
         <div className="flex gap-1.5 ml-1">
           {[
             { label: 'Collapse all', action: () => collapseAll(getAllCollapsibleIds(tree)) },
-            { label: 'Expand all',   action: expandAll },
+            { label: 'Expand all', action: expandAll },
           ].map(({ label, action }) => (
             <button
               key={label}

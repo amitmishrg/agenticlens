@@ -62,7 +62,7 @@ export function enrichNodes(nodes) {
   const deltaById = new Map();
   for (let i = 1; i < timed.length; i++) {
     const prev = parseEventTime(timed[i - 1]);
-    const cur  = parseEventTime(timed[i]);
+    const cur = parseEventTime(timed[i]);
     if (prev != null && cur != null) {
       deltaById.set(timed[i].id, Math.max(0, cur - prev));
     }
@@ -75,9 +75,9 @@ export function enrichNodes(nodes) {
     }
     return {
       ...n,
-      deltaMs:       deltaById.has(n.id) ? deltaById.get(n.id) : null,
+      deltaMs: deltaById.has(n.id) ? deltaById.get(n.id) : null,
       parentDeltaMs,
-      totalTokens:   n.totalTokens ?? tokenSum(n.meta),
+      totalTokens: n.totalTokens ?? tokenSum(n.meta),
     };
   });
 }

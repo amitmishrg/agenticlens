@@ -9,10 +9,10 @@ export function resolveType(raw) {
   const top = raw.type || raw.role || '';
 
   if (top === 'queue-operation') return 'queue-operation';
-  if (top === 'last-prompt')     return 'last-prompt';
-  if (top === 'progress')        return 'progress';
-  if (top === 'result')          return 'result';
-  if (top === 'system')          return 'system';
+  if (top === 'last-prompt') return 'last-prompt';
+  if (top === 'progress') return 'progress';
+  if (top === 'result') return 'result';
+  if (top === 'system') return 'system';
 
   if (top === 'user') {
     const content = getContent(raw);
@@ -26,8 +26,8 @@ export function resolveType(raw) {
     const content = getContent(raw);
     if (Array.isArray(content) && content.length > 0) {
       const types = content.map((b) => b.type);
-      if (types.every((t) => t === 'tool_use'))  return 'tool_use';
-      if (types.every((t) => t === 'thinking'))  return 'thinking';
+      if (types.every((t) => t === 'tool_use')) return 'tool_use';
+      if (types.every((t) => t === 'thinking')) return 'thinking';
     }
     return 'assistant';
   }

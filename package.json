@@ -14,10 +14,6 @@
     "cli/**",
     "web/dist/**"
   ],
-  "dependencies": {
-    "express": "^4.18.2",
-    "open": "^9.1.0"
-  },
   "workspaces": [
     "cli",
     "web"
@@ -26,6 +22,15 @@
     "prepack": "npm run build --workspace=web",
     "build": "npm run build --workspace=web",
     "dev": "npm run dev --workspace=web",
-    "start": "node cli/index.js"
+    "start": "node cli/index.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "open": "^9.1.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
   }
 }

@@ -28,7 +28,7 @@ export default function FolderPickerButton({ onFilesReady, onError }) {
         e.target.value = '';
       }
     },
-    [onFilesReady, onError]
+    [onFilesReady, onError],
   );
 
   return (
@@ -61,4 +61,3 @@ export default function FolderPickerButton({ onFilesReady, onError }) {
     </>
   );
 }
-

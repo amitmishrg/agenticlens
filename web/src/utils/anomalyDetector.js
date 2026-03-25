@@ -32,4 +32,3 @@ export function detectAnomalies(steps) {
     return step;
   });
 }
-

@@ -4,8 +4,8 @@
  */
 const NODE_W = 252;
 const NODE_H = 124;
-const H_GAP  = 60;
-const V_GAP  = 88;
+const H_GAP = 60;
+const V_GAP = 88;
 
 function subtreeWidth(node, inStep) {
   const kids = (node.children || []).filter((c) => inStep.has(c.id));
@@ -64,7 +64,7 @@ export function layoutStepInterior(stepRoots, stepNodeIds) {
 
   return {
     positions: adj,
-    width:  maxX - minX + PAD * 2,
+    width: maxX - minX + PAD * 2,
     height: maxY - minY + PAD * 2,
   };
 }

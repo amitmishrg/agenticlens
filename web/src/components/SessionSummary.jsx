@@ -2,7 +2,13 @@ import { useMemo } from 'react';
 import useAgentStore from '../store/useAgentStore';
 import { computeVisibleNodeIds } from '../utils/visibility';
 import { computeSessionSummary } from '../utils/sessionSummary';
-import { CoinsIcon, PackageIcon, SquaresFourIcon, TimerIcon, WarningIcon } from '@phosphor-icons/react';
+import {
+  CoinsIcon,
+  PackageIcon,
+  SquaresFourIcon,
+  TimerIcon,
+  WarningIcon,
+} from '@phosphor-icons/react';
 
 function formatSeconds(ms) {
   if (!Number.isFinite(ms) || ms <= 0) return '0.0s';
@@ -27,7 +33,9 @@ export default function SessionSummary() {
     });
 
     // Count only steps that include at least one visible node.
-    const visibleSteps = steps.filter((step) => (step.nodes || []).some((n) => visibleIds.has(n.id)));
+    const visibleSteps = steps.filter((step) =>
+      (step.nodes || []).some((n) => visibleIds.has(n.id)),
+    );
     return computeSessionSummary(visibleSteps);
   }, [steps, nodes, filterType, chronNodeIds, currentStepIndex]);
 
@@ -36,12 +44,12 @@ export default function SessionSummary() {
   const totalTime = formatSeconds(visibleSummary.totalDuration);
 
   return (
-    <div
-      className="px-4 py-2 border-b border-gray-800 shrink-0"
-      style={{ background: '#09090c' }}
-    >
+    <div className="px-4 py-2 border-b border-gray-800 shrink-0" style={{ background: '#09090c' }}>
       <div className="flex items-baseline justify-between gap-4 flex-wrap">
-        <div className="text-[11px] font-bold tracking-widest uppercase" style={{ color: '#33334a' }}>
+        <div
+          className="text-[11px] font-bold tracking-widest uppercase"
+          style={{ color: '#33334a' }}
+        >
           SESSION SUMMARY
         </div>
         <div className="text-[11px] font-mono" style={{ color: '#22223a' }}>
@@ -60,7 +68,12 @@ export default function SessionSummary() {
           Tokens: <span className="text-[#cbd5e1] font-semibold">{visibleSummary.totalTokens}</span>
         </span>
         <span className="text-[12px] whitespace-nowrap" style={{ color: '#94a3b8' }}>
-          <SquaresFourIcon size={14} weight="duotone" color="#94a3b8" className="inline-block mr-1" />
+          <SquaresFourIcon
+            size={14}
+            weight="duotone"
+            color="#94a3b8"
+            className="inline-block mr-1"
+          />
           Steps: <span className="text-[#cbd5e1] font-semibold">{visibleSummary.totalSteps}</span>
         </span>
         <span className="text-[12px] whitespace-nowrap" style={{ color: '#94a3b8' }}>
@@ -69,10 +82,10 @@ export default function SessionSummary() {
         </span>
         <span className="text-[12px] whitespace-nowrap" style={{ color: '#94a3b8' }}>
           <WarningIcon size={14} weight="duotone" color="#f87171" className="inline-block mr-1" />
-          Issues: <span className="text-[#cbd5e1] font-semibold">{visibleSummary.anomalyCount}</span>
+          Issues:{' '}
+          <span className="text-[#cbd5e1] font-semibold">{visibleSummary.anomalyCount}</span>
         </span>
       </div>
     </div>
   );
 }
-

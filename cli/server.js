@@ -38,9 +38,8 @@ async function startServer(inputPath) {
   }
 
   const stat = fs.existsSync(inputPath) ? fs.statSync(inputPath) : null;
-  const jsonlFiles = stat && stat.isDirectory()
-    ? collectJsonlFilesRecursively(inputPath)
-    : [inputPath];
+  const jsonlFiles =
+    stat && stat.isDirectory() ? collectJsonlFilesRecursively(inputPath) : [inputPath];
 
   const workspaceFiles = jsonlFiles.filter(isJsonlPath);
 
@@ -54,9 +53,7 @@ async function startServer(inputPath) {
   app.get('/workspace', (req, res) => {
     const baseDir = stat && stat.isDirectory() ? inputPath : path.dirname(inputPath);
     const files = workspaceFiles.map((p) => ({
-      name: stat && stat.isDirectory()
-        ? path.relative(baseDir, p)
-        : path.basename(p),
+      name: stat && stat.isDirectory() ? path.relative(baseDir, p) : path.basename(p),
     }));
 
     res.json({ files });

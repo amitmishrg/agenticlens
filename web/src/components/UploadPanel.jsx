@@ -11,9 +11,20 @@ export default function UploadPanel({ onFilesReady }) {
         onFilesReady={onFilesReady}
         onError={(msg) => setError(msg)}
         rootClassName="w-full max-w-2xl rounded-xl border border-gray-800 bg-[#0a0a10] px-6 py-6 cursor-pointer"
-        rootStyle={{ boxShadow: '0 0 0 1px rgba(99,102,241,0.08)', transition: 'background 0.15s, border-color 0.15s' }}
+        rootStyle={{
+          boxShadow: '0 0 0 1px rgba(99,102,241,0.08)',
+          transition: 'background 0.15s, border-color 0.15s',
+        }}
       >
-        <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.14em', color: '#33334a', textTransform: 'uppercase' }}>
+        <div
+          style={{
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing: '0.14em',
+            color: '#33334a',
+            textTransform: 'uppercase',
+          }}
+        >
           Upload JSONL (Workspace Mode)
         </div>
 
@@ -22,10 +33,7 @@ export default function UploadPanel({ onFilesReady }) {
         </div>
 
         <div className="mt-3 flex items-center gap-3">
-          <FolderPickerButton
-            onFilesReady={onFilesReady}
-            onError={(msg) => setError(msg)}
-          />
+          <FolderPickerButton onFilesReady={onFilesReady} onError={(msg) => setError(msg)} />
         </div>
 
         {error && (
@@ -37,4 +45,3 @@ export default function UploadPanel({ onFilesReady }) {
     </div>
   );
 }
-

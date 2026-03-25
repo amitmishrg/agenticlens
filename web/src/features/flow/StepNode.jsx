@@ -40,7 +40,15 @@ function StepNode({ data }) {
           STEP {step.index}
         </span>
         {dur != null && (
-          <span style={{ fontSize: 10, color: '#94a3b8', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+          <span
+            style={{
+              fontSize: 10,
+              color: '#94a3b8',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 5,
+            }}
+          >
             <TimerIcon size={12} color="#94a3b8" weight="duotone" />
             {dur}
           </span>
@@ -57,13 +65,19 @@ function StepNode({ data }) {
             <span className="ml-1">High Tokens</span>
           </span>
         )}
-        <span style={{ fontSize: 10, color: '#64748b', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+        <span
+          style={{
+            fontSize: 10,
+            color: '#64748b',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 5,
+          }}
+        >
           <TokenGlyph size={14} color="#94a3b8" />
           {step.totalTokens || 0} tokens
         </span>
-        <span style={{ fontSize: 10, color: '#475569' }}>
-          {step.nodeCount} nodes
-        </span>
+        <span style={{ fontSize: 10, color: '#475569' }}>{step.nodeCount} nodes</span>
       </div>
     </div>
   );

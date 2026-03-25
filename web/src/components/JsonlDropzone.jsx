@@ -36,7 +36,7 @@ export default function JsonlDropzone({
         onError?.(err?.message || 'Failed to read dropped files.');
       }
     },
-    [onFilesReady, onError]
+    [onFilesReady, onError],
   );
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
@@ -77,4 +77,3 @@ export default function JsonlDropzone({
     </div>
   );
 }
-

@@ -1,6 +1,6 @@
-import TypeIcon       from '../../components/TypeIcon';
-import MetaSection    from './MetaSection';
-import JsonViewer     from './JsonViewer';
+import TypeIcon from '../../components/TypeIcon';
+import MetaSection from './MetaSection';
+import JsonViewer from './JsonViewer';
 import StepSummaryLine from './StepSummaryLine';
 import { getAccent } from '../../constants/typeConfig';
 import { formatDeltaMs } from '../../utils/formatDuration';
@@ -17,18 +17,29 @@ export default function InspectorPanel({ node }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
         <span
           style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            width: 36, height: 36, borderRadius: 8,
-            background: `${ac}22`, border: `1.5px solid ${ac}55`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 36,
+            height: 36,
+            borderRadius: 8,
+            background: `${ac}22`,
+            border: `1.5px solid ${ac}55`,
           }}
         >
           <TypeIcon type={node.type} color={ac} size={18} />
         </span>
         <div>
-          <p style={{ color: '#f3f4f6', fontWeight: 600, fontSize: 14, margin: 0 }}>
-            {node.label}
-          </p>
-          <p style={{ color: ac, fontSize: 11, margin: 0, textTransform: 'uppercase', letterSpacing: 1 }}>
+          <p style={{ color: '#f3f4f6', fontWeight: 600, fontSize: 14, margin: 0 }}>{node.label}</p>
+          <p
+            style={{
+              color: ac,
+              fontSize: 11,
+              margin: 0,
+              textTransform: 'uppercase',
+              letterSpacing: 1,
+            }}
+          >
             {node.type}
           </p>
         </div>
@@ -41,7 +52,7 @@ export default function InspectorPanel({ node }) {
           {node.parentDeltaMs != null && (
             <span title="Wall time since parent node in the event tree (same as graph edges)">
               Δ parent: {formatDeltaMs(node.parentDeltaMs)}
-              {(node.deltaMs != null || node.meta?.durationMs != null) ? ' · ' : ''}
+              {node.deltaMs != null || node.meta?.durationMs != null ? ' · ' : ''}
             </span>
           )}
           {node.deltaMs != null && (
@@ -51,13 +62,15 @@ export default function InspectorPanel({ node }) {
             </span>
           )}
           {node.meta?.durationMs != null && (
-            <span title="duration_ms from this event payload">Payload duration: {formatDeltaMs(node.meta.durationMs)}</span>
+            <span title="duration_ms from this event payload">
+              Payload duration: {formatDeltaMs(node.meta.durationMs)}
+            </span>
           )}
         </p>
       )}
 
       <MetaSection meta={node.meta} timestamp={node.timestamp} />
-      <JsonViewer  data={node.data} />
+      <JsonViewer data={node.data} />
     </div>
   );
 }

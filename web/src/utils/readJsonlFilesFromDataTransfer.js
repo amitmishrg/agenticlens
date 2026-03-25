@@ -59,13 +59,9 @@ export async function readJsonlFilesFromDataTransfer(dataTransfer) {
   if (typeof getAsEntry !== 'function') return [];
 
   const out = [];
-  const entries = items
-    .map((it) => it.webkitGetAsEntry?.())
-    .filter(Boolean);
+  const entries = items.map((it) => it.webkitGetAsEntry?.()).filter(Boolean);
 
-  await Promise.all(
-    entries.map((entry) => readEntryFiles(entry, '', out))
-  );
+  await Promise.all(entries.map((entry) => readEntryFiles(entry, '', out)));
 
   // Deduplicate by name.
   const seen = new Set();
@@ -78,4 +74,3 @@ export async function readJsonlFilesFromDataTransfer(dataTransfer) {
 
   return deduped;
 }
-

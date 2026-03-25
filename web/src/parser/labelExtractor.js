@@ -41,7 +41,9 @@ export function extractLabel(raw, type) {
         if (b) {
           const rt = Array.isArray(b.content)
             ? b.content.find((c) => c.type === 'text')?.text
-            : typeof b.content === 'string' ? b.content : null;
+            : typeof b.content === 'string'
+              ? b.content
+              : null;
           return truncate(rt ?? `Result for ${b.tool_use_id ?? '?'}`);
         }
       }
@@ -52,19 +54,22 @@ export function extractLabel(raw, type) {
       return (raw.data || {}).hookName || (raw.data || {}).hookEvent || raw.message || 'Progress';
 
     case 'result': {
-      const sub   = raw.subtype   ? ` (${raw.subtype})`         : '';
+      const sub = raw.subtype ? ` (${raw.subtype})` : '';
       const turns = raw.num_turns != null ? ` · ${raw.num_turns} turns` : '';
       return `Session result${sub}${turns}`;
     }
 
-    case 'queue-operation': return `Queue: ${raw.operation ?? '?'}`;
-    case 'last-prompt':     return truncate(raw.lastPrompt ?? 'Last prompt');
+    case 'queue-operation':
+      return `Queue: ${raw.operation ?? '?'}`;
+    case 'last-prompt':
+      return truncate(raw.lastPrompt ?? 'Last prompt');
 
     case 'system': {
       const tb = Array.isArray(content) ? content.find((b) => b.type === 'text') : null;
       return truncate(tb?.text ?? 'System prompt');
     }
 
-    default: return truncate(raw.type || raw.role || 'Event');
+    default:
+      return truncate(raw.type || raw.role || 'Event');
   }
 }

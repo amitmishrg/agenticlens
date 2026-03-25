@@ -1,6 +1,6 @@
-import { resolveType }  from './typeResolver';
+import { resolveType } from './typeResolver';
 import { extractLabel } from './labelExtractor';
-import { extractMeta }  from './metaExtractor';
+import { extractMeta } from './metaExtractor';
 import { getContent, truncate } from './contentUtils';
 
 let _counter = 0;
@@ -14,13 +14,13 @@ function expandThinkingChildren(raw, parentId, timestamp) {
   return content
     .filter((b) => b.type === 'thinking' && b.thinking)
     .map((b) => ({
-      id:        nextId(),
+      id: nextId(),
       parentId,
-      type:      'thinking',
-      label:     truncate(b.thinking),
+      type: 'thinking',
+      label: truncate(b.thinking),
       timestamp,
-      data:      b,
-      meta:      {},
+      data: b,
+      meta: {},
     }));
 }
 
@@ -31,8 +31,11 @@ export function parseJSONL(rawText) {
   const parsed = [];
 
   for (const line of lines) {
-    try { parsed.push(JSON.parse(line)); }
-    catch { /* skip malformed lines */ }
+    try {
+      parsed.push(JSON.parse(line));
+    } catch {
+      /* skip malformed lines */
+    }
   }
 
   // Pre-register UUIDs so parent references resolve correctly
@@ -44,14 +47,12 @@ export function parseJSONL(rawText) {
   const nodes = [];
 
   for (const raw of parsed) {
-    const type      = resolveType(raw);
-    const label     = extractLabel(raw, type);
+    const type = resolveType(raw);
+    const label = extractLabel(raw, type);
     const timestamp = raw.timestamp ?? raw.created_at ?? null;
-    const meta      = extractMeta(raw, type);
-    const id        = raw.uuid ? idMap.get(raw.uuid) : nextId();
-    const parentId  = raw.parentUuid && idMap.has(raw.parentUuid)
-      ? idMap.get(raw.parentUuid)
-      : null;
+    const meta = extractMeta(raw, type);
+    const id = raw.uuid ? idMap.get(raw.uuid) : nextId();
+    const parentId = raw.parentUuid && idMap.has(raw.parentUuid) ? idMap.get(raw.parentUuid) : null;
 
     nodes.push({ id, parentId, type, label, timestamp, data: raw, meta });
 

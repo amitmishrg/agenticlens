@@ -45,13 +45,13 @@ function IconBtn({ title, onClick, disabled, children }) {
 }
 
 export default function ToolbarReplay() {
-  const chronLen    = useAgentStore((s) => s.chronNodeIds.length);
-  const idx         = useAgentStore((s) => s.currentStepIndex);
-  const isPlaying   = useAgentStore((s) => s.isPlaying);
-  const play        = useAgentStore((s) => s.play);
-  const pause       = useAgentStore((s) => s.pause);
-  const nextStep    = useAgentStore((s) => s.nextStep);
-  const prevStep    = useAgentStore((s) => s.prevStep);
+  const chronLen = useAgentStore((s) => s.chronNodeIds.length);
+  const idx = useAgentStore((s) => s.currentStepIndex);
+  const isPlaying = useAgentStore((s) => s.isPlaying);
+  const play = useAgentStore((s) => s.play);
+  const pause = useAgentStore((s) => s.pause);
+  const nextStep = useAgentStore((s) => s.nextStep);
+  const prevStep = useAgentStore((s) => s.prevStep);
   const resetReplay = useAgentStore((s) => s.resetReplay);
 
   if (!chronLen) return null;

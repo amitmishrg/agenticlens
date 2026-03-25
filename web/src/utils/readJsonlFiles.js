@@ -21,9 +21,8 @@ export async function readJsonlFiles(fileList) {
         name: file.webkitRelativePath || file.name,
         content,
       };
-    })
+    }),
   );
 
   return contents;
 }
-

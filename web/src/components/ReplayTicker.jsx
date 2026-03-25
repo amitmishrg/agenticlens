@@ -3,9 +3,9 @@ import useAgentStore from '../store/useAgentStore';
 
 /** Advances replay while isPlaying is true. */
 export default function ReplayTicker() {
-  const isPlaying  = useAgentStore((s) => s.isPlaying);
-  const nextStep   = useAgentStore((s) => s.nextStep);
-  const nextRef    = useRef(nextStep);
+  const isPlaying = useAgentStore((s) => s.isPlaying);
+  const nextStep = useAgentStore((s) => s.nextStep);
+  const nextRef = useRef(nextStep);
 
   nextRef.current = nextStep;
 

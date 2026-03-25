@@ -13,11 +13,15 @@ const sel = {
 
 export default function ToolbarTypeFilter() {
   const filterType = useAgentStore((s) => s.filterType);
-  const setFilter  = useAgentStore((s) => s.setFilterType);
+  const setFilter = useAgentStore((s) => s.setFilterType);
 
   return (
     <div className="flex items-center gap-2 ml-2">
-      <label htmlFor="agent-type-filter" className="text-[10px] uppercase tracking-wider" style={{ color: '#52527a' }}>
+      <label
+        htmlFor="agent-type-filter"
+        className="text-[10px] uppercase tracking-wider"
+        style={{ color: '#52527a' }}
+      >
         Type
       </label>
       <select

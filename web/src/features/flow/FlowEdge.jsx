@@ -4,15 +4,26 @@ import { getBezierPath } from '@xyflow/react';
  * Animated edge with optional center label (inter-node latency).
  */
 export default function FlowEdge({
-  id, sourceX, sourceY, targetX, targetY,
-  sourcePosition, targetPosition, data,
+  id,
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  sourcePosition,
+  targetPosition,
+  data,
 }) {
   const [path, labelX, labelY] = getBezierPath({
-    sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition,
+    sourceX,
+    sourceY,
+    targetX,
+    targetY,
+    sourcePosition,
+    targetPosition,
   });
-  const ac     = data?.accent ?? '#6366f1';
+  const ac = data?.accent ?? '#6366f1';
   const pathId = `motion-${id}`;
-  const label  = data?.label;
+  const label = data?.label;
 
   return (
     <g className="react-flow__edge">
@@ -34,7 +45,11 @@ export default function FlowEdge({
         </animateMotion>
       </circle>
       {label ? (
-        <g transform={`translate(${labelX}, ${labelY})`} className="nodrag nopan" style={{ pointerEvents: 'none' }}>
+        <g
+          transform={`translate(${labelX}, ${labelY})`}
+          className="nodrag nopan"
+          style={{ pointerEvents: 'none' }}
+        >
           <text
             x={0}
             y={0}

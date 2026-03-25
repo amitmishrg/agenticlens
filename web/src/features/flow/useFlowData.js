@@ -7,12 +7,12 @@ import { buildFlowElements } from './buildFlowElements';
  * Converts store data into React Flow nodes + edges (grouped steps, filters, replay).
  */
 export function useFlowData() {
-  const nodes             = useAgentStore((s) => s.nodes);
-  const steps             = useAgentStore((s) => s.steps);
-  const filterType        = useAgentStore((s) => s.filterType);
-  const currentStepIndex  = useAgentStore((s) => s.currentStepIndex);
-  const chronNodeIds      = useAgentStore((s) => s.chronNodeIds);
-  const setSelectedNode   = useAgentStore((s) => s.setSelectedNode);
+  const nodes = useAgentStore((s) => s.nodes);
+  const steps = useAgentStore((s) => s.steps);
+  const filterType = useAgentStore((s) => s.filterType);
+  const currentStepIndex = useAgentStore((s) => s.currentStepIndex);
+  const chronNodeIds = useAgentStore((s) => s.chronNodeIds);
+  const setSelectedNode = useAgentStore((s) => s.setSelectedNode);
 
   return useMemo(() => {
     const visibleIds = computeVisibleNodeIds(nodes, {

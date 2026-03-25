@@ -11,7 +11,10 @@ export default function FileSidebar() {
       style={{ background: '#09090c' }}
     >
       <div className="px-4 py-3" style={{ borderBottom: '1px solid #1a1a28' }}>
-        <div className="text-[11px] font-bold tracking-widest uppercase" style={{ color: '#33334a' }}>
+        <div
+          className="text-[11px] font-bold tracking-widest uppercase"
+          style={{ color: '#33334a' }}
+        >
           Sessions
         </div>
         <div className="text-[10px] font-mono" style={{ color: '#64748b', marginTop: 2 }}>
@@ -27,7 +30,7 @@ export default function FileSidebar() {
               key={`${f.name}-${idx}`}
               type="button"
               onClick={() => setActiveFile(idx)}
-              className="w-full text-left rounded-lg px-3 py-2 mb-2"
+              className="w-full px-3 py-2 mb-2 text-left rounded-lg"
               style={{
                 background: isActive ? 'rgba(99,102,241,0.16)' : 'transparent',
                 border: `1px solid ${isActive ? 'rgba(129,140,248,0.55)' : '#1e1e2e'}`,
@@ -40,7 +43,10 @@ export default function FileSidebar() {
               }}
               title={f.name}
             >
-              <div className="text-[11px] font-semibold" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <div
+                className="text-[11px] font-semibold"
+                style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+              >
                 {f.name}
               </div>
             </button>
@@ -56,4 +62,3 @@ export default function FileSidebar() {
     </aside>
   );
 }
-

@@ -1,14 +1,19 @@
 import { useEffect } from 'react';
 import {
-  ReactFlow, Background, BackgroundVariant,
-  useNodesState, useEdgesState, ReactFlowProvider,
+  ReactFlow,
+  Background,
+  BackgroundVariant,
+  useNodesState,
+  useEdgesState,
+  ReactFlowProvider,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
-import FlowNode     from './FlowNode';
-import FlowEdge     from './FlowEdge';
-import StepNode     from './StepNode';
+import FlowNode from './FlowNode';
+import FlowEdge from './FlowEdge';
+import StepNode from './StepNode';
 import ZoomControls from './ZoomControls';
+import FlowMiniMap from './FlowMiniMap';
 import { useFlowData } from './useFlowData';
 
 const nodeTypes = { agentNode: FlowNode, stepNode: StepNode };
@@ -22,8 +27,12 @@ function FlowCanvas() {
   const [nodes, setNodes, onNodesChange] = useNodesState(rfNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(rfEdges);
 
-  useEffect(() => { setNodes(rfNodes); }, [rfNodes, setNodes]);
-  useEffect(() => { setEdges(rfEdges); }, [rfEdges, setEdges]);
+  useEffect(() => {
+    setNodes(rfNodes);
+  }, [rfNodes, setNodes]);
+  useEffect(() => {
+    setEdges(rfEdges);
+  }, [rfEdges, setEdges]);
 
   return (
     <ReactFlow
@@ -41,13 +50,9 @@ function FlowCanvas() {
       maxZoom={2.5}
       style={{ background: '#09090c' }}
     >
-      <Background
-        variant={BackgroundVariant.Dots}
-        color="#2e2e4a"
-        gap={28}
-        size={1.5}
-      />
+      <Background variant={BackgroundVariant.Dots} color="#2e2e4a" gap={28} size={1.5} />
       <ZoomControls />
+      <FlowMiniMap />
     </ReactFlow>
   );
 }

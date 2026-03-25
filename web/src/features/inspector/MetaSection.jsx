@@ -1,24 +1,24 @@
 import MetaRow from './MetaRow';
 
 const LABELS = {
-  model:               'Model',
-  inputTokens:         'Input tokens',
-  outputTokens:        'Output tokens',
-  cacheReadTokens:     'Cache read',
+  model: 'Model',
+  inputTokens: 'Input tokens',
+  outputTokens: 'Output tokens',
+  cacheReadTokens: 'Cache read',
   cacheCreationTokens: 'Cache write',
-  costUsd:             'Cost (USD)',
-  durationMs:          'Duration (ms)',
-  durationApiMs:       'API latency (ms)',
-  numTurns:            'Turns',
-  stopReason:          'Stop reason',
-  toolName:            'Tool name',
-  sessionId:           'Session ID',
-  gitBranch:           'Git branch',
-  cwd:                 'Working dir',
-  entrypoint:          'Entrypoint',
-  version:             'Version',
-  slug:                'Slug',
-  sidechain:           'Sidechain',
+  costUsd: 'Cost (USD)',
+  durationMs: 'Duration (ms)',
+  durationApiMs: 'API latency (ms)',
+  numTurns: 'Turns',
+  stopReason: 'Stop reason',
+  toolName: 'Tool name',
+  sessionId: 'Session ID',
+  gitBranch: 'Git branch',
+  cwd: 'Working dir',
+  entrypoint: 'Entrypoint',
+  version: 'Version',
+  slug: 'Slug',
+  sidechain: 'Sidechain',
 };
 
 export default function MetaSection({ meta = {}, timestamp }) {
@@ -35,9 +35,7 @@ export default function MetaSection({ meta = {}, timestamp }) {
         marginBottom: 12,
       }}
     >
-      <p style={{ color: '#4b5563', fontSize: 10, letterSpacing: 1, marginBottom: 6 }}>
-        METADATA
-      </p>
+      <p style={{ color: '#4b5563', fontSize: 10, letterSpacing: 1, marginBottom: 6 }}>METADATA</p>
       {timestamp && <MetaRow label="Timestamp" value={new Date(timestamp).toLocaleString()} />}
       {Object.entries(LABELS).map(([key, label]) => (
         <MetaRow key={key} label={label} value={meta[key]} />

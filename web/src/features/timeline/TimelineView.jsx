@@ -3,10 +3,10 @@ import { computeVisibleNodeIds } from '../../utils/visibility';
 import TimelineItem from './TimelineItem';
 
 export default function TimelineView() {
-  const nodes            = useAgentStore((s) => s.nodes);
-  const filterType       = useAgentStore((s) => s.filterType);
+  const nodes = useAgentStore((s) => s.nodes);
+  const filterType = useAgentStore((s) => s.filterType);
   const currentStepIndex = useAgentStore((s) => s.currentStepIndex);
-  const chronNodeIds     = useAgentStore((s) => s.chronNodeIds);
+  const chronNodeIds = useAgentStore((s) => s.chronNodeIds);
 
   const visible = computeVisibleNodeIds(nodes, {
     replayIndex: currentStepIndex,
@@ -27,7 +27,7 @@ export default function TimelineView() {
   }
 
   return (
-    <div style={{ padding: '12px 8px', overflowY: 'auto', height: '100%' }}>
+    <div className="box-border min-w-full p-3 px-2">
       {sorted.map((node) => (
         <TimelineItem key={node.id} node={node} delta={node.deltaMs} />
       ))}
