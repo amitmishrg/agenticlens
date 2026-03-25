@@ -1,4 +1,5 @@
 import { getAccent } from '../constants/typeConfig';
+import { XIcon } from '@phosphor-icons/react';
 
 const closeBtn = {
   width: 28, height: 28, borderRadius: 8,
@@ -46,10 +47,7 @@ export default function SlidePaneHeader({ node, onClose }) {
           onMouseEnter={(e) => { e.currentTarget.style.background = '#1e1e2e'; e.currentTarget.style.color = '#8888a8'; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = '#141420'; e.currentTarget.style.color = '#44445a'; }}
         >
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-            <line x1="1" y1="1" x2="9" y2="9" />
-            <line x1="9" y1="1" x2="1" y2="9" />
-          </svg>
+          <XIcon size={10} weight="bold" />
         </button>
       </div>
     </div>

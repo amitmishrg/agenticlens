@@ -1,9 +1,15 @@
-import { CodeIcon } from '@phosphor-icons/react';
+import { CoinsIcon } from '@phosphor-icons/react';
 
-/** Phosphor “token count” affordance — replaces ad-hoc emoji. See https://phosphoricons.com/ */
-export default function TokenGlyph({ size = 13, color = 'currentColor', weight = 'duotone', style, className }) {
+/** Small icon for token counts (Phosphor Coin). */
+export default function TokenGlyph({
+  size = 13,
+  color = 'currentColor',
+  weight = 'duotone',
+  style,
+  className,
+}) {
   return (
-    <CodeIcon
+    <CoinsIcon
       size={size}
       color={color}
       weight={weight}

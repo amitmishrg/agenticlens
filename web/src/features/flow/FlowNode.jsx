@@ -1,4 +1,5 @@
 import { Handle, Position } from '@xyflow/react';
+import { CurrencyDollarIcon, TimerIcon } from '@phosphor-icons/react';
 import TypeIcon from '../../components/TypeIcon';
 import MetaChip  from './MetaChip';
 import TokenGlyph from '../../components/icons/TokenGlyph';
@@ -61,12 +62,23 @@ export default function FlowNode({ data }) {
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 12px', marginBottom: 6, fontSize: 10, color: '#64748b', alignItems: 'center' }}>
         {sinceParent && (
-          <span title="Time since parent node in tree">⏱ {sinceParent}</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }} title="Time since parent node in tree">
+            <TimerIcon size={12} color="#94a3b8" weight="duotone" />
+            {sinceParent}
+          </span>
         )}
         {!sinceParent && sincePrev && (
-          <span title="Time since previous log line (no parent timestamp)">⏱ {sincePrev}</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }} title="Time since previous log line (no parent timestamp)">
+            <TimerIcon size={12} color="#94a3b8" weight="duotone" />
+            {sincePrev}
+          </span>
         )}
-        {dur && <span title="duration_ms on this event">⏱ {dur}</span>}
+        {dur && (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }} title="duration_ms on this event">
+            <TimerIcon size={12} color="#94a3b8" weight="duotone" />
+            {dur}
+          </span>
+        )}
         {tokens != null && (
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }} title="Input + output tokens (this event)">
             <TokenGlyph size={13} color="#94a3b8" />
@@ -74,7 +86,10 @@ export default function FlowNode({ data }) {
           </span>
         )}
         {cost != null && (
-          <span title="Cost USD">${Number(cost).toFixed(4)}</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }} title="Cost USD">
+            <CurrencyDollarIcon size={12} color="#94a3b8" weight="duotone" />
+            {Number(cost).toFixed(4)}
+          </span>
         )}
       </div>
 

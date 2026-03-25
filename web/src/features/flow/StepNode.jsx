@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { TimerIcon } from '@phosphor-icons/react';
 import { formatDeltaMs } from '../../utils/formatDuration';
 import TokenGlyph from '../../components/icons/TokenGlyph';
 
@@ -36,8 +37,9 @@ function StepNode({ data }) {
           STEP {step.index}
         </span>
         {dur != null && (
-          <span style={{ fontSize: 10, color: '#94a3b8' }}>
-            ⏱ {dur}
+          <span style={{ fontSize: 10, color: '#94a3b8', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+            <TimerIcon size={12} color="#94a3b8" weight="duotone" />
+            {dur}
           </span>
         )}
         <span style={{ fontSize: 10, color: '#64748b', display: 'inline-flex', alignItems: 'center', gap: 5 }}>

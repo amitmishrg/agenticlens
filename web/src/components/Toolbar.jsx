@@ -1,4 +1,5 @@
 import useAgentStore from '../store/useAgentStore';
+import { SparkleIcon } from '@phosphor-icons/react';
 import { VIEWS } from './toolbarViews.jsx';
 import ToolbarTypeFilter from './ToolbarTypeFilter';
 import ToolbarReplay from './ToolbarReplay';
@@ -24,13 +25,7 @@ export default function Toolbar() {
       {/* Logo */}
       <div className="flex items-center gap-2 mr-3">
         <div className="w-5 h-5 rounded-md bg-indigo-600 flex items-center justify-center">
-          <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-            <circle cx="6" cy="6" r="2" fill="white" />
-            <line x1="6" y1="1"   x2="6"  y2="3.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="6" y1="8.5" x2="6"  y2="11"  stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="1" y1="6"   x2="3.5" y2="6"  stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="8.5" y1="6" x2="11"  y2="6"  stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+          <SparkleIcon size={11} color="#ffffff" weight="fill" />
         </div>
         <span className="text-xs font-semibold text-indigo-400 tracking-wide">AgentScope</span>
       </div>
