@@ -1,0 +1,14 @@
+{
+  "name": "agentscope-root",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "cli",
+    "web"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=web",
+    "dev": "npm run dev --workspace=web",
+    "start": "node cli/index.js"
+  }
+}
