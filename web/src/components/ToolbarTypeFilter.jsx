@@ -16,7 +16,7 @@ export default function ToolbarTypeFilter() {
         id="agent-type-filter"
         value={filterType}
         onChange={(e) => setFilter(e.target.value)}
-        className="w-[150px] text-xs py-1.5 px-2.5 rounded-lg border border-app-border bg-app-surface-2 text-app-fg-subtle cursor-pointer"
+        className="w-[150px] min-h-9 text-xs py-2 px-2.5 rounded-xl border border-app-border bg-app-surface/90 text-app-fg-subtle cursor-pointer shadow-sm transition-[border-color,box-shadow] duration-200 hover:border-app-border-strong focus-visible:ring-2 focus-visible:ring-app-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-app-bg [outline-offset:2px]"
       >
         {FILTER_TYPES.map((t) => (
           <option key={t} value={t}>

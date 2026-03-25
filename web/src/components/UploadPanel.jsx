@@ -10,9 +10,10 @@ export default function UploadPanel({ onFilesReady }) {
       <JsonlDropzone
         onFilesReady={onFilesReady}
         onError={(msg) => setError(msg)}
-        rootClassName="w-full max-w-2xl rounded-xl border border-app-border bg-app-surface-elevated px-6 py-6 cursor-pointer transition-[background,border-color] duration-150"
+        rootClassName="group w-full max-w-2xl rounded-2xl border border-app-border bg-[color-mix(in_oklab,var(--app-surface)_88%,transparent)] px-8 py-8 cursor-pointer transition-[background,border-color,box-shadow,transform] duration-300 ease-out backdrop-blur-md hover:border-app-accent-soft-border hover:shadow-lg hover:shadow-indigo-500/10 hover:-translate-y-0.5 active:translate-y-0"
         rootStyle={{
-          boxShadow: '0 0 0 1px rgb(99 102 241 / 0.08)',
+          boxShadow:
+            '0 0 0 1px rgb(99 102 241 / 0.1), 0 20px 50px -24px rgb(0 0 0 / 0.35)',
         }}
       >
         <div className="text-xs font-extrabold tracking-widest uppercase text-app-label">

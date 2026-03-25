@@ -1,80 +1,77 @@
 @import 'tailwindcss';
 
 /*
- * Theme system — Tailwind v4 + semantic tokens
+ * Design system — semantic tokens on [data-theme] + Tailwind v4 @theme inline.
  *
- * Each theme is a [data-theme="…"] block on <html> setting the same `--app-*` variables.
- * `@theme inline` maps those to utilities: `bg-app-bg`, `text-app-fg`, `border-app-border`, …
- *
- * Add another theme:
- *   1. Duplicate a block below as `[data-theme="ocean"] { --app-bg: …; … }`
- *   2. Extend useThemeStore + UI to set `document.documentElement.dataset.theme = 'ocean'`
- *
- * Light/dark: `useThemeStore` + `ThemeToggle` (persisted in localStorage).
+ * Typography: Inter (UI), JetBrains Mono (mono). Atmospheric gradients use --app-glow-*.
+ * Motion: respect prefers-reduced-motion for entrance animations.
  */
 
 [data-theme='dark'] {
-  --app-bg: #09090c;
-  --app-surface: #111118;
-  --app-surface-elevated: #0a0a10;
-  --app-surface-2: #1a1a28;
-  --app-border: #1e1e2e;
-  --app-border-strong: #2a2a44;
-  --app-fg: #e2e8f0;
+  --app-bg: #0a0a0e;
+  --app-surface: #12121a;
+  --app-surface-elevated: #0c0c12;
+  --app-surface-2: #1c1c28;
+  --app-border: #252532;
+  --app-border-strong: #34344a;
+  --app-fg: #e8edf4;
   --app-fg-muted: #94a3b8;
   --app-fg-subtle: #cbd5e1;
-  --app-label: #4b4b65;
-  --app-label-muted: #2a2a3a;
-  --app-switch-inactive: #44445a;
+  --app-label: #5c6078;
+  --app-label-muted: #3d3d52;
+  --app-switch-inactive: #64748b;
   --app-accent: #6366f1;
   --app-accent-fg: #a5b4fc;
   --app-accent-bright: #c7d2fe;
   --app-accent-logo: #818cf8;
-  --app-accent-soft-bg: rgb(99 102 241 / 0.28);
-  --app-accent-soft-border: rgb(129 140 248 / 0.45);
-  --app-accent-inner-ring: rgb(129 140 248 / 0.35);
-  --app-accent-inner-glow: rgb(165 180 252 / 0.15);
+  --app-accent-soft-bg: rgb(99 102 241 / 0.22);
+  --app-accent-soft-border: rgb(129 140 248 / 0.42);
+  --app-accent-inner-ring: rgb(129 140 248 / 0.32);
+  --app-accent-inner-glow: rgb(165 180 252 / 0.12);
   --app-tree-btn-bg: #1a1a28;
   --app-tree-btn-fg: #64748b;
-  --app-live: #22c55e;
-  --app-dot-grid: #2e2e4a;
+  --app-live: #34d399;
+  --app-dot-grid: #2e2e44;
   --app-overlay-scrim: rgb(9 9 12 / 0.65);
-  --app-backdrop: rgb(0 0 0 / 0.55);
-  --app-pane-shadow: -24px 0 80px rgb(0 0 0 / 0.7);
-  --app-list-active-bg: rgb(99 102 241 / 0.16);
-  --app-list-active-border: rgb(129 140 248 / 0.55);
-  --app-list-active-fg: #c7d2fe;
-  --app-scrollbar-track: #1f2937;
-  --app-scrollbar-thumb: #374151;
-  --app-scrollbar-thumb-hover: #4b5563;
-  --app-close-bg: #141420;
-  --app-close-border: #222230;
-  --app-close-fg: #44445a;
-  --app-close-hover-bg: #1e1e2e;
-  --app-close-hover-fg: #8888a8;
+  --app-backdrop: rgb(0 0 0 / 0.52);
+  --app-pane-shadow: -28px 0 96px rgb(0 0 0 / 0.65);
+  --app-list-active-bg: rgb(99 102 241 / 0.18);
+  --app-list-active-border: rgb(129 140 248 / 0.5);
+  --app-list-active-fg: #e0e7ff;
+  --app-scrollbar-track: #1a1a24;
+  --app-scrollbar-thumb: #3b3b52;
+  --app-scrollbar-thumb-hover: #52526e;
+  --app-close-bg: #14141c;
+  --app-close-border: #252530;
+  --app-close-fg: #5a5a72;
+  --app-close-hover-bg: #1e1e2a;
+  --app-close-hover-fg: #9898b8;
   --app-spinner-border: #6366f1;
-  /* Flow canvas: node cards & step group */
-  --app-flow-card-bg: #0d0d11;
-  --app-flow-card-border-idle: #1e1e2e;
-  --app-flow-card-shadow: 0 2px 12px rgb(0 0 0 / 0.4);
+  --app-glow-1: rgb(99 102 241 / 0.14);
+  --app-glow-2: rgb(56 189 248 / 0.07);
+  --app-toolbar-scrim: rgb(10 10 14 / 0.72);
+  --app-focus-ring: rgb(129 140 248 / 0.95);
+  --app-flow-card-bg: #0e0e12;
+  --app-flow-card-border-idle: #252532;
+  --app-flow-card-shadow: 0 4px 24px rgb(0 0 0 / 0.45);
   --app-flow-preview: #4b5563;
   --app-meta-chip-label: #6b7280;
-  --app-step-border: #2a2a4a;
-  --app-step-bg: linear-gradient(165deg, rgb(30 30 55 / 0.92) 0%, rgb(12 12 20 / 0.85) 100%);
-  --app-step-header-bg: rgb(0 0 0 / 0.2);
-  --app-step-header-divider: rgb(99 102 241 / 0.2);
+  --app-step-border: #2e2e4a;
+  --app-step-bg: linear-gradient(165deg, rgb(30 30 55 / 0.92) 0%, rgb(12 12 20 / 0.88) 100%);
+  --app-step-header-bg: rgb(0 0 0 / 0.22);
+  --app-step-header-divider: rgb(99 102 241 / 0.22);
 }
 
 [data-theme='light'] {
-  --app-bg: #f8fafc;
+  --app-bg: #f4f6fb;
   --app-surface: #ffffff;
-  --app-surface-elevated: #f1f5f9;
+  --app-surface-elevated: #eef2f8;
   --app-surface-2: #e2e8f0;
-  --app-border: #cbd5e1;
+  --app-border: #c8d0dc;
   --app-border-strong: #94a3b8;
   --app-fg: #0f172a;
   --app-fg-muted: #475569;
-  --app-fg-subtle: #334155;
+  --app-fg-subtle: #1e293b;
   --app-label: #64748b;
   --app-label-muted: #94a3b8;
   --app-switch-inactive: #64748b;
@@ -82,21 +79,21 @@
   --app-accent-fg: #4338ca;
   --app-accent-bright: #312e81;
   --app-accent-logo: #4f46e5;
-  --app-accent-soft-bg: rgb(79 70 229 / 0.14);
-  --app-accent-soft-border: rgb(79 70 229 / 0.4);
-  --app-accent-inner-ring: rgb(79 70 229 / 0.3);
-  --app-accent-inner-glow: rgb(79 70 229 / 0.08);
+  --app-accent-soft-bg: rgb(79 70 229 / 0.12);
+  --app-accent-soft-border: rgb(79 70 229 / 0.38);
+  --app-accent-inner-ring: rgb(79 70 229 / 0.28);
+  --app-accent-inner-glow: rgb(79 70 229 / 0.06);
   --app-tree-btn-bg: #e2e8f0;
   --app-tree-btn-fg: #64748b;
-  --app-live: #16a34a;
+  --app-live: #059669;
   --app-dot-grid: #94a3b8;
-  --app-overlay-scrim: rgb(248 250 252 / 0.88);
-  --app-backdrop: rgb(15 23 42 / 0.35);
-  --app-pane-shadow: -24px 0 80px rgb(15 23 42 / 0.12);
-  --app-list-active-bg: rgb(79 70 229 / 0.12);
-  --app-list-active-border: rgb(79 70 229 / 0.45);
-  --app-list-active-fg: #3730a3;
-  --app-scrollbar-track: #e2e8f0;
+  --app-overlay-scrim: rgb(248 250 252 / 0.9);
+  --app-backdrop: rgb(15 23 42 / 0.32);
+  --app-pane-shadow: -28px 0 96px rgb(15 23 42 / 0.1);
+  --app-list-active-bg: rgb(79 70 229 / 0.14);
+  --app-list-active-border: rgb(79 70 229 / 0.42);
+  --app-list-active-fg: #312e81;
+  --app-scrollbar-track: #e8ecf4;
   --app-scrollbar-thumb: #94a3b8;
   --app-scrollbar-thumb-hover: #64748b;
   --app-close-bg: #f1f5f9;
@@ -105,15 +102,19 @@
   --app-close-hover-bg: #e2e8f0;
   --app-close-hover-fg: #334155;
   --app-spinner-border: #4f46e5;
+  --app-glow-1: rgb(79 70 229 / 0.09);
+  --app-glow-2: rgb(14 165 233 / 0.06);
+  --app-toolbar-scrim: rgb(255 255 255 / 0.76);
+  --app-focus-ring: rgb(79 70 229 / 0.9);
   --app-flow-card-bg: #ffffff;
-  --app-flow-card-border-idle: #cbd5e1;
-  --app-flow-card-shadow: 0 2px 12px rgb(15 23 42 / 0.1);
+  --app-flow-card-border-idle: #c8d0dc;
+  --app-flow-card-shadow: 0 4px 24px rgb(15 23 42 / 0.08);
   --app-flow-preview: #64748b;
   --app-meta-chip-label: #64748b;
   --app-step-border: #c7d2fe;
-  --app-step-bg: linear-gradient(165deg, rgb(238 242 255 / 0.98) 0%, rgb(248 250 252 / 1) 100%);
-  --app-step-header-bg: rgb(255 255 255 / 0.65);
-  --app-step-header-divider: rgb(79 70 229 / 0.2);
+  --app-step-bg: linear-gradient(165deg, rgb(238 242 255 / 0.98) 0%, rgb(255 255 255 / 1) 100%);
+  --app-step-header-bg: rgb(255 255 255 / 0.7);
+  --app-step-header-divider: rgb(79 70 229 / 0.18);
 }
 
 @theme inline {
@@ -136,23 +137,59 @@
   --color-app-live: var(--app-live);
   --color-app-dot-grid: var(--app-dot-grid);
   --color-app-spinner: var(--app-spinner-border);
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-    monospace;
+  font-family: var(--font-sans);
+  font-feature-settings:
+    'cv02' 1,
+    'cv03' 1,
+    'cv04' 1,
+    'cv11' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   background-color: var(--app-bg);
   color: var(--app-fg);
+  background-image:
+    radial-gradient(ellipse 110% 55% at 12% -8%, var(--app-glow-1), transparent 52%),
+    radial-gradient(ellipse 65% 40% at 98% 2%, var(--app-glow-2), transparent 48%),
+    linear-gradient(180deg, var(--app-bg) 0%, var(--app-bg) 100%);
+  background-attachment: fixed;
 }
 
-/* ─── Card view entrance animation ─── */
+:where(code, kbd, samp, pre, .font-mono) {
+  font-family: var(--font-mono);
+}
+
+:where(button, [href], input:not([type='hidden']), select, textarea, summary, [tabindex]:not([tabindex='-1'])):focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+:where(button, [role='button']):focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Card view entrance */
 @keyframes cardEntrance {
   from {
     opacity: 0;
@@ -198,6 +235,33 @@ body {
   animation: flowCardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+@keyframes sessionStripIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.session-summary-anim {
+  animation: sessionStripIn 0.35s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-card-anim,
+  .flow-card-anim,
+  .session-summary-anim {
+    animation: none !important;
+  }
+
+  :where(.animate-ping) {
+    animation: none !important;
+  }
+}
+
 .react-flow__attribution {
   display: none;
 }
@@ -206,8 +270,8 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -216,7 +280,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: var(--app-scrollbar-thumb);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

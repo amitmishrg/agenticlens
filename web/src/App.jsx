@@ -74,7 +74,7 @@ export default function App() {
   const showUploadPanel = isUploadPanelOpen || (showEmptyUpload && status === 'upload');
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-app-bg text-app-fg">
+    <div className="relative isolate flex flex-col h-screen min-h-0 overflow-hidden bg-transparent text-app-fg">
       <Toolbar />
 
       {showAutoLoading ? (

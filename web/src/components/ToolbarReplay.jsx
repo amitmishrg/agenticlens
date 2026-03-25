@@ -15,10 +15,10 @@ function IconBtn({ title, onClick, disabled, children }) {
       onClick={onClick}
       disabled={disabled}
       className={[
-        'flex items-center justify-center w-7 h-7 rounded-lg transition-colors duration-150 border',
+        'flex items-center justify-center min-w-9 min-h-9 w-9 h-9 rounded-lg transition-[background-color,border-color,color,transform] duration-200 ease-out border [outline-offset:2px]',
         disabled
           ? 'border-app-border bg-app-surface text-app-label cursor-not-allowed opacity-50'
-          : 'border-app-border-strong bg-app-surface-2 text-app-accent-bright cursor-pointer hover:border-app-accent',
+          : 'border-app-border-strong bg-app-surface-2 text-app-accent-bright cursor-pointer hover:border-app-accent hover:shadow-sm active:scale-95',
       ].join(' ')}
     >
       {children}
