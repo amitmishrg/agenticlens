@@ -1,6 +1,6 @@
 {
   "name": "agenticlens-web",
-  "version": "0.1.1",
+  "version": "0.20",
   "private": true,
   "type": "module",
   "scripts": {
