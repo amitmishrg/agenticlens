@@ -1,5 +1,7 @@
 import useAgentStore from '../store/useAgentStore';
 import { VIEWS } from './toolbarViews.jsx';
+import ToolbarTypeFilter from './ToolbarTypeFilter';
+import ToolbarReplay from './ToolbarReplay';
 
 function getAllCollapsibleIds(treeNodes) {
   const ids = [];
@@ -54,6 +56,9 @@ export default function Toolbar() {
           </button>
         ))}
       </div>
+
+      <ToolbarTypeFilter />
+      <ToolbarReplay />
 
       {/* Tree-specific: collapse / expand controls */}
       {view === 'tree' && (

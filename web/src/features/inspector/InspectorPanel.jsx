@@ -1,7 +1,9 @@
-import TypeIcon  from '../../components/TypeIcon';
-import MetaSection from './MetaSection';
-import JsonViewer  from './JsonViewer';
+import TypeIcon       from '../../components/TypeIcon';
+import MetaSection    from './MetaSection';
+import JsonViewer     from './JsonViewer';
+import StepSummaryLine from './StepSummaryLine';
 import { getAccent } from '../../constants/typeConfig';
+import { formatDeltaMs } from '../../utils/formatDuration';
 
 export default function InspectorPanel({ node }) {
   if (!node) return null;
@@ -31,6 +33,28 @@ export default function InspectorPanel({ node }) {
           </p>
         </div>
       </div>
+
+      <StepSummaryLine stepId={node.stepId} />
+
+      {(node.parentDeltaMs != null || node.deltaMs != null || node.meta?.durationMs != null) && (
+        <p style={{ fontSize: 11, color: '#64748b', margin: '0 0 12px' }}>
+          {node.parentDeltaMs != null && (
+            <span title="Wall time since parent node in the event tree (same as graph edges)">
+              Δ parent: {formatDeltaMs(node.parentDeltaMs)}
+              {(node.deltaMs != null || node.meta?.durationMs != null) ? ' · ' : ''}
+            </span>
+          )}
+          {node.deltaMs != null && (
+            <span title="Time since previous line when all events are sorted by timestamp">
+              Δ log order: {formatDeltaMs(node.deltaMs)}
+              {node.meta?.durationMs != null ? ' · ' : ''}
+            </span>
+          )}
+          {node.meta?.durationMs != null && (
+            <span title="duration_ms from this event payload">Payload duration: {formatDeltaMs(node.meta.durationMs)}</span>
+          )}
+        </p>
+      )}
 
       <MetaSection meta={node.meta} timestamp={node.timestamp} />
       <JsonViewer  data={node.data} />

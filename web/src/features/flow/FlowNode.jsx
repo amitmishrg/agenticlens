@@ -1,34 +1,49 @@
 import { Handle, Position } from '@xyflow/react';
-import TypeIcon  from '../../components/TypeIcon';
+import TypeIcon from '../../components/TypeIcon';
 import MetaChip  from './MetaChip';
+import TokenGlyph from '../../components/icons/TokenGlyph';
 import { extractBodyText } from '../../parser/contentUtils';
+import { formatDeltaMs } from '../../utils/formatDuration';
 import useAgentStore from '../../store/useAgentStore';
 
 const BODY_LIMIT = 80;
 
-/** Custom React Flow node that renders an agent event as a compact card. */
 export default function FlowNode({ data }) {
-  const { node, onSelect, accent: ac } = data;
+  const { node, onSelect, accent: ac, replayActive } = data;
   const selectedNode = useAgentStore((s) => s.selectedNode);
-  const selected = selectedNode?.id === node.id;
+  const selected     = selectedNode?.id === node.id;
 
-  const body = extractBodyText(node);
+  const body    = extractBodyText(node);
   const preview = body.length > BODY_LIMIT ? body.slice(0, BODY_LIMIT) + '…' : body;
+
+  const sinceParent = formatDeltaMs(node.parentDeltaMs);
+  const sincePrev   = formatDeltaMs(node.deltaMs);
+  const dur         = formatDeltaMs(node.meta?.durationMs);
+  const tokens      = node.totalTokens ?? node.meta?.totalTokens;
+  const cost        = node.meta?.costUsd;
+
+  const ring = replayActive
+    ? `0 0 0 3px ${ac}66, 0 0 18px ${ac}33`
+    : selected
+      ? `0 0 0 3px ${ac}55`
+      : 'none';
 
   return (
     <div
       onClick={() => onSelect(node)}
       style={{
-        width: 252, background: '#0d0d11', borderRadius: 10,
-        border: `1.5px solid ${selected ? ac : '#1e1e2e'}`,
-        padding: '10px 13px', cursor: 'pointer',
-        boxShadow: selected ? `0 0 0 3px ${ac}33, 0 4px 24px ${ac}22` : '0 2px 12px #00000066',
+        width: 252,
+        background: '#0d0d11',
+        borderRadius: 10,
+        border: `1.5px solid ${selected || replayActive ? ac : '#1e1e2e'}`,
+        padding: '10px 13px',
+        cursor: 'pointer',
+        boxShadow: `${ring}, ${selected ? `0 4px 24px ${ac}22` : '0 2px 12px #00000066'}`,
         transition: 'border-color 0.15s, box-shadow 0.15s',
         animation: 'flowCardIn 0.3s cubic-bezier(0.22,1,0.36,1) both',
       }}
     >
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 7 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 6 }}>
         <span style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           width: 26, height: 26, borderRadius: 6,
@@ -36,27 +51,50 @@ export default function FlowNode({ data }) {
         }}>
           <TypeIcon type={node.type} color={ac} size={13} />
         </span>
-        <span style={{ fontSize: 10, color: ac, textTransform: 'uppercase', letterSpacing: 0.7, fontWeight: 600 }}>
+        <span style={{
+          fontSize: 10, color: ac, textTransform: 'uppercase',
+          letterSpacing: 0.7, fontWeight: 600,
+        }}>
           {node.type}
         </span>
       </div>
 
-      {/* Label */}
-      <p style={{ fontSize: 11, color: '#e5e7eb', margin: '0 0 6px',
-        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 12px', marginBottom: 6, fontSize: 10, color: '#64748b', alignItems: 'center' }}>
+        {sinceParent && (
+          <span title="Time since parent node in tree">⏱ {sinceParent}</span>
+        )}
+        {!sinceParent && sincePrev && (
+          <span title="Time since previous log line (no parent timestamp)">⏱ {sincePrev}</span>
+        )}
+        {dur && <span title="duration_ms on this event">⏱ {dur}</span>}
+        {tokens != null && (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }} title="Input + output tokens (this event)">
+            <TokenGlyph size={13} color="#94a3b8" />
+            {tokens}
+          </span>
+        )}
+        {cost != null && (
+          <span title="Cost USD">${Number(cost).toFixed(4)}</span>
+        )}
+      </div>
+
+      <p style={{
+        fontSize: 11, color: '#e5e7eb', margin: '0 0 6px',
+        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+      }}>
         {node.label}
       </p>
 
-      {/* Body preview */}
       {preview && (
-        <p style={{ fontSize: 10, color: '#4b5563', margin: '0 0 7px',
+        <p style={{
+          fontSize: 10, color: '#4b5563', margin: '0 0 7px',
           fontFamily: 'monospace', lineHeight: 1.5,
-          display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+        }}>
           {preview}
         </p>
       )}
 
-      {/* Meta chips */}
       <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
         <MetaChip label="in"   value={node.meta?.inputTokens}  color={ac} />
         <MetaChip label="out"  value={node.meta?.outputTokens} color={ac} />

@@ -8,13 +8,35 @@ const btn = {
 
 /** Zoom controls panel displayed inside the React Flow canvas. */
 export default function ZoomControls() {
-  const { zoomIn, zoomOut, fitView, setViewport, getViewport } = useReactFlow();
+  const { zoomIn, zoomOut, fitView, setViewport, getViewport, getNodes } = useReactFlow();
   const viewport = useViewport();
   const pct = Math.round(viewport.zoom * 100);
 
   const reset100 = () => {
+    const nodes = getNodes();
+    if (!nodes.length) {
+      const vp = getViewport();
+      setViewport({ x: vp.x, y: vp.y, zoom: 1.0 }, { duration: 300 });
+      return;
+    }
+
+    let minX = Infinity;
+    let maxX = -Infinity;
+    for (const n of nodes) {
+      const x = n.positionAbsolute?.x ?? n.position?.x ?? 0;
+      const styleW = Number(n.style?.width);
+      const w = n.width ?? n.measured?.width ?? (Number.isFinite(styleW) ? styleW : 0);
+      minX = Math.min(minX, x);
+      maxX = Math.max(maxX, x + w);
+    }
+
+    const centerX = (minX + maxX) / 2;
+    const pane = document.querySelector('.react-flow__renderer');
+    const paneWidth = pane?.clientWidth ?? window.innerWidth;
     const vp = getViewport();
-    setViewport({ x: vp.x, y: vp.y, zoom: 1.0 }, { duration: 300 });
+    const x = paneWidth / 2 - centerX;
+
+    setViewport({ x, y: vp.y, zoom: 1.0 }, { duration: 320 });
   };
 
   const fitAll = () => fitView({ padding: 0.12, maxZoom: 1.0, duration: 400 });

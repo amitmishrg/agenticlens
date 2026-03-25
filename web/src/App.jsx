@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import useAgentStore from './store/useAgentStore';
-import { parseJSONL } from './parser/parseJSONL';
-import { buildTree } from './parser/buildTree';
-import Toolbar      from './components/Toolbar';
-import SlidePane    from './components/SlidePane';
+import { parseJSONL }  from './parser/parseJSONL';
+import { buildTree }   from './parser/buildTree';
+import { enrichNodes } from './parser/enrichNodes';
+import { buildSteps }  from './parser/buildSteps';
+import Toolbar       from './components/Toolbar';
+import SlidePane     from './components/SlidePane';
+import ReplayTicker  from './components/ReplayTicker';
 import FlowView     from './features/flow/FlowView';
 import TreeView     from './features/tree/TreeView';
 import TimelineView from './features/timeline/TimelineView';
 
 export default function App() {
-  const { view, setNodes, setTree, nodes } = useAgentStore();
+  const { view, setNodes, setTree, setSteps, setChronNodeIds, nodes } = useAgentStore();
   const [status, setStatus] = useState('loading');
   const [error, setError] = useState(null);
 
@@ -19,9 +22,18 @@ export default function App() {
         const res = await fetch('/data');
         if (!res.ok) throw new Error(`Server returned ${res.status}`);
         const raw = await res.text();
-        const parsed = parseJSONL(raw);
-        setNodes(parsed);
-        setTree(buildTree(parsed));
+        const parsed   = parseJSONL(raw);
+        const enriched = enrichNodes(parsed);
+        const steps    = buildSteps(enriched);
+        const chron    = [...enriched]
+          .filter((n) => n.timestamp)
+          .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+          .map((n) => n.id);
+
+        setNodes(enriched);
+        setTree(buildTree(enriched));
+        setSteps(steps);
+        setChronNodeIds(chron);
         setStatus('ready');
       } catch (err) {
         setError(err.message);
@@ -29,7 +41,7 @@ export default function App() {
       }
     }
     load();
-  }, [setNodes, setTree]);
+  }, [setNodes, setTree, setSteps, setChronNodeIds]);
 
   if (status === 'loading') {
     return (
@@ -64,6 +76,8 @@ export default function App() {
         {view === 'tree'     && <PanelWrap label="Event Tree" count={nodes.length}><TreeView /></PanelWrap>}
         {view === 'timeline' && <PanelWrap label="Timeline" count={nodes.length}><TimelineView /></PanelWrap>}
       </div>
+
+      <ReplayTicker />
 
       {/* Inspector slide pane — single shared instance, overlays from the right */}
       <SlidePane />

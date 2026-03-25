@@ -1,13 +1,18 @@
 import TypeIcon from '../../components/TypeIcon';
 import { getAccent } from '../../constants/typeConfig';
 import useAgentStore from '../../store/useAgentStore';
+import { formatDeltaMs } from '../../utils/formatDuration';
 
 export default function TreeNode({ node, depth = 0 }) {
-  const { selectedNode, setSelectedNode, collapsed, toggleCollapse } = useAgentStore();
-  const ac         = getAccent(node.type);
-  const isSelected = selectedNode?.id === node.id;
+  const {
+    selectedNode, setSelectedNode, collapsedNodeIds, toggleNode,
+  } = useAgentStore();
+
+  const ac          = getAccent(node.type);
+  const isSelected  = selectedNode?.id === node.id;
   const hasChildren = node.children?.length > 0;
-  const isCollapsed = collapsed.has(node.id);
+  const isCollapsed = collapsedNodeIds.has(node.id);
+  const edgeDelay   = formatDeltaMs(node.parentDeltaMs) ?? formatDeltaMs(node.deltaMs);
 
   return (
     <div style={{ marginLeft: depth === 0 ? 0 : 18 }}>
@@ -23,13 +28,14 @@ export default function TreeNode({ node, depth = 0 }) {
       >
         {hasChildren ? (
           <button
-            onClick={(e) => { e.stopPropagation(); toggleCollapse(node.id); }}
+            type="button"
+            onClick={(e) => { e.stopPropagation(); toggleNode(node.id); }}
             style={{
               background: 'none', border: 'none', cursor: 'pointer',
               color: '#4b5563', fontSize: 10, padding: 0, lineHeight: 1, flexShrink: 0,
             }}
           >
-            {isCollapsed ? '▸' : '▾'}
+            {isCollapsed ? '▶' : '▼'}
           </button>
         ) : (
           <span style={{ width: 12, flexShrink: 0 }} />
@@ -44,6 +50,15 @@ export default function TreeNode({ node, depth = 0 }) {
         <span style={{ fontSize: 12, color: '#d1d5db', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {node.label}
         </span>
+
+        {edgeDelay && (
+          <span
+            style={{ marginLeft: 'auto', fontSize: 10, color: '#4b5563', fontFamily: 'monospace', flexShrink: 0 }}
+            title={node.parentDeltaMs != null ? 'Δ since parent in tree' : 'Δ since previous log line'}
+          >
+            +{edgeDelay}
+          </span>
+        )}
       </div>
 
       {!isCollapsed && hasChildren && (

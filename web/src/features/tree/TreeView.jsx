@@ -1,8 +1,8 @@
-import useAgentStore from '../../store/useAgentStore';
+import { usePrunedTree } from '../../hooks/usePrunedTree';
 import TreeNode from './TreeNode';
 
 export default function TreeView() {
-  const tree = useAgentStore((s) => s.tree);
+  const tree = usePrunedTree();
 
   if (!tree.length) {
     return (

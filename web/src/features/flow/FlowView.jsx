@@ -7,10 +7,11 @@ import '@xyflow/react/dist/style.css';
 
 import FlowNode     from './FlowNode';
 import FlowEdge     from './FlowEdge';
+import StepNode     from './StepNode';
 import ZoomControls from './ZoomControls';
 import { useFlowData } from './useFlowData';
 
-const nodeTypes = { agentNode: FlowNode };
+const nodeTypes = { agentNode: FlowNode, stepNode: StepNode };
 const edgeTypes = { agentEdge: FlowEdge };
 
 // Default to 100% zoom; user can use "Fit" button to zoom-to-fit

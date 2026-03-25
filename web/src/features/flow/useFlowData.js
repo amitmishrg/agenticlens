@@ -1,46 +1,37 @@
 import { useMemo } from 'react';
-import useAgentStore     from '../../store/useAgentStore';
-import { computeLayout } from './flowLayout';
-import { getAccent }     from '../../constants/typeConfig';
+import useAgentStore from '../../store/useAgentStore';
+import { computeVisibleNodeIds } from '../../utils/visibility';
+import { buildFlowElements } from './buildFlowElements';
 
 /**
- * Converts the Zustand tree into React Flow nodes + edges.
- * Selection state is NOT included here — FlowNode reads the store directly
- * so re-selecting doesn't recompute the entire graph.
+ * Converts store data into React Flow nodes + edges (grouped steps, filters, replay).
  */
 export function useFlowData() {
-  const tree           = useAgentStore((s) => s.tree);
-  const setSelectedNode = useAgentStore((s) => s.setSelectedNode);
+  const nodes             = useAgentStore((s) => s.nodes);
+  const steps             = useAgentStore((s) => s.steps);
+  const filterType        = useAgentStore((s) => s.filterType);
+  const currentStepIndex  = useAgentStore((s) => s.currentStepIndex);
+  const chronNodeIds      = useAgentStore((s) => s.chronNodeIds);
+  const setSelectedNode   = useAgentStore((s) => s.setSelectedNode);
 
   return useMemo(() => {
-    const positions = computeLayout(tree);
-    const rfNodes   = [];
-    const rfEdges   = [];
+    const visibleIds = computeVisibleNodeIds(nodes, {
+      replayIndex: currentStepIndex,
+      chronNodeIds,
+      filterType,
+    });
 
-    function walk(node) {
-      const pos = positions.get(node.id);
-      if (pos) {
-        rfNodes.push({
-          id:       node.id,
-          type:     'agentNode',
-          position: pos,
-          data:     { node, onSelect: setSelectedNode, accent: getAccent(node.type) },
-        });
-      }
+    const replayActiveId =
+      currentStepIndex >= 0 && chronNodeIds[currentStepIndex]
+        ? chronNodeIds[currentStepIndex]
+        : null;
 
-      for (const child of node.children ?? []) {
-        rfEdges.push({
-          id:     `e-${node.id}-${child.id}`,
-          source: node.id,
-          target: child.id,
-          type:   'agentEdge',
-          data:   { accent: getAccent(node.type) },
-        });
-        walk(child);
-      }
-    }
-
-    tree.forEach(walk);
-    return { rfNodes, rfEdges };
-  }, [tree, setSelectedNode]);
+    return buildFlowElements({
+      steps,
+      nodes,
+      visibleIds,
+      replayActiveId,
+      setSelectedNode,
+    });
+  }, [nodes, steps, filterType, currentStepIndex, chronNodeIds, setSelectedNode]);
 }
