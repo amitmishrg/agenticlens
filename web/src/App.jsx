@@ -1,19 +1,20 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import useAgentStore from './store/useAgentStore';
-import { parseJSONL }  from './parser/parseJSONL';
-import { buildTree }   from './parser/buildTree';
+import { parseJSONL } from './parser/parseJSONL';
+import { buildTree } from './parser/buildTree';
 import { enrichNodes } from './parser/enrichNodes';
-import { buildSteps }  from './parser/buildSteps';
+import { buildSteps } from './parser/buildSteps';
 import { detectAnomalies } from './utils/anomalyDetector';
 import { computeSessionSummary } from './utils/sessionSummary';
-import Toolbar       from './components/Toolbar';
+import Toolbar from './components/Toolbar';
 import SessionSummary from './components/SessionSummary';
-import UploadPanel  from './components/UploadPanel';
-import FileSidebar   from './components/FileSidebar';
-import SlidePane     from './components/SlidePane';
-import ReplayTicker  from './components/ReplayTicker';
-import FlowView     from './features/flow/FlowView';
-import TreeView     from './features/tree/TreeView';
+import UploadPanel from './components/UploadPanel';
+import FileSidebar from './components/FileSidebar';
+import SlidePane from './components/SlidePane';
+import ReplayTicker from './components/ReplayTicker';
+import FlowView from './features/flow/FlowView';
+import TreeView from './features/tree/TreeView';
 import TimelineView from './features/timeline/TimelineView';
 import { WarningOctagonIcon } from '@phosphor-icons/react';
 
@@ -41,14 +42,17 @@ export default function App() {
   const activeFile = workspaceFiles?.[activeFileIndex] || null;
   const loadedSignatureRef = useRef(null);
 
-  const onFilesReady = useCallback((filesArray) => {
-    setError(null);
-    loadedSignatureRef.current = null;
-    setWorkspaceFiles(filesArray || []);
-    setActiveFile(0);
-    setStatus('parsing');
-    closeUploadPanel();
-  }, [setWorkspaceFiles, setActiveFile, closeUploadPanel]);
+  const onFilesReady = useCallback(
+    (filesArray) => {
+      setError(null);
+      loadedSignatureRef.current = null;
+      setWorkspaceFiles(filesArray || []);
+      setActiveFile(0);
+      setStatus('parsing');
+      closeUploadPanel();
+    },
+    [setWorkspaceFiles, setActiveFile, closeUploadPanel],
+  );
 
   // Auto mode detection: try CLI `/data` first, fall back to upload UI.
   useEffect(() => {
@@ -64,7 +68,9 @@ export default function App() {
           if (Array.isArray(files) && files.length) {
             if (cancelled) return;
             loadedSignatureRef.current = null;
-            setWorkspaceFiles(files.map((f) => ({ name: f.name, content: null })));
+            setWorkspaceFiles(
+              files.map((f) => ({ name: f.name, content: null })),
+            );
             setActiveFile(0);
             setStatus('parsing');
             return;
@@ -88,7 +94,9 @@ export default function App() {
     }
 
     autoLoad();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [setWorkspaceFiles, setActiveFile]);
 
   // Parse only the active file contents.
@@ -149,7 +157,9 @@ export default function App() {
     }
 
     parseActive();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [
     activeFile,
     activeFileIndex,
@@ -165,37 +175,46 @@ export default function App() {
   const showOverlayLoading = status === 'parsing' && !!workspaceFiles?.length;
   const showOverlayError = status === 'error' && !!workspaceFiles?.length;
   const showAutoLoading = status === 'auto_loading' && showEmptyUpload;
-  const showUploadPanel = isUploadPanelOpen || (showEmptyUpload && status === 'upload');
+  const showUploadPanel =
+    isUploadPanelOpen || (showEmptyUpload && status === 'upload');
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden" style={{ background: '#09090c' }}>
+    <div
+      className="flex flex-col h-screen overflow-hidden"
+      style={{ background: '#09090c' }}
+    >
       <Toolbar />
 
       {showAutoLoading ? (
-        <div className="flex-1 overflow-hidden flex flex-col items-center justify-center px-4">
+        <div className="flex flex-col items-center justify-center flex-1 px-4 overflow-hidden">
           <div className="flex flex-col items-center gap-3">
-            <div className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-            <p className="text-xs" style={{ color: '#33334a' }}>Loading agent logs…</p>
+            <div className="w-5 h-5 border-2 border-indigo-500 rounded-full border-t-transparent animate-spin" />
+            <p className="text-xs" style={{ color: '#33334a' }}>
+              Loading agent logs…
+            </p>
           </div>
         </div>
       ) : showUploadPanel ? (
-        <div className="flex-1 overflow-hidden flex flex-col items-center justify-center px-4">
+        <div className="flex flex-col items-center justify-center flex-1 px-4 overflow-hidden">
           <div className="w-full max-w-3xl">
             <UploadPanel onFilesReady={onFilesReady} />
             {showEmptyUpload && (
-              <div className="mt-4 text-[12px] font-mono" style={{ color: '#64748b', textAlign: 'center' }}>
+              <div
+                className="mt-4 text-[12px] font-mono"
+                style={{ color: '#64748b', textAlign: 'center' }}
+              >
                 Upload a JSONL file or folder to begin
               </div>
             )}
           </div>
         </div>
       ) : (
-        <div className="flex-1 overflow-hidden flex">
+        <div className="flex flex-1 overflow-hidden">
           <FileSidebar />
 
-          <div className="flex-1 overflow-hidden flex flex-col">
+          <div className="flex flex-col flex-1 overflow-hidden">
             <SessionSummary />
-            <div className="flex-1 overflow-hidden relative">
+            <div className="relative flex-1 overflow-hidden">
               {(showOverlayLoading || showOverlayError) && (
                 <div
                   className="absolute inset-0 flex items-center justify-center"
@@ -204,19 +223,27 @@ export default function App() {
                     zIndex: 5,
                   }}
                 >
-                  <div className="flex flex-col items-center gap-3 max-w-md text-center px-6">
+                  <div className="flex flex-col items-center max-w-md gap-3 px-6 text-center">
                     {showOverlayLoading ? (
                       <>
-                        <div className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-indigo-500 rounded-full border-t-transparent animate-spin" />
                         <p className="text-xs" style={{ color: '#33334a' }}>
                           Loading: {activeFile?.name}
                         </p>
                       </>
                     ) : (
                       <>
-                        <WarningOctagonIcon size={34} weight="duotone" color="#f87171" />
-                        <p className="font-semibold text-red-400 text-sm">Failed to parse JSONL</p>
-                        <p className="text-xs font-mono text-red-600">{error}</p>
+                        <WarningOctagonIcon
+                          size={34}
+                          weight="duotone"
+                          color="#f87171"
+                        />
+                        <p className="text-sm font-semibold text-red-400">
+                          Failed to parse JSONL
+                        </p>
+                        <p className="font-mono text-xs text-red-600">
+                          {error}
+                        </p>
                       </>
                     )}
                   </div>
@@ -243,6 +270,8 @@ export default function App() {
 
       {/* Inspector slide pane — single shared instance, overlays from the right */}
       <SlidePane />
+
+      <Analytics />
     </div>
   );
 }

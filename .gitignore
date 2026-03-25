@@ -40,3 +40,4 @@ coverage/
 .cache/
 *.tgz
 dir.md
+*.jsonl
