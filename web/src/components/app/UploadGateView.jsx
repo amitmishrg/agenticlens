@@ -6,10 +6,7 @@ export default function UploadGateView({ onFilesReady, showEmptyHint }) {
       <div className="w-full max-w-3xl">
         <UploadPanel onFilesReady={onFilesReady} />
         {showEmptyHint && (
-          <div
-            className="mt-4 text-[12px] font-mono"
-            style={{ color: '#64748b', textAlign: 'center' }}
-          >
+          <div className="mt-4 text-[12px] font-mono text-app-fg-muted text-center">
             Upload a JSONL file or folder to begin
           </div>
         )}

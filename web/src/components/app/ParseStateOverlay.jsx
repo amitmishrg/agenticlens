@@ -5,19 +5,14 @@ export default function ParseStateOverlay({ loading, error, fileName }) {
 
   return (
     <div
-      className="absolute inset-0 flex items-center justify-center"
-      style={{
-        background: 'rgba(9,9,12,0.65)',
-        zIndex: 5,
-      }}
+      className="absolute inset-0 flex items-center justify-center z-[5]"
+      style={{ background: 'var(--app-overlay-scrim)' }}
     >
       <div className="flex flex-col items-center max-w-md gap-3 px-6 text-center">
         {loading ? (
           <>
-            <div className="w-5 h-5 border-2 border-indigo-500 rounded-full border-t-transparent animate-spin" />
-            <p className="text-xs" style={{ color: '#33334a' }}>
-              Loading: {fileName}
-            </p>
+            <div className="w-5 h-5 border-2 border-app-spinner rounded-full border-t-transparent animate-spin" />
+            <p className="text-xs text-app-label">Loading: {fileName}</p>
           </>
         ) : (
           <>

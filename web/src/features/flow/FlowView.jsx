@@ -9,6 +9,7 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
+import { useThemeStore } from '@/store/useThemeStore';
 import FlowNode from '@/features/flow/FlowNode';
 import FlowEdge from '@/features/flow/FlowEdge';
 import StepNode from '@/features/flow/StepNode';
@@ -23,6 +24,7 @@ const edgeTypes = { agentEdge: FlowEdge };
 const DEFAULT_VIEWPORT = { x: 80, y: 80, zoom: 1.0 };
 
 function FlowCanvas() {
+  const theme = useThemeStore((s) => s.theme);
   const { rfNodes, rfEdges } = useFlowData();
   const [nodes, setNodes, onNodesChange] = useNodesState(rfNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(rfEdges);
@@ -45,12 +47,17 @@ function FlowCanvas() {
       defaultViewport={DEFAULT_VIEWPORT}
       nodesDraggable={false}
       nodesConnectable={false}
-      colorMode="dark"
+      colorMode={theme === 'dark' ? 'dark' : 'light'}
       minZoom={0.08}
       maxZoom={2.5}
-      style={{ background: '#09090c' }}
+      style={{ background: 'var(--app-bg)' }}
     >
-      <Background variant={BackgroundVariant.Dots} color="#2e2e4a" gap={28} size={1.5} />
+      <Background
+        variant={BackgroundVariant.Dots}
+        color="var(--app-dot-grid)"
+        gap={28}
+        size={1.5}
+      />
       <ZoomControls />
       <FlowMiniMap />
     </ReactFlow>

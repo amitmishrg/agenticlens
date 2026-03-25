@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import useAgentStore from '@/store/useAgentStore';
 import InspectorPanel from '@/features/inspector/InspectorPanel';
-import { getAccent } from '@/constants/typeConfig';
 import SlidePaneHeader from '@/components/SlidePaneHeader';
 
 export default function SlidePane() {
@@ -18,42 +17,25 @@ export default function SlidePane() {
 
   return (
     <>
-      {/* Dimmed backdrop */}
       <div
         onClick={() => setSelectedNode(null)}
+        className="fixed inset-0 z-40 backdrop-blur-[2px] transition-opacity duration-[250ms]"
         style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 40,
-          background: 'rgba(0,0,0,0.55)',
-          backdropFilter: 'blur(2px)',
-          WebkitBackdropFilter: 'blur(2px)',
+          background: 'var(--app-backdrop)',
           opacity: isOpen ? 1 : 0,
           pointerEvents: isOpen ? 'auto' : 'none',
-          transition: 'opacity 0.25s ease',
         }}
       />
 
-      {/* Slide-in pane */}
       <div
+        className="fixed right-0 top-0 bottom-0 z-50 flex flex-col w-[440px] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] border-l border-app-border bg-app-surface-elevated"
         style={{
-          position: 'fixed',
-          right: 0,
-          top: 0,
-          bottom: 0,
-          width: 440,
-          zIndex: 50,
-          display: 'flex',
-          flexDirection: 'column',
-          background: '#0a0a10',
-          borderLeft: '1px solid #1e1e2e',
-          boxShadow: isOpen ? '-24px 0 80px rgba(0,0,0,0.7)' : 'none',
+          boxShadow: isOpen ? 'var(--app-pane-shadow)' : 'none',
           transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
-          transition: 'transform 0.32s cubic-bezier(0.22,1,0.36,1), box-shadow 0.32s ease',
         }}
       >
         <SlidePaneHeader node={selectedNode} onClose={() => setSelectedNode(null)} />
-        <div style={{ flex: 1, overflow: 'hidden' }}>
+        <div className="flex-1 min-h-0 overflow-hidden">
           <InspectorPanel node={selectedNode} />
         </div>
       </div>

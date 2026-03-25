@@ -25,23 +25,26 @@ export default function FlowNode({ data }) {
   const tokens = node.totalTokens ?? node.meta?.totalTokens;
   const cost = node.meta?.costUsd;
 
+  const idleBorder = 'var(--app-flow-card-border-idle)';
+  const borderCol = selected || replayActive ? ac : idleBorder;
   const ring = replayActive
     ? `0 0 0 3px ${ac}66, 0 0 18px ${ac}33`
     : selected
       ? `0 0 0 3px ${ac}55`
       : 'none';
+  const cardShadow = selected ? `0 4px 24px ${ac}22` : 'var(--app-flow-card-shadow)';
 
   return (
     <div
       onClick={() => onSelect(node)}
       style={{
         width: 252,
-        background: '#0d0d11',
+        background: 'var(--app-flow-card-bg)',
         borderRadius: 10,
-        border: `1.5px solid ${selected || replayActive ? ac : '#1e1e2e'}`,
+        border: `1.5px solid ${borderCol}`,
         padding: '10px 13px',
         cursor: 'pointer',
-        boxShadow: `${ring}, ${selected ? `0 4px 24px ${ac}22` : '0 2px 12px #00000066'}`,
+        boxShadow: `${ring}, ${cardShadow}`,
         transition: 'border-color 0.15s, box-shadow 0.15s',
         animation: 'flowCardIn 0.3s cubic-bezier(0.22,1,0.36,1) both',
       }}
@@ -114,7 +117,7 @@ export default function FlowNode({ data }) {
           gap: '6px 12px',
           marginBottom: 6,
           fontSize: 10,
-          color: '#64748b',
+          color: 'var(--app-fg-muted)',
           alignItems: 'center',
         }}
       >
@@ -123,7 +126,7 @@ export default function FlowNode({ data }) {
             style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
             title="Time since parent node in tree"
           >
-            <TimerIcon size={12} color="#94a3b8" weight="duotone" />
+            <TimerIcon size={12} color="currentColor" weight="duotone" />
             {sinceParent}
           </span>
         )}
@@ -132,7 +135,7 @@ export default function FlowNode({ data }) {
             style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
             title="Time since previous log line (no parent timestamp)"
           >
-            <TimerIcon size={12} color="#94a3b8" weight="duotone" />
+            <TimerIcon size={12} color="currentColor" weight="duotone" />
             {sincePrev}
           </span>
         )}
@@ -141,7 +144,7 @@ export default function FlowNode({ data }) {
             style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
             title="duration_ms on this event"
           >
-            <TimerIcon size={12} color="#94a3b8" weight="duotone" />
+            <TimerIcon size={12} color="currentColor" weight="duotone" />
             {dur}
           </span>
         )}
@@ -150,13 +153,13 @@ export default function FlowNode({ data }) {
             style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
             title="Input + output tokens (this event)"
           >
-            <TokenGlyph size={13} color="#94a3b8" />
+            <TokenGlyph size={13} color="currentColor" />
             {tokens}
           </span>
         )}
         {cost != null && (
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }} title="Cost USD">
-            <CurrencyDollarIcon size={12} color="#94a3b8" weight="duotone" />
+            <CurrencyDollarIcon size={12} color="currentColor" weight="duotone" />
             {Number(cost).toFixed(4)}
           </span>
         )}
@@ -165,7 +168,7 @@ export default function FlowNode({ data }) {
       <p
         style={{
           fontSize: 11,
-          color: '#e5e7eb',
+          color: 'var(--app-fg)',
           margin: '0 0 6px',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -179,7 +182,7 @@ export default function FlowNode({ data }) {
         <p
           style={{
             fontSize: 10,
-            color: '#4b5563',
+            color: 'var(--app-flow-preview)',
             margin: '0 0 7px',
             fontFamily: 'monospace',
             lineHeight: 1.5,

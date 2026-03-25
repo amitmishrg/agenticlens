@@ -21,7 +21,7 @@ export default function FlowEdge({
     sourcePosition,
     targetPosition,
   });
-  const ac = data?.accent ?? '#6366f1';
+  const ac = data?.accent ?? 'var(--app-accent)';
   const pathId = `motion-${id}`;
   const label = data?.label;
 
@@ -55,7 +55,7 @@ export default function FlowEdge({
             y={0}
             dy="0.35em"
             textAnchor="middle"
-            fill="#94a3b8"
+            fill="var(--app-fg-muted)"
             fontSize={10}
             style={{ fontFamily: 'monospace' }}
           >

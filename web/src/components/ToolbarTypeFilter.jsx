@@ -1,16 +1,5 @@
 import useAgentStore, { FILTER_TYPES } from '@/store/useAgentStore';
 
-const sel = {
-  width: 150,
-  fontSize: 12,
-  padding: '6px 10px',
-  borderRadius: 8,
-  border: '1px solid #2d2d3f',
-  background: '#15151f',
-  color: '#cbd5e1',
-  cursor: 'pointer',
-};
-
 export default function ToolbarTypeFilter() {
   const filterType = useAgentStore((s) => s.filterType);
   const setFilter = useAgentStore((s) => s.setFilterType);
@@ -19,8 +8,7 @@ export default function ToolbarTypeFilter() {
     <div className="flex items-center gap-2 ml-2">
       <label
         htmlFor="agent-type-filter"
-        className="text-[10px] uppercase tracking-wider"
-        style={{ color: '#52527a' }}
+        className="text-[10px] uppercase tracking-wider text-app-label-muted"
       >
         Type
       </label>
@@ -28,7 +16,7 @@ export default function ToolbarTypeFilter() {
         id="agent-type-filter"
         value={filterType}
         onChange={(e) => setFilter(e.target.value)}
-        style={sel}
+        className="w-[150px] text-xs py-1.5 px-2.5 rounded-lg border border-app-border bg-app-surface-2 text-app-fg-subtle cursor-pointer"
       >
         {FILTER_TYPES.map((t) => (
           <option key={t} value={t}>

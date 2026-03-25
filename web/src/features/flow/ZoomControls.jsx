@@ -1,15 +1,7 @@
 import { Panel, useReactFlow, useViewport } from '@xyflow/react';
 
-const btn = {
-  background: '#111116',
-  border: '1px solid #2d2d3d',
-  color: '#9ca3af',
-  padding: '5px 10px',
-  borderRadius: 6,
-  cursor: 'pointer',
-  fontSize: 12,
-  transition: 'color 0.15s, border-color 0.15s',
-};
+const btn =
+  'text-xs px-2.5 py-1 rounded-md cursor-pointer transition-colors border bg-app-surface-2 border-app-border-strong text-app-fg-muted hover:text-app-fg hover:border-app-border';
 
 /** Zoom controls panel displayed inside the React Flow canvas. */
 export default function ZoomControls() {
@@ -48,43 +40,25 @@ export default function ZoomControls() {
 
   return (
     <Panel position="top-right">
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          background: '#09090c',
-          padding: 6,
-          borderRadius: 8,
-          border: '1px solid #1e1e2e',
-        }}
-      >
-        <button style={btn} onClick={() => zoomOut({ duration: 200 })}>
+      <div className="flex items-center gap-1.5 bg-app-bg p-1.5 rounded-lg border border-app-border">
+        <button type="button" className={btn} onClick={() => zoomOut({ duration: 200 })}>
           −
         </button>
 
-        <span
-          style={{
-            fontSize: 11,
-            color: '#6b7280',
-            minWidth: 38,
-            textAlign: 'center',
-            fontFamily: 'monospace',
-          }}
-        >
+        <span className="text-[11px] text-app-fg-muted min-w-[38px] text-center font-mono">
           {pct}%
         </span>
 
-        <button style={btn} onClick={() => zoomIn({ duration: 200 })}>
+        <button type="button" className={btn} onClick={() => zoomIn({ duration: 200 })}>
           +
         </button>
 
-        <div style={{ width: 1, height: 16, background: '#2d2d3d' }} />
+        <div className="w-px h-4 bg-app-border-strong" />
 
-        <button style={btn} onClick={reset100} title="Reset to 100%">
+        <button type="button" className={btn} onClick={reset100} title="Reset to 100%">
           1:1
         </button>
-        <button style={btn} onClick={fitAll} title="Fit all nodes">
+        <button type="button" className={btn} onClick={fitAll} title="Fit all nodes">
           Fit
         </button>
       </div>

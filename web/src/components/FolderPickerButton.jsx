@@ -53,8 +53,7 @@ export default function FolderPickerButton({ onFilesReady, onError }) {
         type="button"
         onClick={open}
         data-folder-picker-button="true"
-        className="text-[11px] rounded-md px-2.5 py-1"
-        style={{ background: '#1a1a28', color: '#818cf8', border: '1px solid #2a2a44' }}
+        className="text-[11px] rounded-md px-2.5 py-1 bg-app-surface-2 text-app-accent border border-app-border-strong"
       >
         Choose folder
       </button>

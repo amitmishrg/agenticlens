@@ -32,7 +32,6 @@ export default function SessionSummary() {
       filterType,
     });
 
-    // Count only steps that include at least one visible node.
     const visibleSteps = steps.filter((step) =>
       (step.nodes || []).some((n) => visibleIds.has(n.id)),
     );
@@ -42,48 +41,41 @@ export default function SessionSummary() {
   if (!visibleSummary) return null;
 
   const totalTime = formatSeconds(visibleSummary.totalDuration);
+  const iconCls = 'inline-block mr-1 text-app-fg-muted';
 
   return (
-    <div className="px-4 py-2 border-b border-gray-800 shrink-0" style={{ background: '#09090c' }}>
+    <div className="px-4 py-2 border-b border-app-border shrink-0 bg-app-bg">
       <div className="flex items-baseline justify-between gap-4 flex-wrap">
-        <div
-          className="text-[11px] font-bold tracking-widest uppercase"
-          style={{ color: '#33334a' }}
-        >
+        <div className="text-[11px] font-bold tracking-widest uppercase text-app-label">
           SESSION SUMMARY
         </div>
-        <div className="text-[11px] font-mono" style={{ color: '#22223a' }}>
-          {/* keeps line-height consistent */}
-          &nbsp;
-        </div>
+        <div className="text-[11px] font-mono text-app-label-muted">&nbsp;</div>
       </div>
 
       <div className="mt-1 flex flex-wrap items-center gap-x-6 gap-y-1 overflow-hidden">
-        <span className="text-[12px] whitespace-nowrap" style={{ color: '#94a3b8' }}>
-          <TimerIcon size={14} weight="duotone" color="#94a3b8" className="inline-block mr-1" />
-          Total Time: <span className="text-[#cbd5e1] font-semibold">{totalTime}</span>
+        <span className="text-[12px] whitespace-nowrap text-app-fg-muted">
+          <TimerIcon size={14} weight="duotone" color="currentColor" className={iconCls} />
+          Total Time: <span className="text-app-fg-subtle font-semibold">{totalTime}</span>
         </span>
-        <span className="text-[12px] whitespace-nowrap" style={{ color: '#94a3b8' }}>
-          <CoinsIcon size={14} weight="duotone" color="#94a3b8" className="inline-block mr-1" />
-          Tokens: <span className="text-[#cbd5e1] font-semibold">{visibleSummary.totalTokens}</span>
+        <span className="text-[12px] whitespace-nowrap text-app-fg-muted">
+          <CoinsIcon size={14} weight="duotone" color="currentColor" className={iconCls} />
+          Tokens:{' '}
+          <span className="text-app-fg-subtle font-semibold">{visibleSummary.totalTokens}</span>
         </span>
-        <span className="text-[12px] whitespace-nowrap" style={{ color: '#94a3b8' }}>
-          <SquaresFourIcon
-            size={14}
-            weight="duotone"
-            color="#94a3b8"
-            className="inline-block mr-1"
-          />
-          Steps: <span className="text-[#cbd5e1] font-semibold">{visibleSummary.totalSteps}</span>
+        <span className="text-[12px] whitespace-nowrap text-app-fg-muted">
+          <SquaresFourIcon size={14} weight="duotone" color="currentColor" className={iconCls} />
+          Steps:{' '}
+          <span className="text-app-fg-subtle font-semibold">{visibleSummary.totalSteps}</span>
         </span>
-        <span className="text-[12px] whitespace-nowrap" style={{ color: '#94a3b8' }}>
-          <PackageIcon size={14} weight="duotone" color="#94a3b8" className="inline-block mr-1" />
-          Nodes: <span className="text-[#cbd5e1] font-semibold">{visibleSummary.totalNodes}</span>
+        <span className="text-[12px] whitespace-nowrap text-app-fg-muted">
+          <PackageIcon size={14} weight="duotone" color="currentColor" className={iconCls} />
+          Nodes:{' '}
+          <span className="text-app-fg-subtle font-semibold">{visibleSummary.totalNodes}</span>
         </span>
-        <span className="text-[12px] whitespace-nowrap" style={{ color: '#94a3b8' }}>
+        <span className="text-[12px] whitespace-nowrap text-app-fg-muted">
           <WarningIcon size={14} weight="duotone" color="#f87171" className="inline-block mr-1" />
           Issues:{' '}
-          <span className="text-[#cbd5e1] font-semibold">{visibleSummary.anomalyCount}</span>
+          <span className="text-app-fg-subtle font-semibold">{visibleSummary.anomalyCount}</span>
         </span>
       </div>
     </div>

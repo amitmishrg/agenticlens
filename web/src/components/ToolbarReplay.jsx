@@ -7,17 +7,6 @@ import {
 } from '@phosphor-icons/react';
 import useAgentStore from '@/store/useAgentStore';
 
-const shell = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 4,
-  marginLeft: 10,
-  padding: '3px 6px 3px 8px',
-  borderRadius: 8,
-  border: '1px solid #2d2d3f',
-  background: '#12121b',
-};
-
 function IconBtn({ title, onClick, disabled, children }) {
   return (
     <button
@@ -25,19 +14,12 @@ function IconBtn({ title, onClick, disabled, children }) {
       title={title}
       onClick={onClick}
       disabled={disabled}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 28,
-        height: 28,
-        borderRadius: 8,
-        border: disabled ? '1px solid #222232' : '1px solid #3f3f5c',
-        background: disabled ? '#12121a' : '#1a1a28',
-        color: disabled ? '#3f3f50' : '#bfc3ff',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        transition: 'background 0.15s, border-color 0.15s, color 0.15s',
-      }}
+      className={[
+        'flex items-center justify-center w-7 h-7 rounded-lg transition-colors duration-150 border',
+        disabled
+          ? 'border-app-border bg-app-surface text-app-label cursor-not-allowed opacity-50'
+          : 'border-app-border-strong bg-app-surface-2 text-app-accent-bright cursor-pointer hover:border-app-accent',
+      ].join(' ')}
     >
       {children}
     </button>
@@ -59,18 +41,8 @@ export default function ToolbarReplay() {
   const atEnd = idx >= chronLen - 1;
 
   return (
-    <div style={shell}>
-      <span
-        style={{
-          fontSize: 9,
-          fontWeight: 700,
-          letterSpacing: '0.12em',
-          color: '#a5b4fc',
-          textTransform: 'uppercase',
-          marginRight: 4,
-          whiteSpace: 'nowrap',
-        }}
-      >
+    <div className="flex items-center gap-1 ml-2.5 py-0.5 pl-2 pr-1.5 rounded-lg border border-app-border bg-app-surface">
+      <span className="text-[9px] font-bold tracking-widest uppercase text-app-accent-fg mr-1 whitespace-nowrap">
         Replay
       </span>
 
@@ -91,13 +63,10 @@ export default function ToolbarReplay() {
       </IconBtn>
 
       <span
-        style={{
-          fontSize: 11,
-          fontFamily: 'ui-monospace, monospace',
-          color: idx < 0 ? '#5c5c78' : '#94a3b8',
-          minWidth: 48,
-          textAlign: 'center',
-        }}
+        className={[
+          'text-[11px] font-mono min-w-[48px] text-center',
+          idx < 0 ? 'text-app-label' : 'text-app-fg-muted',
+        ].join(' ')}
       >
         {idx < 0 ? '— / —' : `${idx + 1} / ${chronLen}`}
       </span>

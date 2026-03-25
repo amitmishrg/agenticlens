@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import JsonlDropzone from '@/components/JsonlDropzone';
 import FolderPickerButton from '@/components/FolderPickerButton';
 
@@ -10,25 +10,16 @@ export default function UploadPanel({ onFilesReady }) {
       <JsonlDropzone
         onFilesReady={onFilesReady}
         onError={(msg) => setError(msg)}
-        rootClassName="w-full max-w-2xl rounded-xl border border-gray-800 bg-[#0a0a10] px-6 py-6 cursor-pointer"
+        rootClassName="w-full max-w-2xl rounded-xl border border-app-border bg-app-surface-elevated px-6 py-6 cursor-pointer transition-[background,border-color] duration-150"
         rootStyle={{
-          boxShadow: '0 0 0 1px rgba(99,102,241,0.08)',
-          transition: 'background 0.15s, border-color 0.15s',
+          boxShadow: '0 0 0 1px rgb(99 102 241 / 0.08)',
         }}
       >
-        <div
-          style={{
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: '0.14em',
-            color: '#33334a',
-            textTransform: 'uppercase',
-          }}
-        >
+        <div className="text-xs font-extrabold tracking-widest uppercase text-app-label">
           Upload JSONL (Workspace Mode)
         </div>
 
-        <div className="mt-3 text-[12px]" style={{ color: '#94a3b8' }}>
+        <div className="mt-3 text-xs text-app-fg-muted">
           Click to browse or drag & drop files/folders here
         </div>
 
@@ -36,11 +27,7 @@ export default function UploadPanel({ onFilesReady }) {
           <FolderPickerButton onFilesReady={onFilesReady} onError={(msg) => setError(msg)} />
         </div>
 
-        {error && (
-          <div className="mt-3 text-[12px] font-semibold" style={{ color: '#f87171' }}>
-            {error}
-          </div>
-        )}
+        {error && <div className="mt-3 text-xs font-semibold text-red-400">{error}</div>}
       </JsonlDropzone>
     </div>
   );

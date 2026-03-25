@@ -4,6 +4,7 @@ import { ArrowsInIcon, ArrowsOutIcon, SparkleIcon, UploadSimpleIcon } from '@pho
 import { VIEWS } from '@/components/toolbarViews.jsx';
 import ToolbarTypeFilter from '@/components/ToolbarTypeFilter';
 import ToolbarReplay from '@/components/ToolbarReplay';
+import ThemeToggle from '@/components/ThemeToggle';
 
 function getAllCollapsibleIds(treeNodes) {
   const ids = [];
@@ -26,23 +27,17 @@ export default function Toolbar() {
     collapsibleIds.length > 0 && collapsibleIds.every((id) => !collapsedNodeIds.has(id));
 
   return (
-    <header
-      className="flex items-center gap-2 px-4 py-2.5 border-b border-gray-800 shrink-0"
-      style={{ background: '#09090c' }}
-    >
-      {/* Logo */}
+    <header className="flex items-center gap-2 px-4 py-2.5 border-b border-app-border shrink-0 bg-app-bg">
       <div className="flex items-center gap-2 mr-3">
-        <div className="w-5 h-5 rounded-md bg-indigo-600 flex items-center justify-center">
+        <div className="w-5 h-5 rounded-md bg-app-accent flex items-center justify-center">
           <SparkleIcon size={11} color="#ffffff" weight="fill" />
         </div>
-        <span className="text-xs font-semibold text-indigo-400 tracking-wide">Agenticlens</span>
+        <span className="text-xs font-semibold text-app-accent-logo tracking-wide">
+          Agenticlens
+        </span>
       </div>
 
-      {/* View switcher */}
-      <div
-        className="flex rounded-lg overflow-hidden"
-        style={{ border: '1px solid #1e1e2e', background: '#111118' }}
-      >
+      <div className="flex rounded-lg overflow-hidden border border-app-border bg-app-surface">
         {VIEWS.map((v) => {
           const isActive = view === v.id;
           return (
@@ -51,17 +46,12 @@ export default function Toolbar() {
               type="button"
               onClick={() => setView(v.id)}
               aria-pressed={isActive}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium transition-all duration-200"
-              style={
+              className={[
+                'flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium transition-all duration-200 border-r border-app-border last:border-r-0',
                 isActive
-                  ? {
-                      background: 'rgba(99,102,241,0.28)',
-                      color: '#a5b4fc',
-                      borderRight: '1px solid #1e1e2e',
-                      boxShadow: 'inset 0 0 0 1px rgba(129, 140, 248, 0.35)',
-                    }
-                  : { color: '#44445a', borderRight: '1px solid #1e1e2e' }
-              }
+                  ? 'bg-[var(--app-accent-soft-bg)] text-app-accent-fg shadow-[inset_0_0_0_1px_var(--app-accent-inner-ring)]'
+                  : 'text-app-switch-inactive',
+              ].join(' ')}
             >
               {v.icon}
               {v.label}
@@ -73,12 +63,10 @@ export default function Toolbar() {
       <ToolbarTypeFilter />
       <ToolbarReplay />
 
-      {/* Workspace upload entrypoint */}
       <button
         type="button"
         onClick={openUploadPanel}
-        className="ml-2 px-2.5 py-1 text-[11px] rounded-md"
-        style={{ background: '#1a1a28', color: '#818cf8', border: '1px solid #2a2a44' }}
+        className="ml-2 px-2.5 py-1 text-[11px] rounded-md bg-app-surface-2 text-app-accent border border-app-border-strong"
         title="Upload JSONL files or folders"
       >
         <span className="inline-flex items-center gap-2">
@@ -87,7 +75,6 @@ export default function Toolbar() {
         </span>
       </button>
 
-      {/* Tree-specific: collapse / expand controls */}
       {view === 'tree' && (
         <div className="flex gap-1 ml-1">
           {[
@@ -111,21 +98,12 @@ export default function Toolbar() {
               title={title}
               aria-label={title}
               aria-pressed={isActive}
-              className="flex items-center justify-center rounded-md p-1.5 transition-colors duration-200"
-              style={
+              className={[
+                'flex items-center justify-center rounded-md p-1.5 transition-colors duration-200 border',
                 isActive
-                  ? {
-                      background: 'rgba(99,102,241,0.28)',
-                      color: '#c7d2fe',
-                      border: '1px solid rgba(129, 140, 248, 0.45)',
-                      boxShadow: 'inset 0 0 0 1px rgba(165, 180, 252, 0.15)',
-                    }
-                  : {
-                      background: '#1a1a28',
-                      color: '#64748b',
-                      border: '1px solid #1e1e2e',
-                    }
-              }
+                  ? 'bg-[var(--app-accent-soft-bg)] text-app-accent-bright border-[var(--app-accent-soft-border)] shadow-[inset_0_0_0_1px_var(--app-accent-inner-glow)]'
+                  : 'bg-[var(--app-tree-btn-bg)] text-[var(--app-tree-btn-fg)] border-app-border',
+              ].join(' ')}
             >
               <Icon size={16} weight="duotone" color="currentColor" />
             </button>
@@ -133,12 +111,10 @@ export default function Toolbar() {
         </div>
       )}
 
-      {/* Event counter */}
       <div className="ml-auto flex items-center gap-2">
-        <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#22c55e' }} />
-        <span className="text-[11px] font-mono" style={{ color: '#33334a' }}>
-          {nodes.length} events
-        </span>
+        <ThemeToggle />
+        <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-app-live" />
+        <span className="text-[11px] font-mono text-app-label">{nodes.length} events</span>
       </div>
     </header>
   );

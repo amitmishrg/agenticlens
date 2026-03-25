@@ -17,7 +17,7 @@ export default function MetaChip({ label, value, color }) {
         whiteSpace: 'nowrap',
       }}
     >
-      <span style={{ color: '#6b7280' }}>{label}</span>
+      <span style={{ color: 'var(--app-meta-chip-label)' }}>{label}</span>
       {String(value)}
     </span>
   );
