@@ -19,6 +19,9 @@ export default create((set, get) => ({
   tree: [],
   steps: [],
   sessionSummary: null,
+  workspaceFiles: [], // [{ name, content }]
+  activeFileIndex: 0,
+  isUploadPanelOpen: false,
   chronNodeIds: [],
   selectedNode: null,
   view: 'flow',
@@ -35,6 +38,17 @@ export default create((set, get) => ({
   setTree: (tree) => set({ tree }),
   setSteps: (steps) => set({ steps }),
   setSessionSummary: (sessionSummary) => set({ sessionSummary }),
+  setWorkspaceFiles: (workspaceFiles) => set({ workspaceFiles }),
+  setActiveFile: (activeFileIndex) => set({ activeFileIndex }),
+  setWorkspaceFileContent: (index, content) =>
+    set((state) => {
+      const next = [...state.workspaceFiles];
+      if (!next[index]) return state;
+      next[index] = { ...next[index], content };
+      return { workspaceFiles: next };
+    }),
+  openUploadPanel: () => set({ isUploadPanelOpen: true }),
+  closeUploadPanel: () => set({ isUploadPanelOpen: false }),
   setChronNodeIds: (chronNodeIds) => set({ chronNodeIds }),
   setSelectedNode: (node) => set({ selectedNode: node }),
   setView: (view) => set({ view }),

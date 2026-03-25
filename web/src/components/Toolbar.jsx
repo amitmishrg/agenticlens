@@ -1,4 +1,5 @@
 import useAgentStore from '../store/useAgentStore';
+import { UploadSimpleIcon } from '@phosphor-icons/react';
 import { SparkleIcon } from '@phosphor-icons/react';
 import { VIEWS } from './toolbarViews.jsx';
 import ToolbarTypeFilter from './ToolbarTypeFilter';
@@ -15,7 +16,7 @@ function getAllCollapsibleIds(treeNodes) {
 }
 
 export default function Toolbar() {
-  const { view, setView, nodes, tree, collapseAll, expandAll } = useAgentStore();
+  const { view, setView, nodes, tree, collapseAll, expandAll, openUploadPanel } = useAgentStore();
 
   return (
     <header
@@ -54,6 +55,20 @@ export default function Toolbar() {
 
       <ToolbarTypeFilter />
       <ToolbarReplay />
+
+      {/* Workspace upload entrypoint */}
+      <button
+        type="button"
+        onClick={openUploadPanel}
+        className="ml-2 px-2.5 py-1 text-[11px] rounded-md"
+        style={{ background: '#1a1a28', color: '#818cf8', border: '1px solid #2a2a44' }}
+        title="Upload JSONL files or folders"
+      >
+        <span className="inline-flex items-center gap-2">
+          <UploadSimpleIcon size={14} weight="bold" />
+          Upload
+        </span>
+      </button>
 
       {/* Tree-specific: collapse / expand controls */}
       {view === 'tree' && (

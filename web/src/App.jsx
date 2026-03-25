@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useAgentStore from './store/useAgentStore';
 import { parseJSONL }  from './parser/parseJSONL';
 import { buildTree }   from './parser/buildTree';
@@ -8,6 +8,8 @@ import { detectAnomalies } from './utils/anomalyDetector';
 import { computeSessionSummary } from './utils/sessionSummary';
 import Toolbar       from './components/Toolbar';
 import SessionSummary from './components/SessionSummary';
+import UploadPanel  from './components/UploadPanel';
+import FileSidebar   from './components/FileSidebar';
 import SlidePane     from './components/SlidePane';
 import ReplayTicker  from './components/ReplayTicker';
 import FlowView     from './features/flow/FlowView';
@@ -16,26 +18,123 @@ import TimelineView from './features/timeline/TimelineView';
 import { WarningOctagonIcon } from '@phosphor-icons/react';
 
 export default function App() {
-  const { view, setNodes, setTree, setSteps, setSessionSummary, setChronNodeIds, nodes } = useAgentStore();
-  const [status, setStatus] = useState('loading');
+  const {
+    view,
+    setNodes,
+    setTree,
+    setSteps,
+    setSessionSummary,
+    setChronNodeIds,
+    nodes,
+    workspaceFiles,
+    activeFileIndex,
+    setWorkspaceFiles,
+    setActiveFile,
+    isUploadPanelOpen,
+    closeUploadPanel,
+    setWorkspaceFileContent,
+  } = useAgentStore();
+
+  const [status, setStatus] = useState('auto_loading'); // auto_loading | parsing | ready | upload | error
   const [error, setError] = useState(null);
 
+  const activeFile = workspaceFiles?.[activeFileIndex] || null;
+  const loadedSignatureRef = useRef(null);
+
+  const onFilesReady = useCallback((filesArray) => {
+    setError(null);
+    loadedSignatureRef.current = null;
+    setWorkspaceFiles(filesArray || []);
+    setActiveFile(0);
+    setStatus('parsing');
+    closeUploadPanel();
+  }, [setWorkspaceFiles, setActiveFile, closeUploadPanel]);
+
+  // Auto mode detection: try CLI `/data` first, fall back to upload UI.
   useEffect(() => {
-    async function load() {
+    let cancelled = false;
+
+    async function autoLoad() {
       try {
+        // Workspace mode: list jsonl files from folder input.
+        const workspaceRes = await fetch('/workspace');
+        if (workspaceRes.ok) {
+          const workspace = await workspaceRes.json();
+          const files = workspace?.files || [];
+          if (Array.isArray(files) && files.length) {
+            if (cancelled) return;
+            loadedSignatureRef.current = null;
+            setWorkspaceFiles(files.map((f) => ({ name: f.name, content: null })));
+            setActiveFile(0);
+            setStatus('parsing');
+            return;
+          }
+        }
+
+        // Backward compatible fallback: single file.
         const res = await fetch('/data');
         if (!res.ok) throw new Error(`Server returned ${res.status}`);
         const raw = await res.text();
-        const parsed   = parseJSONL(raw);
+        if (cancelled) return;
+        loadedSignatureRef.current = null;
+        setWorkspaceFiles([{ name: 'CLI Session', content: raw }]);
+        setActiveFile(0);
+        setStatus('parsing');
+      } catch (err) {
+        if (cancelled) return;
+        setError(null);
+        setStatus('upload');
+      }
+    }
+
+    autoLoad();
+    return () => { cancelled = true; };
+  }, [setWorkspaceFiles, setActiveFile]);
+
+  // Parse only the active file contents.
+  useEffect(() => {
+    if (!activeFile) return;
+
+    const name = activeFile.name;
+    const currentLen = activeFile.content?.length;
+    const signature = `${activeFileIndex}:${name}:${Number.isFinite(currentLen) ? currentLen : 'empty'}`;
+    if (loadedSignatureRef.current === signature) return;
+    loadedSignatureRef.current = signature;
+
+    let cancelled = false;
+
+    async function parseActive() {
+      try {
+        setError(null);
+        setStatus('parsing');
+
+        // Yield to the browser to keep UI responsive.
+        await new Promise((r) => setTimeout(r, 0));
+
+        let raw = activeFile.content;
+        if (!raw) {
+          const res = await fetch(`/data?index=${activeFileIndex}`);
+          if (!res.ok) throw new Error(`Server returned ${res.status}`);
+          raw = await res.text();
+          if (cancelled) return;
+
+          const finalSignature = `${activeFileIndex}:${name}:${raw.length}`;
+          loadedSignatureRef.current = finalSignature;
+          setWorkspaceFileContent(activeFileIndex, raw);
+        }
+
+        const parsed = parseJSONL(raw);
         const enriched = enrichNodes(parsed);
-        const steps    = buildSteps(enriched);
+        const steps = buildSteps(enriched);
         const stepsWithAnomalies = detectAnomalies(steps);
-        const summary  = computeSessionSummary(stepsWithAnomalies);
-        const chron    = [...enriched]
+        const summary = computeSessionSummary(stepsWithAnomalies);
+
+        const chron = [...enriched]
           .filter((n) => n.timestamp)
           .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
           .map((n) => n.id);
 
+        if (cancelled) return;
         setNodes(enriched);
         setTree(buildTree(enriched));
         setSteps(stepsWithAnomalies);
@@ -43,49 +142,102 @@ export default function App() {
         setChronNodeIds(chron);
         setStatus('ready');
       } catch (err) {
-        setError(err.message);
+        if (cancelled) return;
+        setError(err?.message || 'Failed to parse JSONL.');
         setStatus('error');
       }
     }
-    load();
-  }, [setNodes, setTree, setSteps, setSessionSummary, setChronNodeIds]);
 
-  if (status === 'loading') {
-    return (
-      <div className="flex items-center justify-center h-screen" style={{ background: '#09090c' }}>
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-xs" style={{ color: '#33334a' }}>Loading agent logs…</p>
-        </div>
-      </div>
-    );
-  }
+    parseActive();
+    return () => { cancelled = true; };
+  }, [
+    activeFile,
+    activeFileIndex,
+    setNodes,
+    setTree,
+    setSteps,
+    setSessionSummary,
+    setChronNodeIds,
+    setWorkspaceFileContent,
+  ]);
 
-  if (status === 'error') {
-    return (
-      <div className="flex items-center justify-center h-screen" style={{ background: '#09090c' }}>
-        <div className="flex flex-col items-center gap-3 max-w-md text-center px-6">
-          <WarningOctagonIcon size={34} weight="duotone" color="#f87171" />
-          <p className="font-semibold text-red-400 text-sm">Failed to load logs</p>
-          <p className="text-xs font-mono text-red-600">{error}</p>
-        </div>
-      </div>
-    );
-  }
+  const showEmptyUpload = !workspaceFiles?.length;
+  const showOverlayLoading = status === 'parsing' && !!workspaceFiles?.length;
+  const showOverlayError = status === 'error' && !!workspaceFiles?.length;
+  const showAutoLoading = status === 'auto_loading' && showEmptyUpload;
+  const showUploadPanel = isUploadPanelOpen || (showEmptyUpload && status === 'upload');
 
   return (
     <div className="flex flex-col h-screen overflow-hidden" style={{ background: '#09090c' }}>
       <Toolbar />
 
-      {/* Main content — always full width */}
-      <div className="flex-1 overflow-hidden flex flex-col">
-        <SessionSummary />
-        <div className="flex-1 overflow-hidden">
-          {view === 'flow'     && <FlowView />}
-          {view === 'tree'     && <PanelWrap label="Event Tree" count={nodes.length}><TreeView /></PanelWrap>}
-          {view === 'timeline' && <PanelWrap label="Timeline" count={nodes.length}><TimelineView /></PanelWrap>}
+      {showAutoLoading ? (
+        <div className="flex-1 overflow-hidden flex flex-col items-center justify-center px-4">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+            <p className="text-xs" style={{ color: '#33334a' }}>Loading agent logs…</p>
+          </div>
         </div>
-      </div>
+      ) : showUploadPanel ? (
+        <div className="flex-1 overflow-hidden flex flex-col items-center justify-center px-4">
+          <div className="w-full max-w-3xl">
+            <UploadPanel onFilesReady={onFilesReady} />
+            {showEmptyUpload && (
+              <div className="mt-4 text-[12px] font-mono" style={{ color: '#64748b', textAlign: 'center' }}>
+                Upload a JSONL file or folder to begin
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="flex-1 overflow-hidden flex">
+          <FileSidebar />
+
+          <div className="flex-1 overflow-hidden flex flex-col">
+            <SessionSummary />
+            <div className="flex-1 overflow-hidden relative">
+              {(showOverlayLoading || showOverlayError) && (
+                <div
+                  className="absolute inset-0 flex items-center justify-center"
+                  style={{
+                    background: 'rgba(9,9,12,0.65)',
+                    zIndex: 5,
+                  }}
+                >
+                  <div className="flex flex-col items-center gap-3 max-w-md text-center px-6">
+                    {showOverlayLoading ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                        <p className="text-xs" style={{ color: '#33334a' }}>
+                          Loading: {activeFile?.name}
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <WarningOctagonIcon size={34} weight="duotone" color="#f87171" />
+                        <p className="font-semibold text-red-400 text-sm">Failed to parse JSONL</p>
+                        <p className="text-xs font-mono text-red-600">{error}</p>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {view === 'flow' && <FlowView />}
+              {view === 'tree' && (
+                <PanelWrap label="Event Tree" count={nodes.length}>
+                  <TreeView />
+                </PanelWrap>
+              )}
+              {view === 'timeline' && (
+                <PanelWrap label="Timeline" count={nodes.length}>
+                  <TimelineView />
+                </PanelWrap>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <ReplayTicker />
 

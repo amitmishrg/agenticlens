@@ -7,20 +7,29 @@ const { startServer } = require('./server');
 const args = process.argv.slice(2);
 
 if (args.length === 0) {
-  console.error('Usage: agentscope <path-to-logs.jsonl>');
+  console.error('Usage: agentscope <path-to-logs.jsonl|folder>');
   process.exit(1);
 }
 
-const filePath = path.resolve(args[0]);
+const inputPath = path.resolve(args[0]);
 
-if (!fs.existsSync(filePath)) {
-  console.error(`Error: File not found: ${filePath}`);
+if (!fs.existsSync(inputPath)) {
+  console.error(`Error: Path not found: ${inputPath}`);
   process.exit(1);
 }
 
-if (!filePath.endsWith('.jsonl') && !filePath.endsWith('.json')) {
-  console.warn(`Warning: File does not have a .jsonl extension. Proceeding anyway.`);
+let stat;
+try {
+  stat = fs.statSync(inputPath);
+} catch {
+  stat = null;
 }
 
-console.log(`AgentScope: Loading ${filePath}`);
-startServer(filePath);
+if (stat && stat.isFile()) {
+  if (!inputPath.endsWith('.jsonl') && !inputPath.endsWith('.json')) {
+    console.warn('Warning: File does not have a .jsonl extension. Proceeding anyway.');
+  }
+}
+
+console.log(`AgentScope: Loading ${inputPath}`);
+startServer(inputPath);
