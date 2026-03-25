@@ -17,7 +17,7 @@ function getAllCollapsibleIds(treeNodes) {
 }
 
 export default function Toolbar() {
-  const { view, setView, nodes, tree, collapsedNodeIds, collapseAll, expandAll, openUploadPanel } =
+  const { view, setView, tree, collapsedNodeIds, collapseAll, expandAll, openUploadPanel } =
     useAgentStore();
 
   const collapsibleIds = useMemo(() => getAllCollapsibleIds(tree), [tree]);
@@ -114,20 +114,8 @@ export default function Toolbar() {
         </div>
       )}
 
-      <div className="ml-auto flex items-center gap-3 pl-2">
+      <div className="ml-auto flex items-center pl-2">
         <ThemeToggle />
-        <div
-          className="flex h-9 items-center gap-2 rounded-full border border-app-chrome-border bg-app-chrome-well-bg px-3 box-border shadow-sm"
-          title="Live session size"
-        >
-          <span className="relative flex h-2 w-2" aria-hidden>
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-app-live opacity-40" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-app-live shadow-[0_0_8px_var(--app-live)]" />
-          </span>
-          <span className="text-[13px] font-mono tabular-nums leading-none text-app-fg-subtle">
-            {nodes.length} events
-          </span>
-        </div>
       </div>
     </header>
   );

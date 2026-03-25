@@ -199,6 +199,20 @@ body {
   outline: none;
 }
 
+/*
+ * Dot grid aligned with FlowView (<Background variant="dots" gap={28} size={1.5} />).
+ * Used on the upload gate only; tree/timeline stay plain for readability.
+ */
+.app-viewport-dots {
+  background-color: var(--app-bg);
+  background-image: radial-gradient(
+    circle,
+    var(--app-dot-grid) 0.75px,
+    transparent 0.76px
+  );
+  background-size: 28px 28px;
+}
+
 /* Card view entrance */
 @keyframes cardEntrance {
   from {

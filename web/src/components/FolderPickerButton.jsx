@@ -1,11 +1,11 @@
 import { useCallback, useRef } from 'react';
+import { FolderOpenIcon } from '@phosphor-icons/react';
 import { readJsonlFiles } from '@/utils/readJsonlFiles';
 
 export default function FolderPickerButton({ onFilesReady, onError }) {
   const inputRef = useRef(null);
 
   const open = useCallback((e) => {
-    // Prevent the surrounding dropzone click handler from firing too.
     e?.stopPropagation?.();
     e?.preventDefault?.();
     inputRef.current?.click();
@@ -24,7 +24,6 @@ export default function FolderPickerButton({ onFilesReady, onError }) {
       } catch (err) {
         onError?.(err?.message || 'Failed to read folder files.');
       } finally {
-        // allow re-selecting the same folder
         e.target.value = '';
       }
     },
@@ -53,8 +52,9 @@ export default function FolderPickerButton({ onFilesReady, onError }) {
         type="button"
         onClick={open}
         data-folder-picker-button="true"
-        className="text-[11px] rounded-md px-2.5 py-1 bg-app-surface-2 text-app-accent border border-app-border-strong"
+        className="inline-flex h-9 items-center gap-2 rounded-full border border-app-chrome-border bg-app-chrome-well-bg px-4 text-[13px] font-semibold text-app-fg-subtle shadow-sm transition-[background-color,border-color,color,transform] hover:border-app-border-strong hover:bg-app-surface hover:text-app-fg active:scale-[0.98] outline-offset-2"
       >
+        <FolderOpenIcon size={18} weight="duotone" className="shrink-0 text-app-accent-fg" aria-hidden />
         Choose folder
       </button>
     </>

@@ -19,15 +19,14 @@ function formatSeconds(ms) {
 function Chip({ children, tone = 'neutral' }) {
   const tones = {
     neutral:
-      'bg-app-surface-2/90 text-app-fg-muted ring-black/[0.06] dark:bg-app-surface-2/60 dark:ring-white/[0.07]',
-    accent: 'bg-[var(--app-accent-soft-bg)] text-app-accent-fg ring-[var(--app-accent-inner-ring)]/35',
+      'bg-app-surface-2/90 text-app-fg-muted ring-1 ring-inset ring-[color-mix(in_oklab,var(--app-fg)_8%,transparent)]',
+    accent: 'bg-[var(--app-accent-soft-bg)] text-app-accent-fg ring-1 ring-inset ring-[var(--app-accent-inner-ring)]/35',
   };
   return (
     <span
-      className={[
-        'inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ring-1 ring-inset',
-        tones[tone],
-      ].join(' ')}
+      className={['inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium', tones[tone]].join(
+        ' ',
+      )}
     >
       {children}
     </span>
@@ -39,10 +38,9 @@ function MetricTile({ icon: Icon, label, value, highlight = false }) {
     <div
       className={[
         'group relative min-w-[7.5rem] flex-1 rounded-2xl px-4 py-3',
-        'bg-app-surface/35 ring-1 ring-inset ring-black/[0.04] shadow-[0_1px_0_0_rgba(255,255,255,0.04)]',
-        'dark:bg-app-surface/40 dark:ring-white/[0.06] dark:shadow-[0_1px_0_0_rgba(255,255,255,0.05)]',
+        'bg-app-surface/35 ring-1 ring-inset ring-[color-mix(in_oklab,var(--app-fg)_5%,transparent)] shadow-[0_1px_0_0_color-mix(in_oklab,var(--app-fg)_4%,transparent)]',
         'transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-px hover:shadow-md',
-        highlight ? 'ring-amber-400/25 dark:ring-amber-400/20' : '',
+        highlight ? 'ring-amber-400/35' : '',
       ].join(' ')}
     >
       <div className="flex items-center gap-2 text-app-fg-muted">
@@ -51,6 +49,27 @@ function MetricTile({ icon: Icon, label, value, highlight = false }) {
       </div>
       <div className="mt-1.5 text-[22px] font-semibold tabular-nums tracking-tight text-app-fg leading-none">
         {value}
+      </div>
+    </div>
+  );
+}
+
+/** Total loaded log events (session size); lives in the metrics row so the toolbar stays compact. */
+function SessionEventsTile({ count }) {
+  return (
+    <div
+      className="group relative min-w-[7.5rem] flex-1 rounded-2xl px-4 py-3 bg-app-surface/35 ring-1 ring-inset ring-[color-mix(in_oklab,var(--app-fg)_5%,transparent)] shadow-[0_1px_0_0_color-mix(in_oklab,var(--app-fg)_4%,transparent)] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-px hover:shadow-md"
+      title="Total events in this session"
+    >
+      <div className="flex items-center gap-2 text-app-fg-muted">
+        <span className="relative flex h-4 w-4 items-center justify-center shrink-0" aria-hidden>
+          <span className="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-app-live opacity-35" />
+          <span className="relative h-2 w-2 rounded-full bg-app-live shadow-[0_0_6px_var(--app-live)]" />
+        </span>
+        <span className="text-[11px] font-medium tracking-tight">Events</span>
+      </div>
+      <div className="mt-1.5 text-[22px] font-semibold tabular-nums tracking-tight text-app-fg leading-none">
+        {count.toLocaleString()}
       </div>
     </div>
   );
@@ -114,6 +133,7 @@ export default function SessionSummary() {
           />
           <MetricTile icon={SquaresFourIcon} label="Steps" value={String(visibleSummary.totalSteps)} />
           <MetricTile icon={PackageIcon} label="Nodes" value={String(visibleSummary.totalNodes)} />
+          <SessionEventsTile count={nodes.length} />
           <MetricTile
             icon={WarningIcon}
             label="Issues"

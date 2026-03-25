@@ -3,6 +3,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 import useAgentStore from '@/store/useAgentStore';
 import Toolbar from '@/components/Toolbar';
+import MinimalAppHeader from '@/components/app/MinimalAppHeader';
 import SlidePane from '@/components/SlidePane';
 import ReplayTicker from '@/components/ReplayTicker';
 import AutoLoadingView from '@/components/app/AutoLoadingView';
@@ -72,10 +73,12 @@ export default function App() {
   const showOverlayError = status === 'error' && !!workspaceFiles?.length;
   const showAutoLoading = status === 'auto_loading' && showEmptyUpload;
   const showUploadPanel = isUploadPanelOpen || (showEmptyUpload && status === 'upload');
+  const useMinimalChrome =
+    showAutoLoading || (showUploadPanel && showEmptyUpload);
 
   return (
     <div className="relative isolate flex flex-col h-screen min-h-0 overflow-hidden bg-transparent text-app-fg">
-      <Toolbar />
+      {useMinimalChrome ? <MinimalAppHeader /> : <Toolbar />}
 
       {showAutoLoading ? (
         <AutoLoadingView />

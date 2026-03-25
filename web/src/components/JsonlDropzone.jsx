@@ -68,8 +68,8 @@ export default function JsonlDropzone({
       className={rootClassName}
       style={{
         ...(rootStyle || {}),
-        borderColor: isDragActive ? '#6366f1' : undefined,
-        background: isDragActive ? 'rgba(99,102,241,0.08)' : rootStyle?.background,
+        borderColor: isDragActive ? 'var(--app-accent)' : rootStyle?.borderColor,
+        background: isDragActive ? 'var(--app-accent-soft-bg)' : rootStyle?.background,
       }}
     >
       <input {...getInputProps()} />
