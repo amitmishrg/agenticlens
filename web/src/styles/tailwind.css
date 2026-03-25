@@ -63,6 +63,11 @@
   --app-step-header-bg: rgb(0 0 0 / 0.22);
   --app-step-header-divider: rgb(99 102 241 / 0.22);
   --app-danger-fg: #f87171;
+  /* Marketing / SaaS “ink” (inverts between themes) — landing CTAs & bands */
+  --saas-ink: #fafafa;
+  --saas-ink-contrast: #0a0a0a;
+  /* Deeper indigo for marketing gradients (avoid washed ends in dark theme). */
+  --app-marketing-deep: #4338ca;
 }
 
 [data-theme='light'] {
@@ -122,6 +127,9 @@
   --app-step-header-bg: rgb(255 255 255 / 0.7);
   --app-step-header-divider: rgb(79 70 229 / 0.18);
   --app-danger-fg: #b91c1c;
+  --saas-ink: #0a0a0a;
+  --saas-ink-contrast: #fafafa;
+  --app-marketing-deep: #312e81;
 }
 
 @theme inline {
@@ -147,6 +155,9 @@
   --color-app-danger-fg: var(--app-danger-fg);
   --color-app-chrome-border: var(--app-chrome-border);
   --color-app-chrome-well-bg: var(--app-chrome-well-bg);
+  --color-saas-ink: var(--saas-ink);
+  --color-saas-ink-contrast: var(--saas-ink-contrast);
+  --color-app-marketing-deep: var(--app-marketing-deep);
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
 }
@@ -190,7 +201,15 @@ body {
   font-family: var(--font-mono);
 }
 
-:where(button, [href], input:not([type='hidden']), select, textarea, summary, [tabindex]:not([tabindex='-1'])):focus-visible {
+:where(
+  button,
+  [href],
+  input:not([type='hidden']),
+  select,
+  textarea,
+  summary,
+  [tabindex]:not([tabindex='-1'])
+):focus-visible {
   outline: 2px solid var(--app-focus-ring);
   outline-offset: 2px;
 }
@@ -205,11 +224,7 @@ body {
  */
 .app-viewport-dots {
   background-color: var(--app-bg);
-  background-image: radial-gradient(
-    circle,
-    var(--app-dot-grid) 0.75px,
-    transparent 0.76px
-  );
+  background-image: radial-gradient(circle, var(--app-dot-grid) 0.75px, transparent 0.76px);
   background-size: 28px 28px;
 }
 
@@ -284,6 +299,146 @@ body {
   :where(.animate-ping) {
     animation: none !important;
   }
+}
+
+/*
+ * Landing hero — subtle drifting dot grid (respects reduced motion).
+ */
+@keyframes landing-hero-grid-drift {
+  to {
+    /* Layer 2 (glow) stays fixed at 50% 0 */
+    background-position:
+      28px 28px,
+      50% 0;
+  }
+}
+
+.landing-hero-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+  background-color: transparent;
+  background-image:
+    radial-gradient(circle at center, var(--app-dot-grid) 0.8px, transparent 0.85px),
+    radial-gradient(ellipse 120% 80% at 50% -20%, var(--app-accent-inner-glow), transparent 55%);
+  background-size:
+    28px 28px,
+    100% 100%;
+  background-position:
+    0 0,
+    50% 0;
+  animation: landing-hero-grid-drift 22s linear infinite;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 40%, #000 20%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 40%, #000 20%, transparent 72%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-hero-pattern {
+    animation: none;
+    opacity: 0.4;
+  }
+}
+
+/* Landing — aim-forward panels (accent rim + soft lift) */
+.landing-future-panel {
+  border: 1px solid color-mix(in oklab, var(--app-accent) 20%, var(--app-border));
+  background: color-mix(in oklab, var(--app-surface) 94%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--app-fg) 4%, transparent),
+    0 24px 64px -32px color-mix(in oklab, var(--app-accent) 28%, transparent);
+}
+
+/*
+ * Landing gallery: PNGs ship at ~1024px wide—cap display so the browser does not upscale
+ * (which looks blurry). Replace assets with 2048px+ exports for retina-sharp marketing shots.
+ */
+.landing-gallery-img {
+  backface-visibility: hidden;
+}
+
+.landing-aim-line {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--app-accent) 45%, transparent) 42%,
+    color-mix(in oklab, var(--app-accent) 45%, transparent) 58%,
+    transparent
+  );
+}
+
+/* Marketing — browser chrome around screenshots (Vercel-style product frames) */
+.landing-showcase-shell {
+  border-radius: 14px;
+  border: 1px solid color-mix(in oklab, var(--app-fg) 11%, var(--app-border));
+  background: color-mix(in oklab, var(--app-surface) 92%, var(--app-bg));
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--app-fg) 4%, transparent),
+    0 28px 90px -32px color-mix(in oklab, var(--app-accent) 24%, transparent),
+    0 16px 48px -28px rgb(0 0 0 / 0.4);
+}
+
+[data-theme='light'] .landing-showcase-shell {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--app-fg) 6%, transparent),
+    0 24px 64px -28px color-mix(in oklab, var(--app-accent) 16%, transparent);
+}
+
+.landing-showcase-chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--app-fg) 8%, var(--app-border));
+  background: color-mix(in oklab, var(--app-surface-2) 40%, var(--app-surface));
+}
+
+.landing-showcase-dots {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.landing-showcase-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--app-fg) 12%, var(--app-border));
+}
+
+.landing-showcase-dot:nth-child(1) {
+  background: #ff5f57;
+}
+
+.landing-showcase-dot:nth-child(2) {
+  background: #febc2e;
+}
+
+.landing-showcase-dot:nth-child(3) {
+  background: #28c840;
+}
+
+.landing-hero-snippet {
+  border: 1px solid color-mix(in oklab, var(--app-fg) 10%, var(--app-border));
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--app-surface) 94%, var(--app-bg));
+  box-shadow: 0 24px 56px -32px color-mix(in oklab, var(--app-accent) 30%, transparent);
+}
+
+.marketing-feature-card {
+  border: 1px solid color-mix(in oklab, var(--app-fg) 8%, var(--app-border));
+  border-radius: 16px;
+  background: color-mix(in oklab, var(--app-surface) 97%, transparent);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.marketing-feature-card:hover {
+  border-color: color-mix(in oklab, var(--app-accent) 32%, var(--app-border));
+  box-shadow: 0 22px 56px -30px color-mix(in oklab, var(--app-accent) 20%, transparent);
 }
 
 .react-flow__attribution {
