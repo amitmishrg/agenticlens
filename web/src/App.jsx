@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import useAgentStore from './store/useAgentStore';
 import { parseJSONL } from './parser/parseJSONL';
 import { buildTree } from './parser/buildTree';
-import Toolbar from './components/Toolbar';
-import TreeView from './components/TreeView';
-import TimelineView from './components/TimelineView';
-import CardView from './components/CardView';
-import FlowView from './components/FlowView';
-import SlidePane from './components/SlidePane';
+import Toolbar      from './components/Toolbar';
+import SlidePane    from './components/SlidePane';
+import FlowView     from './features/flow/FlowView';
+import TreeView     from './features/tree/TreeView';
+import TimelineView from './features/timeline/TimelineView';
 
 export default function App() {
   const { view, setNodes, setTree, nodes } = useAgentStore();
@@ -62,7 +61,6 @@ export default function App() {
       {/* Main content — always full width */}
       <div className="flex-1 overflow-hidden flex flex-col">
         {view === 'flow'     && <FlowView />}
-        {view === 'card'     && <CardView />}
         {view === 'tree'     && <PanelWrap label="Event Tree" count={nodes.length}><TreeView /></PanelWrap>}
         {view === 'timeline' && <PanelWrap label="Timeline" count={nodes.length}><TimelineView /></PanelWrap>}
       </div>

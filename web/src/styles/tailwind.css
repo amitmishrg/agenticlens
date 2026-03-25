@@ -57,6 +57,10 @@ body {
   animation: flowCardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* ─── React Flow dark theme overrides ─── */
+.react-flow__attribution { display: none; }
+.react-flow__handle { opacity: 0 !important; }
+
 /* ─── Custom scrollbar for devtool feel ─── */
 ::-webkit-scrollbar {
   width: 6px;
