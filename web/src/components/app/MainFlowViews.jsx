@@ -1,7 +1,7 @@
-import FlowView from '../../features/flow/FlowView';
-import TreeView from '../../features/tree/TreeView';
-import TimelineView from '../../features/timeline/TimelineView';
-import PanelWrap from '../PanelWrap';
+import FlowView from '@/features/flow/FlowView';
+import TreeView from '@/features/tree/TreeView';
+import TimelineView from '@/features/timeline/TimelineView';
+import PanelWrap from '@/components/PanelWrap';
 
 export default function MainFlowViews({ view, nodeCount }) {
   if (view === 'flow') {

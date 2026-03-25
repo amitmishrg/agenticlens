@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import useAgentStore from '../store/useAgentStore';
-import InspectorPanel from '../features/inspector/InspectorPanel';
-import { getAccent } from '../constants/typeConfig';
-import SlidePaneHeader from './SlidePaneHeader';
+import useAgentStore from '@/store/useAgentStore';
+import InspectorPanel from '@/features/inspector/InspectorPanel';
+import { getAccent } from '@/constants/typeConfig';
+import SlidePaneHeader from '@/components/SlidePaneHeader';
 
 export default function SlidePane() {
   const { selectedNode, setSelectedNode } = useAgentStore();

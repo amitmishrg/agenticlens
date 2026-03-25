@@ -5,7 +5,7 @@ import {
   CaretRightIcon,
   ArrowsOutSimpleIcon,
 } from '@phosphor-icons/react';
-import useAgentStore from '../store/useAgentStore';
+import useAgentStore from '@/store/useAgentStore';
 
 const shell = {
   display: 'flex',

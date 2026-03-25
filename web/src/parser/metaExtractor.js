@@ -1,4 +1,4 @@
-import { getContent } from './contentUtils';
+import { getContent } from '@/parser/contentUtils';
 
 /** Pull all available metadata fields from a raw SDK log line. */
 export function extractMeta(raw, type) {

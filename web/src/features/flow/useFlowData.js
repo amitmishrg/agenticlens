@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import useAgentStore from '../../store/useAgentStore';
-import { computeVisibleNodeIds } from '../../utils/visibility';
-import { buildFlowElements } from './buildFlowElements';
+import useAgentStore from '@/store/useAgentStore';
+import { computeVisibleNodeIds } from '@/utils/visibility';
+import { buildFlowElements } from '@/features/flow/buildFlowElements';
 
 /**
  * Converts store data into React Flow nodes + edges (grouped steps, filters, replay).

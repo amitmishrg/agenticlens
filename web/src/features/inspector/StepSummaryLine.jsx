@@ -1,6 +1,6 @@
-import useAgentStore from '../../store/useAgentStore';
-import { formatDeltaMs } from '../../utils/formatDuration';
-import TokenGlyph from '../../components/icons/TokenGlyph';
+import useAgentStore from '@/store/useAgentStore';
+import { formatDeltaMs } from '@/utils/formatDuration';
+import TokenGlyph from '@/components/icons/TokenGlyph';
 import { TimerIcon } from '@phosphor-icons/react';
 
 /** Shows aggregate stats for the agent step that contains this node. */

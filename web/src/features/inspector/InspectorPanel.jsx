@@ -1,9 +1,9 @@
-import TypeIcon from '../../components/TypeIcon';
-import MetaSection from './MetaSection';
-import JsonViewer from './JsonViewer';
-import StepSummaryLine from './StepSummaryLine';
-import { getAccent } from '../../constants/typeConfig';
-import { formatDeltaMs } from '../../utils/formatDuration';
+import TypeIcon from '@/components/TypeIcon';
+import MetaSection from '@/features/inspector/MetaSection';
+import JsonViewer from '@/features/inspector/JsonViewer';
+import StepSummaryLine from '@/features/inspector/StepSummaryLine';
+import { getAccent } from '@/constants/typeConfig';
+import { formatDeltaMs } from '@/utils/formatDuration';
 
 export default function InspectorPanel({ node }) {
   if (!node) return null;

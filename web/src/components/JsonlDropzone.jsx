@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { readJsonlFiles } from '../utils/readJsonlFiles';
-import { readJsonlFilesFromDataTransfer } from '../utils/readJsonlFilesFromDataTransfer';
+import { readJsonlFiles } from '@/utils/readJsonlFiles';
+import { readJsonlFilesFromDataTransfer } from '@/utils/readJsonlFilesFromDataTransfer';
 
 export default function JsonlDropzone({
   onFilesReady,

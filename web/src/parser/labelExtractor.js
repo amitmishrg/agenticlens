@@ -1,4 +1,4 @@
-import { getContent, truncate } from './contentUtils';
+import { getContent, truncate } from '@/parser/contentUtils';
 
 export function extractLabel(raw, type) {
   const content = getContent(raw);

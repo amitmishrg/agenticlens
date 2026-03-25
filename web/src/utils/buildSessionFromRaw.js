@@ -1,9 +1,9 @@
-import { parseJSONL } from '../parser/parseJSONL';
-import { buildTree } from '../parser/buildTree';
-import { enrichNodes } from '../parser/enrichNodes';
-import { buildSteps } from '../parser/buildSteps';
-import { detectAnomalies } from './anomalyDetector';
-import { computeSessionSummary } from './sessionSummary';
+import { parseJSONL } from '@/parser/parseJSONL';
+import { buildTree } from '@/parser/buildTree';
+import { enrichNodes } from '@/parser/enrichNodes';
+import { buildSteps } from '@/parser/buildSteps';
+import { detectAnomalies } from '@/utils/anomalyDetector';
+import { computeSessionSummary } from '@/utils/sessionSummary';
 
 /** Pure pipeline: JSONL text → graph data + steps + summary + chronological ids. */
 export function buildSessionFromRaw(raw) {

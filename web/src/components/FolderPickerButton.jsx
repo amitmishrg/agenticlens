@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react';
-import { readJsonlFiles } from '../utils/readJsonlFiles';
+import { readJsonlFiles } from '@/utils/readJsonlFiles';
 
 export default function FolderPickerButton({ onFilesReady, onError }) {
   const inputRef = useRef(null);

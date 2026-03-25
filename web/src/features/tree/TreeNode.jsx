@@ -1,7 +1,7 @@
-import TypeIcon from '../../components/TypeIcon';
-import { getAccent } from '../../constants/typeConfig';
-import useAgentStore from '../../store/useAgentStore';
-import { formatDeltaMs } from '../../utils/formatDuration';
+import TypeIcon from '@/components/TypeIcon';
+import { getAccent } from '@/constants/typeConfig';
+import useAgentStore from '@/store/useAgentStore';
+import { formatDeltaMs } from '@/utils/formatDuration';
 
 export default function TreeNode({ node, depth = 0 }) {
   const { selectedNode, setSelectedNode, collapsedNodeIds, toggleNode } = useAgentStore();

@@ -1,6 +1,6 @@
-import { getAccent } from '../../constants/typeConfig';
-import { formatDeltaMs } from '../../utils/formatDuration';
-import { deltaParentToChild } from '../../utils/timeDelta';
+import { getAccent } from '@/constants/typeConfig';
+import { formatDeltaMs } from '@/utils/formatDuration';
+import { deltaParentToChild } from '@/utils/timeDelta';
 
 export function collectFlowEdges(parentNode, agentIds, rfEdges, byId) {
   for (const child of parentNode.children || []) {

@@ -1,4 +1,4 @@
-import useAgentStore, { FILTER_TYPES } from '../store/useAgentStore';
+import useAgentStore, { FILTER_TYPES } from '@/store/useAgentStore';
 
 const sel = {
   width: 150,

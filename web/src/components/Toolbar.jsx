@@ -1,9 +1,9 @@
-import useAgentStore from '../store/useAgentStore';
-import { UploadSimpleIcon } from '@phosphor-icons/react';
-import { SparkleIcon } from '@phosphor-icons/react';
-import { VIEWS } from './toolbarViews.jsx';
-import ToolbarTypeFilter from './ToolbarTypeFilter';
-import ToolbarReplay from './ToolbarReplay';
+import { useMemo } from 'react';
+import useAgentStore from '@/store/useAgentStore';
+import { ArrowsInIcon, ArrowsOutIcon, SparkleIcon, UploadSimpleIcon } from '@phosphor-icons/react';
+import { VIEWS } from '@/components/toolbarViews.jsx';
+import ToolbarTypeFilter from '@/components/ToolbarTypeFilter';
+import ToolbarReplay from '@/components/ToolbarReplay';
 
 function getAllCollapsibleIds(treeNodes) {
   const ids = [];
@@ -16,7 +16,14 @@ function getAllCollapsibleIds(treeNodes) {
 }
 
 export default function Toolbar() {
-  const { view, setView, nodes, tree, collapseAll, expandAll, openUploadPanel } = useAgentStore();
+  const { view, setView, nodes, tree, collapsedNodeIds, collapseAll, expandAll, openUploadPanel } =
+    useAgentStore();
+
+  const collapsibleIds = useMemo(() => getAllCollapsibleIds(tree), [tree]);
+  const allTreeCollapsed =
+    collapsibleIds.length > 0 && collapsibleIds.every((id) => collapsedNodeIds.has(id));
+  const allTreeExpanded =
+    collapsibleIds.length > 0 && collapsibleIds.every((id) => !collapsedNodeIds.has(id));
 
   return (
     <header
@@ -36,25 +43,31 @@ export default function Toolbar() {
         className="flex rounded-lg overflow-hidden"
         style={{ border: '1px solid #1e1e2e', background: '#111118' }}
       >
-        {VIEWS.map((v) => (
-          <button
-            key={v.id}
-            onClick={() => setView(v.id)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium transition-all duration-200"
-            style={
-              view === v.id
-                ? {
-                    background: 'rgba(99,102,241,0.2)',
-                    color: '#818cf8',
-                    borderRight: '1px solid #1e1e2e',
-                  }
-                : { color: '#44445a', borderRight: '1px solid #1e1e2e' }
-            }
-          >
-            {v.icon}
-            {v.label}
-          </button>
-        ))}
+        {VIEWS.map((v) => {
+          const isActive = view === v.id;
+          return (
+            <button
+              key={v.id}
+              type="button"
+              onClick={() => setView(v.id)}
+              aria-pressed={isActive}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium transition-all duration-200"
+              style={
+                isActive
+                  ? {
+                      background: 'rgba(99,102,241,0.28)',
+                      color: '#a5b4fc',
+                      borderRight: '1px solid #1e1e2e',
+                      boxShadow: 'inset 0 0 0 1px rgba(129, 140, 248, 0.35)',
+                    }
+                  : { color: '#44445a', borderRight: '1px solid #1e1e2e' }
+              }
+            >
+              {v.icon}
+              {v.label}
+            </button>
+          );
+        })}
       </div>
 
       <ToolbarTypeFilter />
@@ -76,18 +89,45 @@ export default function Toolbar() {
 
       {/* Tree-specific: collapse / expand controls */}
       {view === 'tree' && (
-        <div className="flex gap-1.5 ml-1">
+        <div className="flex gap-1 ml-1">
           {[
-            { label: 'Collapse all', action: () => collapseAll(getAllCollapsibleIds(tree)) },
-            { label: 'Expand all', action: expandAll },
-          ].map(({ label, action }) => (
+            {
+              title: 'Collapse all',
+              action: () => collapseAll(getAllCollapsibleIds(tree)),
+              icon: ArrowsInIcon,
+              isActive: allTreeCollapsed,
+            },
+            {
+              title: 'Expand all',
+              action: expandAll,
+              icon: ArrowsOutIcon,
+              isActive: allTreeExpanded,
+            },
+          ].map(({ title, action, icon: Icon, isActive }) => (
             <button
-              key={label}
+              key={title}
+              type="button"
               onClick={action}
-              className="px-2.5 py-1 text-[11px] rounded-md"
-              style={{ background: '#1a1a28', color: '#55556a', border: '1px solid #1e1e2e' }}
+              title={title}
+              aria-label={title}
+              aria-pressed={isActive}
+              className="flex items-center justify-center rounded-md p-1.5 transition-colors duration-200"
+              style={
+                isActive
+                  ? {
+                      background: 'rgba(99,102,241,0.28)',
+                      color: '#c7d2fe',
+                      border: '1px solid rgba(129, 140, 248, 0.45)',
+                      boxShadow: 'inset 0 0 0 1px rgba(165, 180, 252, 0.15)',
+                    }
+                  : {
+                      background: '#1a1a28',
+                      color: '#64748b',
+                      border: '1px solid #1e1e2e',
+                    }
+              }
             >
-              {label}
+              <Icon size={16} weight="duotone" color="currentColor" />
             </button>
           ))}
         </div>

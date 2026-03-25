@@ -1,5 +1,5 @@
-import { usePrunedTree } from '../../hooks/usePrunedTree';
-import TreeNode from './TreeNode';
+import { usePrunedTree } from '@/hooks/usePrunedTree';
+import TreeNode from '@/features/tree/TreeNode';
 
 export default function TreeView() {
   const tree = usePrunedTree();

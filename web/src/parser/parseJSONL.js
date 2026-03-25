@@ -1,7 +1,7 @@
-import { resolveType } from './typeResolver';
-import { extractLabel } from './labelExtractor';
-import { extractMeta } from './metaExtractor';
-import { getContent, truncate } from './contentUtils';
+import { resolveType } from '@/parser/typeResolver';
+import { extractLabel } from '@/parser/labelExtractor';
+import { extractMeta } from '@/parser/metaExtractor';
+import { getContent, truncate } from '@/parser/contentUtils';
 
 let _counter = 0;
 const nextId = () => `node-${++_counter}`;

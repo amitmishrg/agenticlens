@@ -1,4 +1,4 @@
-import { getContent } from './contentUtils';
+import { getContent } from '@/parser/contentUtils';
 
 /**
  * Resolve the semantic display type from a raw SDK log line.

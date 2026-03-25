@@ -1,4 +1,4 @@
-import { getAccent } from '../constants/typeConfig';
+import { getAccent } from '@/constants/typeConfig';
 import { XIcon } from '@phosphor-icons/react';
 
 const closeBtn = {

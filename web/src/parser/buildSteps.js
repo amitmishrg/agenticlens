@@ -4,7 +4,7 @@
  * totalTokens = sum of (input + output) usage on each node in the step.
  */
 
-import { parseEventTime } from '../utils/timeDelta';
+import { parseEventTime } from '@/utils/timeDelta';
 
 function stepTimes(nodes) {
   const sorted = [...nodes]

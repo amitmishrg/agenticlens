@@ -1,4 +1,4 @@
-import useAgentStore from '../store/useAgentStore';
+import useAgentStore from '@/store/useAgentStore';
 
 export default function FileSidebar() {
   const workspaceFiles = useAgentStore((s) => s.workspaceFiles);

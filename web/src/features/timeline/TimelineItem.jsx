@@ -1,6 +1,6 @@
-import TypeIcon from '../../components/TypeIcon';
-import { getAccent } from '../../constants/typeConfig';
-import useAgentStore from '../../store/useAgentStore';
+import TypeIcon from '@/components/TypeIcon';
+import { getAccent } from '@/constants/typeConfig';
+import useAgentStore from '@/store/useAgentStore';
 
 export default function TimelineItem({ node, delta }) {
   const { selectedNode, setSelectedNode } = useAgentStore();

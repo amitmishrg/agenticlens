@@ -1,4 +1,4 @@
-import { buildTree } from '../parser/buildTree';
+import { buildTree } from '@/parser/buildTree';
 
 /** Extend id set with ancestors so tree/graph stays connected. */
 export function addAncestorIds(ids, byId) {

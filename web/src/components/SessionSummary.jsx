@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import useAgentStore from '../store/useAgentStore';
-import { computeVisibleNodeIds } from '../utils/visibility';
-import { computeSessionSummary } from '../utils/sessionSummary';
+import useAgentStore from '@/store/useAgentStore';
+import { computeVisibleNodeIds } from '@/utils/visibility';
+import { computeSessionSummary } from '@/utils/sessionSummary';
 import {
   CoinsIcon,
   PackageIcon,

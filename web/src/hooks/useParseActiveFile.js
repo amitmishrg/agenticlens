@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { buildSessionFromRaw } from '../utils/buildSessionFromRaw';
+import { buildSessionFromRaw } from '@/utils/buildSessionFromRaw';
 
 /** Loads / parses only the active workspace file and hydrates the Zustand store. */
 export function useParseActiveFile({

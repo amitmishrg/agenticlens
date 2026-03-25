@@ -9,12 +9,12 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
-import FlowNode from './FlowNode';
-import FlowEdge from './FlowEdge';
-import StepNode from './StepNode';
-import ZoomControls from './ZoomControls';
-import FlowMiniMap from './FlowMiniMap';
-import { useFlowData } from './useFlowData';
+import FlowNode from '@/features/flow/FlowNode';
+import FlowEdge from '@/features/flow/FlowEdge';
+import StepNode from '@/features/flow/StepNode';
+import ZoomControls from '@/features/flow/ZoomControls';
+import FlowMiniMap from '@/features/flow/FlowMiniMap';
+import { useFlowData } from '@/features/flow/useFlowData';
 
 const nodeTypes = { agentNode: FlowNode, stepNode: StepNode };
 const edgeTypes = { agentEdge: FlowEdge };

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
-import JsonlDropzone from './JsonlDropzone';
-import FolderPickerButton from './FolderPickerButton';
+import JsonlDropzone from '@/components/JsonlDropzone';
+import FolderPickerButton from '@/components/FolderPickerButton';
 
 export default function UploadPanel({ onFilesReady }) {
   const [error, setError] = useState(null);

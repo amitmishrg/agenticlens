@@ -1,4 +1,4 @@
-import MetaRow from './MetaRow';
+import MetaRow from '@/features/inspector/MetaRow';
 
 const LABELS = {
   model: 'Model',

@@ -3,7 +3,7 @@
  * parentDeltaMs (tree parent → child), and token totals.
  */
 
-import { parseEventTime, deltaParentToChild } from '../utils/timeDelta';
+import { parseEventTime, deltaParentToChild } from '@/utils/timeDelta';
 
 function resolveStepId(node, byId) {
   let cur = node;

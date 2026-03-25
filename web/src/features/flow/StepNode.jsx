@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { FlameIcon, TimerIcon, WarningOctagonIcon } from '@phosphor-icons/react';
-import { formatDeltaMs } from '../../utils/formatDuration';
-import TokenGlyph from '../../components/icons/TokenGlyph';
+import { formatDeltaMs } from '@/utils/formatDuration';
+import TokenGlyph from '@/components/icons/TokenGlyph';
 
 /** React Flow parent node: step summary header + bounds for child events. */
 function StepNode({ data }) {

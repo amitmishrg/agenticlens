@@ -1,6 +1,6 @@
-import useAgentStore from '../../store/useAgentStore';
-import { computeVisibleNodeIds } from '../../utils/visibility';
-import TimelineItem from './TimelineItem';
+import useAgentStore from '@/store/useAgentStore';
+import { computeVisibleNodeIds } from '@/utils/visibility';
+import TimelineItem from '@/features/timeline/TimelineItem';
 
 export default function TimelineView() {
   const nodes = useAgentStore((s) => s.nodes);

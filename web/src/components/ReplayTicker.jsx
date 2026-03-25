@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import useAgentStore from '../store/useAgentStore';
+import useAgentStore from '@/store/useAgentStore';
 
 /** Advances replay while isPlaying is true. */
 export default function ReplayTicker() {

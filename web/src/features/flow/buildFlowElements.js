@@ -1,7 +1,7 @@
-import { buildTree } from '../../parser/buildTree';
-import { layoutStepInterior } from './flowLayoutStep';
-import { getAccent } from '../../constants/typeConfig';
-import { collectFlowEdges } from './collectFlowEdges';
+import { buildTree } from '@/parser/buildTree';
+import { layoutStepInterior } from '@/features/flow/flowLayoutStep';
+import { getAccent } from '@/constants/typeConfig';
+import { collectFlowEdges } from '@/features/flow/collectFlowEdges';
 
 // Must match (or exceed) StepNode header minimum height.
 const STEP_HEADER = 62;

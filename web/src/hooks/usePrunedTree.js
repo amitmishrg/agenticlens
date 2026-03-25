@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import useAgentStore from '../store/useAgentStore';
-import { computeVisibleNodeIds, buildVisibleTree } from '../utils/visibility';
+import useAgentStore from '@/store/useAgentStore';
+import { computeVisibleNodeIds, buildVisibleTree } from '@/utils/visibility';
 
 /** Tree roots respecting type filter and replay window. */
 export function usePrunedTree() {

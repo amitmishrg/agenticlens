@@ -1,7 +1,7 @@
-import FileSidebar from '../FileSidebar';
-import SessionSummary from '../SessionSummary';
-import ParseStateOverlay from './ParseStateOverlay';
-import MainFlowViews from './MainFlowViews';
+import FileSidebar from '@/components/FileSidebar';
+import SessionSummary from '@/components/SessionSummary';
+import ParseStateOverlay from '@/components/app/ParseStateOverlay';
+import MainFlowViews from '@/components/app/MainFlowViews';
 
 export default function DashboardShell({
   view,

@@ -1,11 +1,11 @@
 import { Handle, Position } from '@xyflow/react';
 import { CurrencyDollarIcon, TimerIcon } from '@phosphor-icons/react';
-import TypeIcon from '../../components/TypeIcon';
-import MetaChip from './MetaChip';
-import TokenGlyph from '../../components/icons/TokenGlyph';
-import { extractBodyText } from '../../parser/contentUtils';
-import { formatDeltaMs } from '../../utils/formatDuration';
-import useAgentStore from '../../store/useAgentStore';
+import TypeIcon from '@/components/TypeIcon';
+import MetaChip from '@/features/flow/MetaChip';
+import TokenGlyph from '@/components/icons/TokenGlyph';
+import { extractBodyText } from '@/parser/contentUtils';
+import { formatDeltaMs } from '@/utils/formatDuration';
+import useAgentStore from '@/store/useAgentStore';
 
 const BODY_LIMIT = 80;
 

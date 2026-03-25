@@ -1,15 +1,16 @@
 import { useRef, useState } from 'react';
 import { Analytics } from '@vercel/analytics/react';
-import useAgentStore from './store/useAgentStore';
-import Toolbar from './components/Toolbar';
-import SlidePane from './components/SlidePane';
-import ReplayTicker from './components/ReplayTicker';
-import AutoLoadingView from './components/app/AutoLoadingView';
-import UploadGateView from './components/app/UploadGateView';
-import DashboardShell from './components/app/DashboardShell';
-import { useWorkspaceAutoLoad } from './hooks/useWorkspaceAutoLoad';
-import { useParseActiveFile } from './hooks/useParseActiveFile';
-import { useFilesReadyHandler } from './hooks/useFilesReadyHandler';
+
+import useAgentStore from '@/store/useAgentStore';
+import Toolbar from '@/components/Toolbar';
+import SlidePane from '@/components/SlidePane';
+import ReplayTicker from '@/components/ReplayTicker';
+import AutoLoadingView from '@/components/app/AutoLoadingView';
+import UploadGateView from '@/components/app/UploadGateView';
+import DashboardShell from '@/components/app/DashboardShell';
+import { useWorkspaceAutoLoad } from '@/hooks/useWorkspaceAutoLoad';
+import { useParseActiveFile } from '@/hooks/useParseActiveFile';
+import { useFilesReadyHandler } from '@/hooks/useFilesReadyHandler';
 
 export default function App() {
   const {

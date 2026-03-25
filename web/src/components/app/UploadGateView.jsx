@@ -1,4 +1,4 @@
-import UploadPanel from '../UploadPanel';
+import UploadPanel from '@/components/UploadPanel';
 
 export default function UploadGateView({ onFilesReady, showEmptyHint }) {
   return (
