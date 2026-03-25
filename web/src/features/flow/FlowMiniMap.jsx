@@ -21,12 +21,9 @@ export default function FlowMiniMap() {
       maskStrokeWidth={2}
       bgColor="#111116"
       style={{
-        borderRadius: 8,
-        border: '1px solid #1e1e2e',
-        width: 192,
-        height: 132,
-        margin: 12,
-        boxShadow: '0 8px 24px rgba(0,0,0,0.35)',
+        borderRadius: 20,
+        width: 160,
+        height: 100,
       }}
       ariaLabel="Flow overview: frame shows the visible area; drag to pan, scroll wheel to zoom"
     />
