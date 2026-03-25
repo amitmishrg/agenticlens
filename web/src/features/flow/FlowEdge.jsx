@@ -34,18 +34,19 @@ export default function FlowEdge({
         </animateMotion>
       </circle>
       {label ? (
-        <text
-          x={labelX}
-          y={labelY}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="#94a3b8"
-          fontSize={10}
-          className="nodrag nopan"
-          style={{ pointerEvents: 'none', fontFamily: 'monospace' }}
-        >
-          {label}
-        </text>
+        <g transform={`translate(${labelX}, ${labelY})`} className="nodrag nopan" style={{ pointerEvents: 'none' }}>
+          <text
+            x={0}
+            y={0}
+            dy="0.35em"
+            textAnchor="middle"
+            fill="#94a3b8"
+            fontSize={10}
+            style={{ fontFamily: 'monospace' }}
+          >
+            {label}
+          </text>
+        </g>
       ) : null}
     </g>
   );
