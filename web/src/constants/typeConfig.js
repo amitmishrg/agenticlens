@@ -17,3 +17,23 @@ export const TYPE_ACCENTS = {
 
 /** Returns the accent colour for a node type, with a safe fallback. */
 export const getAccent = (type) => TYPE_ACCENTS[type] ?? '#6b7280';
+
+/**
+ * Colour for type labels & icons: full accent on dark UI, blended toward slate for WCAG on white.
+ * @param {string} accentHex
+ * @param {'light' | 'dark'} theme
+ */
+export function getAccentLabelColor(accentHex, theme) {
+  if (theme !== 'light') return accentHex;
+  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(accentHex);
+  if (!m) return accentHex;
+  const r = parseInt(m[1], 16);
+  const g = parseInt(m[2], 16);
+  const b = parseInt(m[3], 16);
+  const t = 0.58;
+  const tgt = { r: 15, g: 23, b: 42 };
+  const R = Math.round(r * (1 - t) + tgt.r * t);
+  const G = Math.round(g * (1 - t) + tgt.g * t);
+  const B = Math.round(b * (1 - t) + tgt.b * t);
+  return `rgb(${R},${G},${B})`;
+}

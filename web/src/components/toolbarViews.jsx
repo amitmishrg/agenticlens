@@ -5,16 +5,16 @@ export const VIEWS = [
   {
     id: 'flow',
     label: 'Flow',
-    icon: <ShareNetworkIcon size={13} weight="duotone" />,
+    icon: <ShareNetworkIcon size={16} weight="duotone" className="shrink-0" />,
   },
   {
     id: 'tree',
     label: 'Tree',
-    icon: <ListBulletsIcon size={13} weight="duotone" />,
+    icon: <ListBulletsIcon size={16} weight="duotone" className="shrink-0" />,
   },
   {
     id: 'timeline',
     label: 'Timeline',
-    icon: <ChartLineUpIcon size={13} weight="duotone" />,
+    icon: <ChartLineUpIcon size={16} weight="duotone" className="shrink-0" />,
   },
 ];

@@ -7,6 +7,8 @@ import {
 } from '@phosphor-icons/react';
 import useAgentStore from '@/store/useAgentStore';
 
+const ICON_PX = 15;
+
 function IconBtn({ title, onClick, disabled, children }) {
   return (
     <button
@@ -15,10 +17,10 @@ function IconBtn({ title, onClick, disabled, children }) {
       onClick={onClick}
       disabled={disabled}
       className={[
-        'flex items-center justify-center min-w-9 min-h-9 w-9 h-9 rounded-lg transition-[background-color,border-color,color,transform] duration-200 ease-out border [outline-offset:2px]',
+        'flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-0 transition-[background-color,color,transform] duration-150 outline-offset-2',
         disabled
-          ? 'border-app-border bg-app-surface text-app-label cursor-not-allowed opacity-50'
-          : 'border-app-border-strong bg-app-surface-2 text-app-accent-bright cursor-pointer hover:border-app-accent hover:shadow-sm active:scale-95',
+          ? 'cursor-not-allowed text-app-label opacity-40'
+          : 'cursor-pointer text-app-fg-muted hover:bg-[color-mix(in_oklab,var(--app-surface-2)_88%,var(--app-fg))] hover:text-app-fg active:scale-[0.94]',
       ].join(' ')}
     >
       {children}
@@ -40,32 +42,38 @@ export default function ToolbarReplay() {
 
   const atEnd = idx >= chronLen - 1;
 
+  const ic = { size: ICON_PX, color: 'currentColor', className: 'shrink-0' };
+
   return (
-    <div className="flex items-center gap-1 ml-2.5 py-0.5 pl-2 pr-1.5 rounded-lg border border-app-border bg-app-surface">
-      <span className="text-[9px] font-bold tracking-widest uppercase text-app-accent-fg mr-1 whitespace-nowrap">
+    <div
+      className="ml-2 flex h-9 items-center gap-0.5 rounded-full border border-app-chrome-border bg-app-chrome-well-bg px-1 shadow-sm box-border"
+      role="group"
+      aria-label="Replay controls"
+    >
+      <span className="select-none pl-2 pr-0.5 text-[13px] font-medium leading-none text-app-fg-muted">
         Replay
       </span>
 
       <IconBtn title="Show full session" onClick={resetReplay}>
-        <ArrowsOutSimpleIcon size={15} weight="bold" />
+        <ArrowsOutSimpleIcon {...ic} weight="duotone" />
       </IconBtn>
 
       <IconBtn title={isPlaying ? 'Pause' : 'Play'} onClick={() => (isPlaying ? pause() : play())}>
-        {isPlaying ? <PauseIcon size={15} weight="fill" /> : <PlayIcon size={15} weight="fill" />}
+        {isPlaying ? <PauseIcon {...ic} weight="fill" /> : <PlayIcon {...ic} weight="fill" />}
       </IconBtn>
 
       <IconBtn title="Previous event" onClick={prevStep} disabled={idx < 0}>
-        <CaretLeftIcon size={15} weight="bold" />
+        <CaretLeftIcon {...ic} weight="duotone" />
       </IconBtn>
 
       <IconBtn title="Next event" onClick={nextStep} disabled={atEnd}>
-        <CaretRightIcon size={15} weight="bold" />
+        <CaretRightIcon {...ic} weight="duotone" />
       </IconBtn>
 
       <span
         className={[
-          'text-[11px] font-mono min-w-[48px] text-center',
-          idx < 0 ? 'text-app-label' : 'text-app-fg-muted',
+          'flex h-7 min-w-[3.25rem] items-center justify-center px-1 font-mono text-[13px] leading-none tabular-nums',
+          idx < 0 ? 'text-app-label' : 'text-app-fg-subtle',
         ].join(' ')}
       >
         {idx < 0 ? '— / —' : `${idx + 1} / ${chronLen}`}

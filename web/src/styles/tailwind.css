@@ -50,6 +50,8 @@
   --app-glow-1: rgb(99 102 241 / 0.14);
   --app-glow-2: rgb(56 189 248 / 0.07);
   --app-toolbar-scrim: rgb(10 10 14 / 0.72);
+  --app-chrome-border: var(--app-border);
+  --app-chrome-well-bg: var(--app-surface);
   --app-focus-ring: rgb(129 140 248 / 0.95);
   --app-flow-card-bg: #0e0e12;
   --app-flow-card-border-idle: #252532;
@@ -60,21 +62,22 @@
   --app-step-bg: linear-gradient(165deg, rgb(30 30 55 / 0.92) 0%, rgb(12 12 20 / 0.88) 100%);
   --app-step-header-bg: rgb(0 0 0 / 0.22);
   --app-step-header-divider: rgb(99 102 241 / 0.22);
+  --app-danger-fg: #f87171;
 }
 
 [data-theme='light'] {
-  --app-bg: #f4f6fb;
+  --app-bg: #f8fafc;
   --app-surface: #ffffff;
-  --app-surface-elevated: #eef2f8;
+  --app-surface-elevated: #f1f5f9;
   --app-surface-2: #e2e8f0;
-  --app-border: #c8d0dc;
-  --app-border-strong: #94a3b8;
+  --app-border: #94a3b8;
+  --app-border-strong: #64748b;
   --app-fg: #0f172a;
-  --app-fg-muted: #475569;
+  --app-fg-muted: #334155;
   --app-fg-subtle: #1e293b;
-  --app-label: #64748b;
-  --app-label-muted: #94a3b8;
-  --app-switch-inactive: #64748b;
+  --app-label: #475569;
+  --app-label-muted: #64748b;
+  --app-switch-inactive: #475569;
   --app-accent: #4f46e5;
   --app-accent-fg: #4338ca;
   --app-accent-bright: #312e81;
@@ -104,7 +107,10 @@
   --app-spinner-border: #4f46e5;
   --app-glow-1: rgb(79 70 229 / 0.09);
   --app-glow-2: rgb(14 165 233 / 0.06);
-  --app-toolbar-scrim: rgb(255 255 255 / 0.76);
+  --app-toolbar-scrim: rgb(255 255 255 / 0.92);
+  /* Softer delineation for toolbar clusters (select, replay, pills) on white. */
+  --app-chrome-border: #cbd5e1;
+  --app-chrome-well-bg: #f1f5f9;
   --app-focus-ring: rgb(79 70 229 / 0.9);
   --app-flow-card-bg: #ffffff;
   --app-flow-card-border-idle: #c8d0dc;
@@ -115,6 +121,7 @@
   --app-step-bg: linear-gradient(165deg, rgb(238 242 255 / 0.98) 0%, rgb(255 255 255 / 1) 100%);
   --app-step-header-bg: rgb(255 255 255 / 0.7);
   --app-step-header-divider: rgb(79 70 229 / 0.18);
+  --app-danger-fg: #b91c1c;
 }
 
 @theme inline {
@@ -137,6 +144,9 @@
   --color-app-live: var(--app-live);
   --color-app-dot-grid: var(--app-dot-grid);
   --color-app-spinner: var(--app-spinner-border);
+  --color-app-danger-fg: var(--app-danger-fg);
+  --color-app-chrome-border: var(--app-chrome-border);
+  --color-app-chrome-well-bg: var(--app-chrome-well-bg);
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
 }

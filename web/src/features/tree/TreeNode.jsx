@@ -1,12 +1,15 @@
 import TypeIcon from '@/components/TypeIcon';
-import { getAccent } from '@/constants/typeConfig';
+import { getAccent, getAccentLabelColor } from '@/constants/typeConfig';
 import useAgentStore from '@/store/useAgentStore';
+import { useThemeStore } from '@/store/useThemeStore';
 import { formatDeltaMs } from '@/utils/formatDuration';
 
 export default function TreeNode({ node, depth = 0 }) {
+  const theme = useThemeStore((s) => s.theme);
   const { selectedNode, setSelectedNode, collapsedNodeIds, toggleNode } = useAgentStore();
 
   const ac = getAccent(node.type);
+  const typeFg = getAccentLabelColor(ac, theme);
   const isSelected = selectedNode?.id === node.id;
   const slowNode = node.anomalies?.includes('slow_node');
   const hasChildren = node.children?.length > 0;
@@ -15,22 +18,24 @@ export default function TreeNode({ node, depth = 0 }) {
 
   const depthIndent = depth === 0 ? 0 : 10;
   const childrenGutter = 8;
+  const branchAlpha = theme === 'light' ? '55' : '22';
 
   return (
     <div style={{ marginLeft: depthIndent }}>
       <div
+        role="button"
+        tabIndex={0}
         onClick={() => setSelectedNode(node)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setSelectedNode(node);
+          }
+        }}
+        className="flex cursor-pointer items-start gap-2 rounded-lg border border-transparent px-2.5 py-1.5 mb-0.5 transition-colors duration-150 outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--app-focus-ring)]"
         style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: 8,
-          padding: '6px 10px',
-          borderRadius: 7,
-          cursor: 'pointer',
-          marginBottom: 2,
-          background: isSelected ? `${ac}18` : 'transparent',
-          border: `1px solid ${isSelected ? `${ac}55` : 'transparent'}`,
-          transition: 'all 0.15s',
+          background: isSelected ? `${ac}24` : 'transparent',
+          borderColor: isSelected ? `${ac}66` : 'transparent',
         }}
       >
         {hasChildren ? (
@@ -40,76 +45,43 @@ export default function TreeNode({ node, depth = 0 }) {
               e.stopPropagation();
               toggleNode(node.id);
             }}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: '#4b5563',
-              fontSize: 10,
-              padding: 0,
-              lineHeight: 1,
-              flexShrink: 0,
-            }}
+            className="shrink-0 border-0 bg-transparent p-0 text-[12px] leading-none text-app-fg-muted hover:text-app-fg-subtle cursor-pointer"
+            aria-expanded={!isCollapsed}
+            aria-label={isCollapsed ? 'Expand' : 'Collapse'}
           >
             {isCollapsed ? '▶' : '▼'}
           </button>
         ) : (
-          <span style={{ width: 12, flexShrink: 0 }} />
+          <span className="w-3 shrink-0" />
         )}
 
-        <TypeIcon type={node.type} color={ac} size={14} />
+        <TypeIcon type={node.type} color={typeFg} size={16} />
 
         <span
-          style={{
-            fontSize: 11,
-            color: ac,
-            textTransform: 'uppercase',
-            letterSpacing: 0.5,
-            flexShrink: 0,
-          }}
+          className="shrink-0 text-[11px] font-semibold uppercase tracking-wide sm:text-xs"
+          style={{ color: typeFg }}
         >
           {node.type}
         </span>
         {slowNode && (
-          <span style={{ marginLeft: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+          <span className="ml-1 inline-flex items-center gap-1">
             <span
-              className="w-1.5 h-1.5 rounded-full bg-red-500"
+              className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-500"
               style={{ boxShadow: '0 0 0 3px rgba(239,68,68,0.15)' }}
             />
-            <span
-              className="text-[9px] font-semibold"
-              style={{ color: '#f87171', textTransform: 'uppercase', letterSpacing: 0.4 }}
-            >
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-app-danger-fg">
               Slow
             </span>
           </span>
         )}
 
-        <span
-          style={{
-            fontSize: 12,
-            color: '#d1d5db',
-            flex: 1,
-            minWidth: 0,
-            whiteSpace: 'normal',
-            wordBreak: 'break-word',
-            lineHeight: 1.35,
-          }}
-        >
+        <span className="min-w-0 flex-1 whitespace-normal break-words text-[13px] leading-snug text-app-fg-subtle">
           {node.label}
         </span>
 
         {edgeDelay && (
           <span
-            style={{
-              marginLeft: 'auto',
-              fontSize: 10,
-              color: '#4b5563',
-              fontFamily: 'monospace',
-              flexShrink: 0,
-              alignSelf: 'flex-start',
-              paddingTop: 1,
-            }}
+            className="ml-auto shrink-0 self-start pt-0.5 font-mono text-[11px] tabular-nums text-app-fg-muted"
             title={
               node.parentDeltaMs != null ? 'Δ since parent in tree' : 'Δ since previous log line'
             }
@@ -120,7 +92,7 @@ export default function TreeNode({ node, depth = 0 }) {
       </div>
 
       {!isCollapsed && hasChildren && (
-        <div style={{ borderLeft: `1px solid ${ac}22`, marginLeft: childrenGutter }}>
+        <div style={{ borderLeft: `1px solid ${ac}${branchAlpha}`, marginLeft: childrenGutter }}>
           {node.children.map((child) => (
             <TreeNode key={child.id} node={child} depth={depth + 1} />
           ))}
