@@ -14,6 +14,8 @@ export default function FlowNode({ data }) {
   const selectedNode = useAgentStore((s) => s.selectedNode);
   const selected     = selectedNode?.id === node.id;
 
+  const slowNode = node.anomalies?.includes('slow_node');
+
   const body    = extractBodyText(node);
   const preview = body.length > BODY_LIMIT ? body.slice(0, BODY_LIMIT) + '…' : body;
 
@@ -58,6 +60,17 @@ export default function FlowNode({ data }) {
         }}>
           {node.type}
         </span>
+        {slowNode && (
+          <span style={{ marginLeft: 4, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-red-500"
+              style={{ boxShadow: '0 0 0 3px rgba(239,68,68,0.15)' }}
+            />
+            <span className="text-[9px] font-semibold" style={{ color: '#f87171', textTransform: 'uppercase', letterSpacing: 0.4 }}>
+              Slow
+            </span>
+          </span>
+        )}
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 12px', marginBottom: 6, fontSize: 10, color: '#64748b', alignItems: 'center' }}>

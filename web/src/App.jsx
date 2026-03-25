@@ -4,15 +4,19 @@ import { parseJSONL }  from './parser/parseJSONL';
 import { buildTree }   from './parser/buildTree';
 import { enrichNodes } from './parser/enrichNodes';
 import { buildSteps }  from './parser/buildSteps';
+import { detectAnomalies } from './utils/anomalyDetector';
+import { computeSessionSummary } from './utils/sessionSummary';
 import Toolbar       from './components/Toolbar';
+import SessionSummary from './components/SessionSummary';
 import SlidePane     from './components/SlidePane';
 import ReplayTicker  from './components/ReplayTicker';
 import FlowView     from './features/flow/FlowView';
 import TreeView     from './features/tree/TreeView';
 import TimelineView from './features/timeline/TimelineView';
+import { WarningOctagonIcon } from '@phosphor-icons/react';
 
 export default function App() {
-  const { view, setNodes, setTree, setSteps, setChronNodeIds, nodes } = useAgentStore();
+  const { view, setNodes, setTree, setSteps, setSessionSummary, setChronNodeIds, nodes } = useAgentStore();
   const [status, setStatus] = useState('loading');
   const [error, setError] = useState(null);
 
@@ -25,6 +29,8 @@ export default function App() {
         const parsed   = parseJSONL(raw);
         const enriched = enrichNodes(parsed);
         const steps    = buildSteps(enriched);
+        const stepsWithAnomalies = detectAnomalies(steps);
+        const summary  = computeSessionSummary(stepsWithAnomalies);
         const chron    = [...enriched]
           .filter((n) => n.timestamp)
           .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
@@ -32,7 +38,8 @@ export default function App() {
 
         setNodes(enriched);
         setTree(buildTree(enriched));
-        setSteps(steps);
+        setSteps(stepsWithAnomalies);
+        setSessionSummary(summary);
         setChronNodeIds(chron);
         setStatus('ready');
       } catch (err) {
@@ -41,7 +48,7 @@ export default function App() {
       }
     }
     load();
-  }, [setNodes, setTree, setSteps, setChronNodeIds]);
+  }, [setNodes, setTree, setSteps, setSessionSummary, setChronNodeIds]);
 
   if (status === 'loading') {
     return (
@@ -58,7 +65,7 @@ export default function App() {
     return (
       <div className="flex items-center justify-center h-screen" style={{ background: '#09090c' }}>
         <div className="flex flex-col items-center gap-3 max-w-md text-center px-6">
-          <span className="text-3xl">⚠️</span>
+          <WarningOctagonIcon size={34} weight="duotone" color="#f87171" />
           <p className="font-semibold text-red-400 text-sm">Failed to load logs</p>
           <p className="text-xs font-mono text-red-600">{error}</p>
         </div>
@@ -72,9 +79,12 @@ export default function App() {
 
       {/* Main content — always full width */}
       <div className="flex-1 overflow-hidden flex flex-col">
-        {view === 'flow'     && <FlowView />}
-        {view === 'tree'     && <PanelWrap label="Event Tree" count={nodes.length}><TreeView /></PanelWrap>}
-        {view === 'timeline' && <PanelWrap label="Timeline" count={nodes.length}><TimelineView /></PanelWrap>}
+        <SessionSummary />
+        <div className="flex-1 overflow-hidden">
+          {view === 'flow'     && <FlowView />}
+          {view === 'tree'     && <PanelWrap label="Event Tree" count={nodes.length}><TreeView /></PanelWrap>}
+          {view === 'timeline' && <PanelWrap label="Timeline" count={nodes.length}><TimelineView /></PanelWrap>}
+        </div>
       </div>
 
       <ReplayTicker />

@@ -10,6 +10,7 @@ export default function TreeNode({ node, depth = 0 }) {
 
   const ac          = getAccent(node.type);
   const isSelected  = selectedNode?.id === node.id;
+  const slowNode    = node.anomalies?.includes('slow_node');
   const hasChildren = node.children?.length > 0;
   const isCollapsed = collapsedNodeIds.has(node.id);
   const edgeDelay   = formatDeltaMs(node.parentDeltaMs) ?? formatDeltaMs(node.deltaMs);
@@ -46,6 +47,17 @@ export default function TreeNode({ node, depth = 0 }) {
         <span style={{ fontSize: 11, color: ac, textTransform: 'uppercase', letterSpacing: 0.5, flexShrink: 0 }}>
           {node.type}
         </span>
+        {slowNode && (
+          <span style={{ marginLeft: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-red-500"
+              style={{ boxShadow: '0 0 0 3px rgba(239,68,68,0.15)' }}
+            />
+            <span className="text-[9px] font-semibold" style={{ color: '#f87171', textTransform: 'uppercase', letterSpacing: 0.4 }}>
+              Slow
+            </span>
+          </span>
+        )}
 
         <span style={{ fontSize: 12, color: '#d1d5db', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {node.label}

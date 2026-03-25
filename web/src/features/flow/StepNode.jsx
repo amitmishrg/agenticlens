@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { TimerIcon } from '@phosphor-icons/react';
+import { FlameIcon, TimerIcon, WarningOctagonIcon } from '@phosphor-icons/react';
 import { formatDeltaMs } from '../../utils/formatDuration';
 import TokenGlyph from '../../components/icons/TokenGlyph';
 
@@ -7,6 +7,9 @@ import TokenGlyph from '../../components/icons/TokenGlyph';
 function StepNode({ data }) {
   const { step } = data;
   const dur = formatDeltaMs(step.duration);
+  const stepAnomalies = step.anomalies || [];
+  const isSlow = stepAnomalies.includes('slow');
+  const hasHighTokens = stepAnomalies.includes('high_tokens');
 
   return (
     <div
@@ -23,7 +26,7 @@ function StepNode({ data }) {
     >
       <div
         style={{
-          height: 50,
+          minHeight: 50,
           padding: '8px 14px',
           display: 'flex',
           alignItems: 'center',
@@ -40,6 +43,18 @@ function StepNode({ data }) {
           <span style={{ fontSize: 10, color: '#94a3b8', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
             <TimerIcon size={12} color="#94a3b8" weight="duotone" />
             {dur}
+          </span>
+        )}
+        {isSlow && (
+          <span className="text-[10px] inline-flex items-center px-2 py-0.5 rounded-md bg-red-500/20 border border-red-500 text-red-200 font-semibold">
+            <WarningOctagonIcon size={12} weight="duotone" color="#f87171" />
+            <span className="ml-1">Slow</span>
+          </span>
+        )}
+        {hasHighTokens && (
+          <span className="text-[10px] inline-flex items-center px-2 py-0.5 rounded-md bg-orange-500/20 border border-orange-500 text-orange-200 font-semibold">
+            <FlameIcon size={12} weight="duotone" color="#fb923c" />
+            <span className="ml-1">High Tokens</span>
           </span>
         )}
         <span style={{ fontSize: 10, color: '#64748b', display: 'inline-flex', alignItems: 'center', gap: 5 }}>

@@ -1,6 +1,7 @@
 import useAgentStore from '../../store/useAgentStore';
 import { formatDeltaMs } from '../../utils/formatDuration';
 import TokenGlyph from '../../components/icons/TokenGlyph';
+import { TimerIcon } from '@phosphor-icons/react';
 
 /** Shows aggregate stats for the agent step that contains this node. */
 export default function StepSummaryLine({ stepId }) {
@@ -27,7 +28,12 @@ export default function StepSummaryLine({ stepId }) {
       }}
     >
       <span style={{ fontWeight: 700, color: '#818cf8', letterSpacing: 1 }}>STEP {step.index}</span>
-      {dur != null && <span>⏱ {dur}</span>}
+      {dur != null && (
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+          <TimerIcon size={12} weight="duotone" color="#94a3b8" />
+          {dur}
+        </span>
+      )}
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
         <TokenGlyph size={14} color="#94a3b8" />
         {step.totalTokens || 0} tokens

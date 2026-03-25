@@ -6,6 +6,7 @@ export default function TimelineItem({ node, delta }) {
   const { selectedNode, setSelectedNode } = useAgentStore();
   const ac = getAccent(node.type);
   const isSelected = selectedNode?.id === node.id;
+  const slowNode = node.anomalies?.includes('slow_node');
 
   return (
     <div
@@ -38,6 +39,17 @@ export default function TimelineItem({ node, delta }) {
           <span style={{ fontSize: 11, color: ac, textTransform: 'uppercase', letterSpacing: 0.6 }}>
             {node.type}
           </span>
+          {slowNode && (
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <span
+                className="w-1.5 h-1.5 rounded-full bg-red-500"
+                style={{ boxShadow: '0 0 0 3px rgba(239,68,68,0.15)' }}
+              />
+              <span className="text-[9px] font-semibold" style={{ color: '#f87171', textTransform: 'uppercase', letterSpacing: 0.4 }}>
+                Slow
+              </span>
+            </span>
+          )}
           {delta != null && (
             <span style={{ fontSize: 10, color: '#4b5563', fontFamily: 'monospace' }}>
               +{delta < 1000 ? `${delta}ms` : `${(delta / 1000).toFixed(2)}s`}
