@@ -39,3 +39,4 @@ coverage/
 *.local
 .cache/
 *.tgz
+dir.md
