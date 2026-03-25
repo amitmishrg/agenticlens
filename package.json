@@ -1,12 +1,29 @@
 {
-  "name": "agenticlens-root",
-  "version": "1.0.0",
-  "private": true,
+  "name": "agenticlens",
+  "version": "0.1.1",
+  "private": false,
+  "bin": {
+    "agenticlens": "./cli/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amitmishrg/agenticlens.git"
+  },
+  "main": "./cli/index.js",
+  "files": [
+    "cli/**",
+    "web/dist/**"
+  ],
+  "dependencies": {
+    "express": "^4.18.2",
+    "open": "^9.1.0"
+  },
   "workspaces": [
     "cli",
     "web"
   ],
   "scripts": {
+    "prepack": "npm run build --workspace=web",
     "build": "npm run build --workspace=web",
     "dev": "npm run dev --workspace=web",
     "start": "node cli/index.js"
