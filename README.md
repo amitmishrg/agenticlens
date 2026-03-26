@@ -1,136 +1,106 @@
 # AgenticLens
 
-**See inside your AI agents.**
+See inside your AI agents.
 
-AgenticLens is a devtool that helps you **visualize, debug, and understand AI agent workflows** from JSONL logs.
+AgenticLens is a developer tool for visualizing and debugging AI agent workflows from JSONL logs.  
+It converts raw traces into an interactive workspace with flow graphs, event trees, timelines, replay controls, and step-level inspection.
 
-It turns raw agent logs into an interactive UI with flow diagrams, timelines, replay, and insights — so you can quickly find what’s happening and what’s going wrong.
+> **Beta:** AgenticLens is currently in beta.  
+> If you find a bug or unexpected behavior, please report it in [GitHub Issues](https://github.com/amitmishrg/agenticlens/issues).
 
----
+## Why AgenticLens
 
-## ✨ Why AgenticLens?
+Agent runs are hard to reason about from raw logs alone:
 
-Debugging AI agents is hard.
+- Flows are implicit
+- Nested tool chains are noisy
+- Latency and token issues are easy to miss
 
-- Logs are messy
-- Flows are invisible
-- Performance issues are hard to spot
+AgenticLens helps you:
 
-AgenticLens makes it easy to:
+- Understand reasoning and tool usage
+- Visualize full execution flow
+- Detect slow or high-token steps quickly
+- Replay sessions step by step
+- Inspect each event with metadata and raw JSON
 
-- 🧠 Understand agent reasoning (thinking steps)
-- 🌊 Visualize full execution flow
-- ⏱ Identify slow steps and bottlenecks
-- 🔥 Detect high token usage
-- 🔍 Inspect every step in detail
-- ⏯ Replay agent execution step-by-step
+## Quick Start
 
----
-
-## 🚀 Quick Start
+Run directly with npx:
 
 ```bash
 npx agenticlens path/to/logs.jsonl
 ```
 
-Your browser will open automatically with the full visualization.
+The app starts and opens in your browser.
 
----
+You can also launch and upload files/folders directly in the UI.
 
-## 📂 Upload Mode (No CLI needed)
+## Screenshots
 
-You can also:
+### Flow Canvas
 
-- Upload a `.jsonl` file
-- Upload a folder with multiple sessions
+Visual graph of each run with connected steps, slow/high-token badges, and clear transitions between queue ops, user turns, thinking, tools, and results.
 
-Then explore each session directly in the UI.
+![AgenticLens Flow Canvas](https://agenticlens-assets.vercel.app/gallery/flow-canvas.png)
 
----
+### Event Tree
 
-## 🧩 Features
+Hierarchical breakdown of events and sub-steps so you can expand branches and inspect execution structure in context.
 
-### 🌊 Flow View
+![AgenticLens Event Tree](https://agenticlens-assets.vercel.app/gallery/event-tree.png)
 
-Visual graph of your agent execution — see how each step connects.
+### Timeline
 
-### 🌳 Tree View
+Chronological event stream with timing deltas and performance signals for debugging ordering and latency gaps.
 
-Structured hierarchy of all events and sub-steps.
+![AgenticLens Timeline](https://agenticlens-assets.vercel.app/gallery/timeline.png)
 
-### ⏱ Timeline View
+### Flow + Inspector
 
-Understand latency and execution order at a glance.
+Flow canvas paired with inspector details (metadata + raw JSON) so topology and payload stay aligned.
 
-### 🔁 Replay Mode
+![AgenticLens Flow Inspector](https://agenticlens-assets.vercel.app/gallery/flow-inspector.png)
 
-Step through execution like a debugger.
+## Core Features
 
-### 📊 Session Summary
+- **Flow View**: graph of execution steps and transitions
+- **Tree View**: nested event hierarchy
+- **Timeline View**: ordered event feed with deltas
+- **Replay**: step through session progression
+- **Session Summary**: totals for time, tokens, steps, nodes, and issues
+- **Inspector Panel**: detailed event metadata and raw JSON
+- **Anomaly Signals**: slow spans, token-heavy steps, bottlenecks
 
-See total time, tokens, steps, and detected issues instantly.
+## Supported Logs
 
-### 🚨 Anomaly Detection
-
-- Slow steps
-- High token usage
-- Performance bottlenecks
-
-### 🔍 Inspector Panel
-
-Deep dive into any node:
-
-- metadata
-- tokens
-- raw JSON
-- timestamps
-
----
-
-## 🎯 Supported Logs
-
-Currently supports:
+Current:
 
 - Claude Agent SDK JSONL logs
 
-Coming soon:
+Planned:
 
 - OpenAI Agents
 - Custom agent frameworks
 - SDK-based integrations
 
----
-
-## 🛠 Use Cases
+## Use Cases
 
 - Debugging agent workflows
 - Understanding reasoning and tool usage
 - Optimizing latency and cost
 - Comparing different runs
-- Building reliable AI systems
+- Building more reliable AI systems
 
----
-
-## 🔮 Roadmap
+## Roadmap
 
 - SDK integration (`agenticlens.init()`)
 - Chrome DevTools extension
-- Multi-provider support (OpenAI, others)
+- Multi-provider support
 - Run comparison
 - Cloud dashboard
 
----
-
-## ⚡ Philosophy
-
-AI agents shouldn’t be a black box.
-
-AgenticLens helps you treat them like real systems —
-**observable, debuggable, and understandable.**
-
----
-
-## 🧑‍💻 Development (optional)
+## Local Development
 
 ```bash
 npm install
@@ -138,8 +108,6 @@ npm run build
 node cli/index.js sample-logs.jsonl
 ```
 
----
-
-## 📜 License
+## License
 
 MIT
