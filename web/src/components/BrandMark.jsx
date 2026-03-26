@@ -1,5 +1,4 @@
-/** AgenticLens wordmark image — lives in `/public/agenticlens-logo.png`. */
-const LOGO_SRC = '/agenticlens-logo.png';
+const LOGO_SRC = 'https://agenticlens-assets.vercel.app/agenticlens-logo.png';
 
 const sizeMap = {
   xs: 'h-7 w-7',
