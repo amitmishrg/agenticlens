@@ -1,6 +1,6 @@
 {
   "name": "agenticlens",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A local devtool to visualize Claude Agent SDK JSONL logs",
   "main": "index.js",
   "bin": {
