@@ -17,28 +17,28 @@ export default function StepSummaryLine({ stepId }) {
         marginBottom: 12,
         padding: '10px 12px',
         borderRadius: 8,
-        background: '#14141f',
-        border: '1px solid #2a2a44',
+        background: 'color-mix(in oklab, var(--app-surface) 86%, var(--app-bg))',
+        border: '1px solid color-mix(in oklab, var(--app-fg) 10%, var(--app-border))',
         fontSize: 11,
-        color: '#94a3b8',
+        color: 'var(--app-fg-muted)',
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
         gap: '6px 12px',
       }}
     >
-      <span style={{ fontWeight: 700, color: '#818cf8', letterSpacing: 1 }}>STEP {step.index}</span>
+      <span style={{ fontWeight: 700, color: 'var(--app-accent)', letterSpacing: 1 }}>STEP {step.index}</span>
       {dur != null && (
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-          <TimerIcon size={12} weight="duotone" color="#94a3b8" />
+          <TimerIcon size={12} weight="duotone" color="currentColor" />
           {dur}
         </span>
       )}
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-        <TokenGlyph size={14} color="#94a3b8" />
+        <TokenGlyph size={14} color="currentColor" />
         {step.totalTokens || 0} tokens
       </span>
-      <span style={{ color: '#64748b' }}>{step.nodeCount} nodes</span>
+      <span style={{ color: 'var(--app-label)' }}>{step.nodeCount} nodes</span>
     </div>
   );
 }

@@ -28,14 +28,14 @@ export default function MetaSection({ meta = {}, timestamp }) {
   return (
     <div
       style={{
-        background: '#111116',
-        border: '1px solid #1e1e2e',
+        background: 'color-mix(in oklab, var(--app-surface) 88%, var(--app-bg))',
+        border: '1px solid color-mix(in oklab, var(--app-fg) 10%, var(--app-border))',
         borderRadius: 8,
         padding: '12px 14px',
         marginBottom: 12,
       }}
     >
-      <p style={{ color: '#4b5563', fontSize: 10, letterSpacing: 1, marginBottom: 6 }}>METADATA</p>
+      <p style={{ color: 'var(--app-label)', fontSize: 10, letterSpacing: 1, marginBottom: 6 }}>METADATA</p>
       {timestamp && <MetaRow label="Timestamp" value={new Date(timestamp).toLocaleString()} />}
       {Object.entries(LABELS).map(([key, label]) => (
         <MetaRow key={key} label={label} value={meta[key]} />

@@ -281,7 +281,6 @@ export default function LandingPage({ onOpenWorkspace }) {
         {/* Hero — Turborepo-scale headline + Vercel-style snippet */}
         <section className="relative max-w-6xl px-5 pt-16 pb-24 mx-auto overflow-hidden sm:px-8 sm:pb-32 sm:pt-20 md:pt-28">
           <div className="landing-hero-pattern" aria-hidden />
-          <div className="landing-hero-sparkles" aria-hidden />
           <div className="relative max-w-4xl mx-auto text-center z-1">
             <div className="flex flex-wrap items-center justify-center gap-2">
               {heroEyebrowPills.map((pill) => (

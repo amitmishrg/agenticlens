@@ -5,15 +5,21 @@ export default function JsonViewer({ data }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div style={{ border: '1px solid #1e1e2e', borderRadius: 8, overflow: 'hidden' }}>
+    <div
+      style={{
+        border: '1px solid color-mix(in oklab, var(--app-fg) 10%, var(--app-border))',
+        borderRadius: 8,
+        overflow: 'hidden',
+      }}
+    >
       <button
         onClick={() => setOpen((v) => !v)}
         style={{
           width: '100%',
           textAlign: 'left',
           padding: '8px 14px',
-          background: '#111116',
-          color: '#6b7280',
+          background: 'color-mix(in oklab, var(--app-surface) 88%, var(--app-bg))',
+          color: 'var(--app-label)',
           fontSize: 11,
           letterSpacing: 1,
           cursor: 'pointer',
@@ -31,8 +37,8 @@ export default function JsonViewer({ data }) {
             overflowY: 'auto',
             fontSize: 11,
             lineHeight: 1.6,
-            color: '#9ca3af',
-            background: '#0d0d11',
+            color: 'var(--app-fg-muted)',
+            background: 'color-mix(in oklab, var(--app-surface) 84%, var(--app-bg))',
             fontFamily: 'monospace',
           }}
         >

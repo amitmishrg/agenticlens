@@ -315,21 +315,6 @@ body {
   }
 }
 
-@keyframes landing-hero-sparkle-drift {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: 0.42;
-  }
-  50% {
-    transform: translate3d(-20px, 18px, 0) scale(1.06);
-    opacity: 0.72;
-  }
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: 0.42;
-  }
-}
-
 .landing-hero-pattern {
   position: absolute;
   inset: 0;
@@ -351,35 +336,10 @@ body {
   -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 40%, #000 20%, transparent 72%);
 }
 
-.landing-hero-sparkles {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.52;
-  background-image:
-    radial-gradient(circle at 14% 22%, color-mix(in oklab, var(--app-accent) 88%, transparent) 0 1.8px, transparent 2.7px),
-    radial-gradient(circle at 26% 34%, color-mix(in oklab, var(--app-accent) 70%, transparent) 0 1.2px, transparent 2px),
-    radial-gradient(circle at 76% 20%, color-mix(in oklab, var(--app-accent) 86%, transparent) 0 1.9px, transparent 2.8px),
-    radial-gradient(circle at 64% 66%, color-mix(in oklab, var(--app-accent) 72%, transparent) 0 1.4px, transparent 2.1px),
-    radial-gradient(circle at 34% 80%, color-mix(in oklab, var(--app-accent) 64%, transparent) 0 1.5px, transparent 2.2px),
-    radial-gradient(circle at 86% 70%, color-mix(in oklab, var(--app-accent) 58%, transparent) 0 1.1px, transparent 1.8px);
-  background-repeat: no-repeat;
-  filter: drop-shadow(0 0 12px color-mix(in oklab, var(--app-accent) 52%, transparent));
-  animation: landing-hero-sparkle-drift 6.5s ease-in-out infinite;
-  mask-image: radial-gradient(ellipse 82% 70% at 50% 42%, #000 24%, transparent 74%);
-  -webkit-mask-image: radial-gradient(ellipse 82% 70% at 50% 42%, #000 24%, transparent 74%);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .landing-hero-pattern {
     animation: none;
     opacity: 0.4;
-  }
-
-  .landing-hero-sparkles {
-    animation: none;
-    opacity: 0.14;
   }
 }
 
