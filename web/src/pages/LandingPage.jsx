@@ -281,6 +281,7 @@ export default function LandingPage({ onOpenWorkspace }) {
         {/* Hero — Turborepo-scale headline + Vercel-style snippet */}
         <section className="relative max-w-6xl px-5 pt-16 pb-24 mx-auto overflow-hidden sm:px-8 sm:pb-32 sm:pt-20 md:pt-28">
           <div className="landing-hero-pattern" aria-hidden />
+          <div className="landing-hero-sparkles" aria-hidden />
           <div className="relative max-w-4xl mx-auto text-center z-1">
             <div className="flex flex-wrap items-center justify-center gap-2">
               {heroEyebrowPills.map((pill) => (
@@ -307,7 +308,7 @@ export default function LandingPage({ onOpenWorkspace }) {
               AgenticLens turns Claude Agent SDK exports into a live workspace—flow, tree, timeline,
               replay, and inspector—so you see what happened before you reread the file.
             </p>
-            <div className="flex flex-col items-center justify-center gap-3 mt-10 sm:flex-row sm:gap-4">
+            <div className="flex flex-col items-center justify-center gap-3 mt-14 sm:flex-row sm:gap-4 sm:mt-16">
               <button
                 type="button"
                 onClick={onOpenWorkspace}
