@@ -1,5 +1,5 @@
 import { Handle, Position } from '@xyflow/react';
-import { CurrencyDollarIcon, TimerIcon } from '@phosphor-icons/react';
+import { CurrencyDollarIcon, FlameIcon, TimerIcon, WarningCircleIcon } from '@phosphor-icons/react';
 import TypeIcon from '@/components/TypeIcon';
 import MetaChip from '@/features/flow/MetaChip';
 import TokenGlyph from '@/components/icons/TokenGlyph';
@@ -10,11 +10,18 @@ import useAgentStore from '@/store/useAgentStore';
 const BODY_LIMIT = 80;
 
 export default function FlowNode({ data }) {
-  const { node, onSelect, accent: ac, replayActive } = data;
+  const { node, step, onSelect, accent: ac, replayActive } = data;
   const selectedNode = useAgentStore((s) => s.selectedNode);
+  const flashNodeId = useAgentStore((s) => s.flashNodeId);
   const selected = selectedNode?.id === node.id;
 
   const slowNode = node.anomalies?.includes('slow_node');
+  const stepAnomalies = step?.anomalies || [];
+  const hasStepSlow = stepAnomalies.includes('slow');
+  const hasStepHighTokens = stepAnomalies.includes('high_tokens');
+  const stepSlowTarget = hasStepSlow && step?.anomalyTargets?.slow === node.id;
+  const stepTokensTarget = hasStepHighTokens && step?.anomalyTargets?.high_tokens === node.id;
+  const flashActive = flashNodeId === node.id;
 
   const body = extractBodyText(node);
   const preview = body.length > BODY_LIMIT ? body.slice(0, BODY_LIMIT) + '…' : body;
@@ -26,26 +33,55 @@ export default function FlowNode({ data }) {
   const cost = node.meta?.costUsd;
 
   const idleBorder = 'var(--app-flow-card-border-idle)';
-  const borderCol = selected || replayActive ? ac : idleBorder;
-  const ring = replayActive
-    ? `0 0 0 3px ${ac}66, 0 0 18px ${ac}33`
-    : selected
-      ? `0 0 0 3px ${ac}55`
-      : 'none';
+  let borderCol = selected || replayActive ? ac : idleBorder;
+  if (stepSlowTarget) borderCol = '#ef4444';
+  else if (stepTokensTarget) borderCol = '#f97316';
+
+  const anomalyGlow = stepSlowTarget
+    ? '0 0 20px rgba(239,68,68,0.5)'
+    : stepTokensTarget
+      ? '0 0 20px rgba(249,115,22,0.45)'
+      : '';
+
   const cardShadow = selected ? `0 4px 24px ${ac}22` : 'var(--app-flow-card-shadow)';
+  const shadowParts = [];
+  if (flashActive) {
+    shadowParts.push(`0 0 0 3px ${ac}`, `0 0 26px ${ac}99`);
+  } else if (replayActive) {
+    shadowParts.push(`0 0 0 3px ${ac}66`, `0 0 18px ${ac}33`);
+  } else if (selected) {
+    shadowParts.push(`0 0 0 3px ${ac}55`);
+  }
+  if (anomalyGlow) shadowParts.push(anomalyGlow);
+  shadowParts.push(cardShadow);
+  const mergedShadow = shadowParts.join(', ');
+  const borderWidth = stepSlowTarget || stepTokensTarget ? 2 : 1.5;
+  const slowChipStyle = {
+    color: 'var(--app-danger-fg)',
+    background: 'color-mix(in oklab, var(--app-danger-fg) 14%, transparent)',
+    boxShadow: 'inset 0 0 0 1px color-mix(in oklab, var(--app-danger-fg) 42%, transparent)',
+  };
+  const tokenChipStyle = {
+    color: 'color-mix(in oklab, #f97316 78%, var(--app-fg))',
+    background: 'color-mix(in oklab, #f97316 14%, transparent)',
+    boxShadow: 'inset 0 0 0 1px color-mix(in oklab, #f97316 45%, transparent)',
+  };
+  const metricsColor = 'var(--app-fg-muted)';
+  const previewColor = 'var(--app-fg-subtle)';
 
   return (
     <div
       onClick={() => onSelect(node)}
+      className="relative"
       style={{
         width: 252,
         background: 'var(--app-flow-card-bg)',
         borderRadius: 10,
-        border: `1.5px solid ${borderCol}`,
+        border: `${borderWidth}px solid ${borderCol}`,
         padding: '10px 13px',
         cursor: 'pointer',
-        boxShadow: `${ring}, ${cardShadow}`,
-        transition: 'border-color 0.15s, box-shadow 0.15s',
+        boxShadow: mergedShadow,
+        transition: 'border-color 0.2s ease-out, box-shadow 0.2s ease-out, transform 0.2s ease-out',
         animation: 'flowCardIn 0.3s cubic-bezier(0.22,1,0.36,1) both',
       }}
     >
@@ -53,62 +89,62 @@ export default function FlowNode({ data }) {
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 7,
-          marginBottom: 6,
+          justifyContent: 'space-between',
+          marginBottom: slowNode || stepTokensTarget ? 4 : 6,
         }}
       >
-        <span
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 26,
-            height: 26,
-            borderRadius: 6,
-            background: `${ac}22`,
-            border: `1px solid ${ac}44`,
-            flexShrink: 0,
-          }}
-        >
-          <TypeIcon type={node.type} color={ac} size={13} />
-        </span>
-        <span
-          style={{
-            fontSize: 10,
-            color: ac,
-            textTransform: 'uppercase',
-            letterSpacing: 0.7,
-            fontWeight: 600,
-          }}
-        >
-          {node.type}
-        </span>
-        {slowNode && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7, minWidth: 0 }}>
           <span
             style={{
-              marginLeft: 4,
-              display: 'inline-flex',
+              display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              justifyContent: 'center',
+              width: 26,
+              height: 26,
+              borderRadius: 6,
+              background: `${ac}22`,
+              border: `1px solid ${ac}44`,
+              flexShrink: 0,
             }}
           >
+            <TypeIcon type={node.type} color={ac} size={13} />
+          </span>
+          <span
+            style={{
+              fontSize: 10,
+              color: ac,
+              textTransform: 'uppercase',
+              letterSpacing: 0.7,
+              fontWeight: 600,
+            }}
+          >
+            {node.type}
+          </span>
+        </div>
+      </div>
+
+      {(slowNode || stepTokensTarget) && (
+        <div className="mb-2 flex flex-wrap items-center gap-1.5">
+          {slowNode && (
             <span
-              className="w-1.5 h-1.5 rounded-full bg-red-500"
-              style={{ boxShadow: '0 0 0 3px rgba(239,68,68,0.15)' }}
-            />
-            <span
-              className="text-[9px] font-semibold"
-              style={{
-                color: '#f87171',
-                textTransform: 'uppercase',
-                letterSpacing: 0.4,
-              }}
+              className="inline-flex shrink-0 items-center gap-1 rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide shadow-sm"
+              style={slowChipStyle}
             >
+              <WarningCircleIcon size={10} weight="fill" />
               Slow
             </span>
-          </span>
-        )}
-      </div>
+          )}
+          {stepTokensTarget && (
+            <span
+              className="inline-flex shrink-0 items-center gap-1 rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide animate-pulse shadow-sm"
+              style={tokenChipStyle}
+            >
+              <FlameIcon size={10} weight="fill" />
+              High Tokens
+            </span>
+          )}
+        </div>
+      )}
 
       <div
         style={{
@@ -117,7 +153,7 @@ export default function FlowNode({ data }) {
           gap: '6px 12px',
           marginBottom: 6,
           fontSize: 10,
-          color: 'var(--app-fg-muted)',
+          color: metricsColor,
           alignItems: 'center',
         }}
       >
@@ -181,8 +217,8 @@ export default function FlowNode({ data }) {
       {preview && (
         <p
           style={{
-            fontSize: 10,
-            color: 'var(--app-flow-preview)',
+            fontSize: 11,
+            color: previewColor,
             margin: '0 0 7px',
             fontFamily: 'monospace',
             lineHeight: 1.5,

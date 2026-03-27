@@ -16,15 +16,12 @@ function StepNode({ data }) {
 
   return (
     <div
+      className="box-border overflow-hidden rounded-[14px] transition-[box-shadow,border-color] duration-200 ease-out pointer-events-none"
       style={{
         width: '100%',
         height: '100%',
-        borderRadius: 14,
         border: '1px solid var(--app-step-border)',
         background: 'var(--app-step-bg)',
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-        pointerEvents: 'none',
       }}
     >
       <div

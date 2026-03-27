@@ -7,7 +7,7 @@ export default function PanelWrap({ label, count, children }) {
         </span>
         <span className="text-[10px] font-mono text-app-label-muted">{count}</span>
       </div>
-      <div className="min-h-0 min-w-0 flex-1 overflow-auto">{children}</div>
+      <div className="min-h-0 min-w-0 flex-1 overflow-auto scroll-smooth">{children}</div>
     </div>
   );
 }

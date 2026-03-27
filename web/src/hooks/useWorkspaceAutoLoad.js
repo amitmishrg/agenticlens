@@ -8,6 +8,7 @@ export function useWorkspaceAutoLoad({
   setActiveFile,
   setStatus,
   setError,
+  setIsSampleSession,
   loadedSignatureRef,
 }) {
   useEffect(() => {
@@ -22,6 +23,7 @@ export function useWorkspaceAutoLoad({
           if (Array.isArray(files) && files.length) {
             if (cancelled) return;
             loadedSignatureRef.current = null;
+            setIsSampleSession(false);
             setWorkspaceFiles(files.map((f) => ({ name: f.name, content: null })));
             setActiveFile(0);
             setStatus('parsing');
@@ -34,12 +36,32 @@ export function useWorkspaceAutoLoad({
         const raw = await res.text();
         if (cancelled) return;
         loadedSignatureRef.current = null;
+        setIsSampleSession(false);
         setWorkspaceFiles([{ name: 'CLI Session', content: raw }]);
         setActiveFile(0);
         setStatus('parsing');
       } catch {
         if (cancelled) return;
+        try {
+          const sampleRes = await fetch('/sample.jsonl');
+          if (sampleRes.ok) {
+            const raw = await sampleRes.text();
+            if (raw.trim() && !cancelled) {
+              loadedSignatureRef.current = null;
+              setIsSampleSession(true);
+              setWorkspaceFiles([{ name: 'Sample session', content: raw }]);
+              setActiveFile(0);
+              setStatus('parsing');
+              setError(null);
+              return;
+            }
+          }
+        } catch {
+          /* fall through to upload */
+        }
+        if (cancelled) return;
         setError(null);
+        setIsSampleSession(false);
         setStatus('upload');
       }
     }
@@ -48,5 +70,5 @@ export function useWorkspaceAutoLoad({
     return () => {
       cancelled = true;
     };
-  }, [setWorkspaceFiles, setActiveFile, setStatus, setError, loadedSignatureRef]);
+  }, [setWorkspaceFiles, setActiveFile, setStatus, setError, setIsSampleSession, loadedSignatureRef]);
 }

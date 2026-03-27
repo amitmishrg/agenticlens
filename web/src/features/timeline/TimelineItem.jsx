@@ -17,6 +17,7 @@ export default function TimelineItem({ node, delta }) {
 
   return (
     <div
+      id={`al-focus-${node.id}`}
       role="button"
       tabIndex={0}
       onClick={() => setSelectedNode(node)}
@@ -26,10 +27,12 @@ export default function TimelineItem({ node, delta }) {
           setSelectedNode(node);
         }
       }}
-      className="mb-1 flex cursor-pointer gap-3.5 rounded-lg px-3.5 py-2.5 outline-offset-2 transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--app-focus-ring)]"
+      className="mb-1 flex cursor-pointer gap-3.5 rounded-lg px-3.5 py-2.5 outline-offset-2 transition-[background,border-color,box-shadow] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-(--app-focus-ring)"
       style={{
         background: isSelected ? `${ac}24` : 'transparent',
-        border: `1px solid ${isSelected ? `${ac}66` : 'transparent'}`,
+        border: isSelected
+          ? `1px solid ${ac}66`
+          : '1px solid color-mix(in oklab, var(--app-fg) 10%, var(--app-border))',
       }}
     >
       <div className="flex shrink-0 flex-col items-center pt-0.5">
@@ -70,12 +73,13 @@ export default function TimelineItem({ node, delta }) {
             </span>
           )}
         </div>
-        <p className="m-0 whitespace-normal break-words text-[13px] leading-snug text-app-fg-subtle">
+        <p className="m-0 whitespace-normal wrap-break-word text-[13px] leading-snug text-app-fg-subtle">
           {node.label}
         </p>
         {node.meta?.model && (
           <span className="mt-1 inline-block font-mono text-[11px] text-app-fg-muted">{node.meta.model}</span>
         )}
+
       </div>
     </div>
   );

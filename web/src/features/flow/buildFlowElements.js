@@ -53,6 +53,7 @@ export function buildFlowElements({ steps, nodes, visibleIds, replayActiveId, se
         position: { x: pos.x + hPad, y: STEP_HEADER + pos.y },
         data: {
           node: n,
+          step,
           onSelect: setSelectedNode,
           accent: getAccent(n.type),
           replayActive: !!(replayActiveId && n.id === replayActiveId),

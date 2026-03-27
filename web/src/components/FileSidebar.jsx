@@ -1,6 +1,7 @@
 import useAgentStore from '@/store/useAgentStore';
 import { formatSessionDisplay } from '@/utils/formatSessionDisplay';
 import { StackIcon } from '@phosphor-icons/react';
+import IssuesPanel from '@/components/IssuesPanel';
 
 function SectionTitle({ title, children }) {
   return (
@@ -56,7 +57,7 @@ export default function FileSidebar() {
                   {subtitle}
                 </div>
               ) : (
-                <div className="mt-1 text-[11px] text-app-label">JSONL trace</div>
+                <div className="mt-1 text-[11px] text-app-fg-muted">JSONL trace</div>
               )}
             </button>
           );
@@ -70,6 +71,8 @@ export default function FileSidebar() {
             </p>
           </div>
         )}
+
+        <IssuesPanel />
       </div>
     </aside>
   );

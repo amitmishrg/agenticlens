@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import useAgentStore from '@/store/useAgentStore';
 import { computeVisibleNodeIds } from '@/utils/visibility';
 import TimelineItem from '@/features/timeline/TimelineItem';
@@ -22,6 +23,15 @@ export default function TimelineView() {
       return new Date(a.timestamp) - new Date(b.timestamp);
     });
 
+  const maxDelta = useMemo(() => {
+    let m = 1;
+    for (const n of sorted) {
+      const d = n.deltaMs;
+      if (typeof d === 'number' && d > m) m = d;
+    }
+    return m;
+  }, [sorted]);
+
   if (!sorted.length) {
     return <div className="p-6 text-[13px] text-app-fg-muted">No events.</div>;
   }
@@ -29,7 +39,7 @@ export default function TimelineView() {
   return (
     <div className="box-border min-w-full p-3 px-2 sm:px-3">
       {sorted.map((node) => (
-        <TimelineItem key={node.id} node={node} delta={node.deltaMs} />
+        <TimelineItem key={node.id} node={node} delta={node.deltaMs} maxDelta={maxDelta} />
       ))}
     </div>
   );

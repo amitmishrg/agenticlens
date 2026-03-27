@@ -23,6 +23,7 @@ export default function TreeNode({ node, depth = 0 }) {
   return (
     <div style={{ marginLeft: depthIndent }}>
       <div
+        id={`al-focus-${node.id}`}
         role="button"
         tabIndex={0}
         onClick={() => setSelectedNode(node)}

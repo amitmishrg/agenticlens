@@ -29,6 +29,7 @@ export default function AppWorkspace() {
     isUploadPanelOpen,
     closeUploadPanel,
     setWorkspaceFileContent,
+    setIsSampleSession,
   } = useAgentStore();
 
   const [status, setStatus] = useState('auto_loading');
@@ -42,6 +43,7 @@ export default function AppWorkspace() {
     setActiveFile,
     setStatus,
     setError,
+    setIsSampleSession,
     loadedSignatureRef,
   });
 
@@ -66,6 +68,7 @@ export default function AppWorkspace() {
     setActiveFile,
     closeUploadPanel,
     setStatus,
+    setIsSampleSession,
   });
 
   const showEmptyUpload = !workspaceFiles?.length;

@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+let flashClearTimerId = null;
+
 const FILTER_TYPES = [
   'all',
   'user',
@@ -24,6 +26,13 @@ export default create((set, get) => ({
   isUploadPanelOpen: false,
   chronNodeIds: [],
   selectedNode: null,
+  selectedNodeId: null,
+  /** Sample trace loaded from /sample.jsonl (no CLI/workspace). */
+  isSampleSession: false,
+  /** React Flow: last focus request for fitView zoom (nonce forces effect). */
+  flowFocus: null,
+  /** Temporary emphasis ring on a node id (~2s). */
+  flashNodeId: null,
   view: 'flow',
 
   collapsedNodeIds: new Set(),
@@ -50,8 +59,40 @@ export default create((set, get) => ({
   openUploadPanel: () => set({ isUploadPanelOpen: true }),
   closeUploadPanel: () => set({ isUploadPanelOpen: false }),
   setChronNodeIds: (chronNodeIds) => set({ chronNodeIds }),
-  setSelectedNode: (node) => set({ selectedNode: node }),
+  setSelectedNode: (node) =>
+    set({ selectedNode: node, selectedNodeId: node?.id ?? null }),
+  setSelectedNodeId: (selectedNodeId) => {
+    const node = selectedNodeId ? get().nodes.find((n) => n.id === selectedNodeId) : null;
+    set({ selectedNodeId: selectedNodeId ?? null, selectedNode: node });
+  },
+  setIsSampleSession: (isSampleSession) => set({ isSampleSession }),
   setView: (view) => set({ view }),
+
+  /**
+   * Inspector selection + scroll (tree/timeline) + animated zoom (flow) + short glow.
+   */
+  focusNode: (nodeId) => {
+    const node = get().nodes.find((n) => n.id === nodeId);
+    if (!node) return;
+    set({
+      selectedNode: node,
+      selectedNodeId: nodeId,
+      flashNodeId: nodeId,
+      flowFocus: { nodeId, nonce: Date.now() },
+    });
+    queueMicrotask(() => {
+      document.getElementById(`al-focus-${nodeId}`)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'nearest',
+      });
+    });
+    if (flashClearTimerId) clearTimeout(flashClearTimerId);
+    flashClearTimerId = setTimeout(() => {
+      flashClearTimerId = null;
+      set({ flashNodeId: null });
+    }, 2000);
+  },
 
   setFilterType: (filterType) => set({ filterType }),
 
