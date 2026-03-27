@@ -41,3 +41,4 @@ coverage/
 *.tgz
 dir.md
 *.jsonl
+!web/public/sample.jsonl
