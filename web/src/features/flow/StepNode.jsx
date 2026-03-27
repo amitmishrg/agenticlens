@@ -3,16 +3,30 @@ import { FlameIcon, TimerIcon, WarningOctagonIcon } from '@phosphor-icons/react'
 import { formatDeltaMs } from '@/utils/formatDuration';
 import TokenGlyph from '@/components/icons/TokenGlyph';
 import { useThemeStore } from '@/store/useThemeStore';
+import useAgentStore from '@/store/useAgentStore';
 
 /** React Flow parent node: step summary header + bounds for child events. */
 function StepNode({ data }) {
   const theme = useThemeStore((s) => s.theme);
+  const selectedStepId = useAgentStore((s) => s.selectedStepId);
+  const flashStepId = useAgentStore((s) => s.flashStepId);
   const isLight = theme === 'light';
   const { step } = data;
   const dur = formatDeltaMs(step.duration);
   const stepAnomalies = step.anomalies || [];
   const isSlow = stepAnomalies.includes('slow');
   const hasHighTokens = stepAnomalies.includes('high_tokens');
+  const stepFocused = selectedStepId === step.stepId;
+  const stepFlashed = flashStepId === step.stepId;
+  const stepFocusShadow = stepFlashed
+    ? isSlow
+      ? '0 0 18px rgba(239,68,68,0.45)'
+      : hasHighTokens
+        ? '0 0 18px rgba(249,115,22,0.4)'
+        : '0 0 14px color-mix(in oklab, var(--app-fg) 16%, transparent)'
+    : stepFocused
+      ? '0 0 10px color-mix(in oklab, var(--app-fg) 12%, transparent)'
+      : 'none';
 
   return (
     <div
@@ -22,6 +36,7 @@ function StepNode({ data }) {
         height: '100%',
         border: '1px solid var(--app-step-border)',
         background: 'var(--app-step-bg)',
+        boxShadow: stepFocusShadow,
       }}
     >
       <div

@@ -37,8 +37,8 @@ function MetricTile({ icon: Icon, label, value, highlight = false }) {
   return (
     <div
       className={[
-        'group relative min-w-[7.5rem] flex-1 rounded-2xl px-4 py-3',
-        'bg-app-surface/35 ring-1 ring-inset ring-[color-mix(in_oklab,var(--app-fg)_5%,transparent)] shadow-[0_1px_0_0_color-mix(in_oklab,var(--app-fg)_4%,transparent)]',
+        'group relative min-w-30 flex-1 rounded-2xl px-4 py-3',
+        'bg-[color-mix(in_oklab,var(--app-surface)_88%,var(--app-bg))] ring-1 ring-inset ring-[color-mix(in_oklab,var(--app-fg)_7%,transparent)] shadow-[0_1px_0_0_color-mix(in_oklab,var(--app-fg)_4%,transparent),0_10px_24px_-20px_color-mix(in_oklab,var(--app-fg)_22%,transparent)]',
         'transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-px hover:shadow-md',
         highlight ? 'ring-amber-400/35' : '',
       ].join(' ')}
@@ -58,7 +58,7 @@ function MetricTile({ icon: Icon, label, value, highlight = false }) {
 function SessionEventsTile({ count }) {
   return (
     <div
-      className="group relative min-w-[7.5rem] flex-1 rounded-2xl px-4 py-3 bg-app-surface/35 ring-1 ring-inset ring-[color-mix(in_oklab,var(--app-fg)_5%,transparent)] shadow-[0_1px_0_0_color-mix(in_oklab,var(--app-fg)_4%,transparent)] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-px hover:shadow-md"
+      className="group relative min-w-30 flex-1 rounded-2xl px-4 py-3 bg-[color-mix(in_oklab,var(--app-surface)_88%,var(--app-bg))] ring-1 ring-inset ring-[color-mix(in_oklab,var(--app-fg)_7%,transparent)] shadow-[0_1px_0_0_color-mix(in_oklab,var(--app-fg)_4%,transparent),0_10px_24px_-20px_color-mix(in_oklab,var(--app-fg)_22%,transparent)] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-px hover:shadow-md"
       title="Total events in this session"
     >
       <div className="flex items-center gap-2 text-app-fg-muted">

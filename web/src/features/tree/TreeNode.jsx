@@ -6,19 +6,32 @@ import { formatDeltaMs } from '@/utils/formatDuration';
 
 export default function TreeNode({ node, depth = 0 }) {
   const theme = useThemeStore((s) => s.theme);
-  const { selectedNode, setSelectedNode, collapsedNodeIds, toggleNode } = useAgentStore();
+  const steps = useAgentStore((s) => s.steps);
+  const { selectedNode, selectedNodeId, setSelectedNode, collapsedNodeIds, toggleNode } = useAgentStore();
 
   const ac = getAccent(node.type);
   const typeFg = getAccentLabelColor(ac, theme);
-  const isSelected = selectedNode?.id === node.id;
+  const inspectorSelected = selectedNode?.id === node.id;
+  const issuesFocused = selectedNodeId === node.id && !inspectorSelected;
+  const isSelected = inspectorSelected || issuesFocused;
   const slowNode = node.anomalies?.includes('slow_node');
   const hasChildren = node.children?.length > 0;
   const isCollapsed = collapsedNodeIds.has(node.id);
-  const edgeDelay = formatDeltaMs(node.parentDeltaMs) ?? formatDeltaMs(node.deltaMs);
+  const rawEdgeDelay =
+    typeof node.parentDeltaMs === 'number' ? node.parentDeltaMs : node.deltaMs;
+  const edgeDelay = typeof rawEdgeDelay === 'number' && rawEdgeDelay > 0 ? formatDeltaMs(rawEdgeDelay) : null;
 
   const depthIndent = depth === 0 ? 0 : 10;
   const childrenGutter = 8;
   const branchAlpha = theme === 'light' ? '55' : '22';
+  const issueStep = steps?.find((s) => (s.nodes || []).some((n) => n.id === node.id));
+  const slowIssueTarget = issueStep?.anomalyTargets?.slow === node.id;
+  const tokenIssueTarget = issueStep?.anomalyTargets?.high_tokens === node.id;
+  const issueFocusGlow = slowIssueTarget
+    ? '0 0 16px rgba(239,68,68,0.5)'
+    : tokenIssueTarget
+      ? '0 0 16px rgba(249,115,22,0.45)'
+      : '0 0 12px color-mix(in oklab, var(--app-fg) 18%, transparent)';
 
   return (
     <div style={{ marginLeft: depthIndent }}>
@@ -33,10 +46,13 @@ export default function TreeNode({ node, depth = 0 }) {
             setSelectedNode(node);
           }
         }}
-        className="flex cursor-pointer items-start gap-2 rounded-lg border border-transparent px-2.5 py-1.5 mb-0.5 transition-colors duration-150 outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--app-focus-ring)]"
+        className="flex cursor-pointer items-start gap-2 rounded-lg border border-transparent px-2.5 py-1.5 mb-0.5 transition-colors duration-150 outline-offset-2 focus-visible:outline-2 focus-visible:outline-(--app-focus-ring)"
         style={{
-          background: isSelected ? `${ac}24` : 'transparent',
-          borderColor: isSelected ? `${ac}66` : 'transparent',
+          background: inspectorSelected ? `${ac}24` : 'transparent',
+          borderColor: inspectorSelected ? `${ac}66` : 'transparent',
+          boxShadow: issuesFocused
+            ? issueFocusGlow
+            : 'none',
         }}
       >
         {hasChildren ? (
@@ -76,7 +92,7 @@ export default function TreeNode({ node, depth = 0 }) {
           </span>
         )}
 
-        <span className="min-w-0 flex-1 whitespace-normal break-words text-[13px] leading-snug text-app-fg-subtle">
+        <span className="min-w-0 flex-1 whitespace-normal wrap-break-word text-[13px] leading-snug text-app-fg-subtle">
           {node.label}
         </span>
 

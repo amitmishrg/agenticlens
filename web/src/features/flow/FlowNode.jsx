@@ -12,8 +12,10 @@ const BODY_LIMIT = 80;
 export default function FlowNode({ data }) {
   const { node, step, onSelect, accent: ac, replayActive } = data;
   const selectedNode = useAgentStore((s) => s.selectedNode);
+  const selectedNodeId = useAgentStore((s) => s.selectedNodeId);
   const flashNodeId = useAgentStore((s) => s.flashNodeId);
-  const selected = selectedNode?.id === node.id;
+  const inspectorSelected = selectedNode?.id === node.id;
+  const issuesFocused = selectedNodeId === node.id && !inspectorSelected;
 
   const slowNode = node.anomalies?.includes('slow_node');
   const stepAnomalies = step?.anomalies || [];
@@ -33,7 +35,7 @@ export default function FlowNode({ data }) {
   const cost = node.meta?.costUsd;
 
   const idleBorder = 'var(--app-flow-card-border-idle)';
-  let borderCol = selected || replayActive ? ac : idleBorder;
+  let borderCol = inspectorSelected || replayActive ? ac : idleBorder;
   if (stepSlowTarget) borderCol = '#ef4444';
   else if (stepTokensTarget) borderCol = '#f97316';
 
@@ -43,14 +45,16 @@ export default function FlowNode({ data }) {
       ? '0 0 20px rgba(249,115,22,0.45)'
       : '';
 
-  const cardShadow = selected ? `0 4px 24px ${ac}22` : 'var(--app-flow-card-shadow)';
+  const cardShadow = inspectorSelected ? `0 4px 24px ${ac}22` : 'var(--app-flow-card-shadow)';
   const shadowParts = [];
   if (flashActive) {
-    shadowParts.push(`0 0 0 3px ${ac}`, `0 0 26px ${ac}99`);
+    shadowParts.push('0 0 16px color-mix(in oklab, var(--app-fg) 16%, transparent)');
   } else if (replayActive) {
     shadowParts.push(`0 0 0 3px ${ac}66`, `0 0 18px ${ac}33`);
-  } else if (selected) {
+  } else if (inspectorSelected) {
     shadowParts.push(`0 0 0 3px ${ac}55`);
+  } else if (issuesFocused) {
+    shadowParts.push('0 0 12px color-mix(in oklab, var(--app-fg) 14%, transparent)');
   }
   if (anomalyGlow) shadowParts.push(anomalyGlow);
   shadowParts.push(cardShadow);

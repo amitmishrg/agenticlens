@@ -11,6 +11,7 @@ function formatStepSeconds(ms) {
 export default function IssuesPanel() {
   const steps = useAgentStore((s) => s.steps);
   const focusNode = useAgentStore((s) => s.focusNode);
+  const focusStep = useAgentStore((s) => s.focusStep);
 
   const issues = useMemo(() => {
     const rows = [];
@@ -23,6 +24,7 @@ export default function IssuesPanel() {
           key: `${step.stepId}-slow`,
           label: `Step ${step.index} — Slow (${formatStepSeconds(step.duration)}s)`,
           kind: 'slow',
+          stepId: step.stepId,
           targetId: slowTarget,
         });
       }
@@ -51,7 +53,13 @@ export default function IssuesPanel() {
           <li key={issue.key}>
             <button
               type="button"
-              onClick={() => issue.targetId && focusNode(issue.targetId)}
+              onClick={() => {
+                if (issue.kind === 'slow' && issue.stepId) {
+                  focusStep(issue.stepId);
+                  return;
+                }
+                if (issue.targetId) focusNode(issue.targetId);
+              }}
               className="w-full text-left rounded-xl px-3 py-2 text-[12px] font-semibold text-app-fg transition-[background,transform] duration-200 ease-out hover:bg-app-surface/80 active:scale-[0.99] ring-1 ring-inset ring-app-border/40 bg-app-surface/35"
             >
               <span className="mr-1.5 inline-flex align-middle" aria-hidden>

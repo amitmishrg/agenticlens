@@ -27,12 +27,15 @@ export default create((set, get) => ({
   chronNodeIds: [],
   selectedNode: null,
   selectedNodeId: null,
+  selectedStepId: null,
   /** Sample trace loaded from /sample.jsonl (no CLI/workspace). */
   isSampleSession: false,
   /** React Flow: last focus request for fitView zoom (nonce forces effect). */
   flowFocus: null,
   /** Temporary emphasis ring on a node id (~2s). */
   flashNodeId: null,
+  /** Temporary emphasis ring on a step id (~2s). */
+  flashStepId: null,
   view: 'flow',
 
   collapsedNodeIds: new Set(),
@@ -60,24 +63,31 @@ export default create((set, get) => ({
   closeUploadPanel: () => set({ isUploadPanelOpen: false }),
   setChronNodeIds: (chronNodeIds) => set({ chronNodeIds }),
   setSelectedNode: (node) =>
-    set({ selectedNode: node, selectedNodeId: node?.id ?? null }),
+    set({ selectedNode: node, selectedNodeId: node?.id ?? null, selectedStepId: node?.stepId ?? null }),
   setSelectedNodeId: (selectedNodeId) => {
     const node = selectedNodeId ? get().nodes.find((n) => n.id === selectedNodeId) : null;
-    set({ selectedNodeId: selectedNodeId ?? null, selectedNode: node });
+    set({
+      selectedNodeId: selectedNodeId ?? null,
+      selectedNode: node,
+      selectedStepId: node?.stepId ?? null,
+    });
   },
   setIsSampleSession: (isSampleSession) => set({ isSampleSession }),
   setView: (view) => set({ view }),
 
   /**
-   * Inspector selection + scroll (tree/timeline) + animated zoom (flow) + short glow.
+   * Issue focus (no inspector open): select id + scroll + flow zoom + short glow.
    */
   focusNode: (nodeId) => {
     const node = get().nodes.find((n) => n.id === nodeId);
     if (!node) return;
     set({
-      selectedNode: node,
+      // Keep inspector closed when jumping from Issues panel.
+      selectedNode: null,
       selectedNodeId: nodeId,
+      selectedStepId: node.stepId ?? null,
       flashNodeId: nodeId,
+      flashStepId: null,
       flowFocus: { nodeId, nonce: Date.now() },
     });
     queueMicrotask(() => {
@@ -90,7 +100,39 @@ export default create((set, get) => ({
     if (flashClearTimerId) clearTimeout(flashClearTimerId);
     flashClearTimerId = setTimeout(() => {
       flashClearTimerId = null;
-      set({ flashNodeId: null });
+      set({ flashNodeId: null, flashStepId: null });
+    }, 2000);
+  },
+
+  /**
+   * Step-level issue focus: fit to step group in Flow; scroll representative node elsewhere.
+   */
+  focusStep: (stepId) => {
+    const step = get().steps.find((s) => s.stepId === stepId);
+    if (!step) return;
+    const representativeNodeId = step.nodes?.[0]?.id ?? null;
+    const rfStepId = `rf-step:${encodeURIComponent(stepId)}`;
+    set({
+      selectedNode: null,
+      selectedNodeId: representativeNodeId,
+      selectedStepId: stepId,
+      flashNodeId: null,
+      flashStepId: stepId,
+      flowFocus: { nodeId: rfStepId, nonce: Date.now() },
+    });
+    if (representativeNodeId) {
+      queueMicrotask(() => {
+        document.getElementById(`al-focus-${representativeNodeId}`)?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest',
+        });
+      });
+    }
+    if (flashClearTimerId) clearTimeout(flashClearTimerId);
+    flashClearTimerId = setTimeout(() => {
+      flashClearTimerId = null;
+      set({ flashNodeId: null, flashStepId: null });
     }, 2000);
   },
 

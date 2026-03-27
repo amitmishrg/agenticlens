@@ -121,6 +121,12 @@ const roadmapItems = [
   'Cloud dashboard',
 ];
 
+const heroEyebrowPills = [
+  { label: 'Observability', tone: 'teal' },
+  { label: 'JSONL', tone: 'violet' },
+  { label: 'In-browser', tone: 'emerald' },
+];
+
 function MarketingEyebrow({ children }) {
   return (
     <p className="m-0 font-mono text-[12px] font-medium uppercase tracking-[0.22em] text-app-label">
@@ -276,7 +282,24 @@ export default function LandingPage({ onOpenWorkspace }) {
         <section className="relative max-w-6xl px-5 pt-16 pb-24 mx-auto overflow-hidden sm:px-8 sm:pb-32 sm:pt-20 md:pt-28">
           <div className="landing-hero-pattern" aria-hidden />
           <div className="relative max-w-4xl mx-auto text-center z-1">
-            <MarketingEyebrow>Agent observability · JSONL · In-browser</MarketingEyebrow>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {heroEyebrowPills.map((pill) => (
+                <span
+                  key={pill.label}
+                  className={[
+                    'inline-flex items-center rounded-full px-3 py-1',
+                    'font-mono text-[11px] font-semibold uppercase tracking-[0.14em]',
+                    pill.tone === 'teal'
+                      ? 'bg-cyan-400/12 text-cyan-200 ring-1 ring-cyan-300/35'
+                      : pill.tone === 'violet'
+                        ? 'bg-violet-400/12 text-violet-200 ring-1 ring-violet-300/35'
+                        : 'bg-emerald-400/12 text-emerald-200 ring-1 ring-emerald-300/35',
+                  ].join(' ')}
+                >
+                  {pill.label}
+                </span>
+              ))}
+            </div>
             <h1 className="mt-6 m-0 text-[2.75rem] font-semibold tracking-[-0.045em] leading-[1.05] text-app-fg sm:text-6xl sm:font-bold sm:leading-[1.02] md:text-[3.75rem] [font-variation-settings:'opsz'_28] md:[font-variation-settings:'opsz'_32]">
               Make agent runs legible.
             </h1>
@@ -547,6 +570,14 @@ export default function LandingPage({ onOpenWorkspace }) {
                 No account required for browser mode. Load a trace and ship the next fix with
                 confidence.
               </p>
+              <div className="mt-6 rounded-xl border border-[color-mix(in_oklab,var(--app-fg)_10%,transparent)] bg-[color-mix(in_oklab,var(--app-surface)_75%,var(--app-bg))] px-4 py-3">
+                <p className="m-0 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-app-label">
+                  Run with npx
+                </p>
+                <code className="mt-2 block font-mono text-[13px] text-app-fg-subtle">
+                  npx agenticlens path/to/logs.jsonl
+                </code>
+              </div>
               <button
                 type="button"
                 onClick={onOpenWorkspace}
