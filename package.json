@@ -1,6 +1,6 @@
 {
   "name": "agenticlens",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": false,
   "bin": {
     "agenticlens": "./cli/index.js"
