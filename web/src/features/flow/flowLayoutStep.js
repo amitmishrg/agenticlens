@@ -1,9 +1,9 @@
 /**
  * Tree layout scoped to a set of node ids (one agent step), plus bounding box.
- * NODE_H should match ~FlowNode rendered height so rows align visually.
+ * NODE_H should match FlowNode rendered height so rows align visually.
  */
 const NODE_W = 252;
-const NODE_H = 124;
+const NODE_H = 150;
 const H_GAP = 60;
 const V_GAP = 88;
 

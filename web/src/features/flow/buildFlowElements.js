@@ -6,7 +6,7 @@ import { collectFlowEdges } from '@/features/flow/collectFlowEdges';
 // Must match (or exceed) StepNode header minimum height.
 const STEP_HEADER = 62;
 const STEP_GAP_X = 40;
-const STEP_PAD_BOTTOM = 20;
+const STEP_PAD_BOTTOM = 40;
 const GLOBAL_X0 = 40;
 const GLOBAL_Y0 = 40;
 

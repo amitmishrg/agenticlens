@@ -236,7 +236,7 @@ export default function FlowNode({ data }) {
         </p>
       )}
 
-      <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 2 }}>
         <MetaChip label="in" value={node.meta?.inputTokens} color={ac} />
         <MetaChip label="out" value={node.meta?.outputTokens} color={ac} />
         <MetaChip label="tool" value={node.meta?.toolName} color={ac} />
