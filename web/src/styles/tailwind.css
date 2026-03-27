@@ -397,6 +397,191 @@ body {
   background: color-mix(in oklab, var(--app-surface-2) 40%, var(--app-surface));
 }
 
+.landing-showcase-video-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 1024px;
+  aspect-ratio: 1024 / 500;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--app-fg) 10%, transparent),
+    0 26px 80px -44px color-mix(in oklab, var(--app-accent) 26%, transparent),
+    0 16px 50px -44px rgb(0 0 0 / 0.45);
+}
+
+/* Hero placement can be wider than gallery frames */
+.landing-hero-video-wrap {
+  max-width: none;
+}
+
+/* Used for both hover affordance and a subtle vignette over the video */
+.landing-showcase-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: top;
+  background: color-mix(in oklab, var(--app-bg) 80%, var(--app-fg) 8%);
+}
+
+/* Hero/more prominent placements: ensure video fills the frame */
+.landing-showcase-video--fill {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.landing-showcase-video-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 0%, transparent 40%, rgb(0 0 0 / 0.35) 110%),
+    linear-gradient(to bottom, rgb(0 0 0 / 0.15), transparent 40%, rgb(0 0 0 / 0.35));
+  opacity: 0.55;
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease;
+}
+
+.landing-showcase-expand-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--app-bg) 65%, transparent);
+  border: 1px solid color-mix(in oklab, var(--app-fg) 14%, transparent);
+  color: var(--app-fg);
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(10px) saturate(140%);
+  opacity: 0.95;
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease,
+    background 200ms ease;
+}
+
+.landing-showcase-expand-text {
+  line-height: 1;
+}
+
+/* Modal: maximize the video and show the whole frame */
+.landing-showcase-video--modal {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+  background: transparent;
+}
+
+.landing-video-modal-video-wrap {
+  aspect-ratio: auto !important;
+  height: calc(100vh - 84px);
+}
+
+.landing-video-modal-video-wrap .landing-showcase-video {
+  height: 100%;
+}
+
+.landing-showcase-expand-btn:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.landing-video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: rgb(0 0 0 / 0.68);
+  backdrop-filter: blur(10px) saturate(140%);
+}
+
+.landing-video-modal-content {
+  width: calc(100vw - 16px);
+  max-width: none;
+}
+
+.landing-video-modal-shell {
+  border-radius: 18px;
+}
+
+.landing-video-modal-close {
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  z-index: 1001;
+  padding: 0.6rem 1rem;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--app-bg) 70%, transparent);
+  border: 1px solid color-mix(in oklab, var(--app-fg) 14%, transparent);
+  color: var(--app-fg);
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(10px) saturate(140%);
+}
+
+.landing-video-modal-video-wrap {
+  max-width: none;
+}
+
+.landing-video-modal .landing-showcase-video-overlay,
+.landing-video-modal .landing-showcase-video-play {
+  opacity: 0;
+}
+
+.landing-showcase-video-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 0.95rem;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--app-bg) 68%, transparent);
+  border: 1px solid color-mix(in oklab, var(--app-fg) 14%, transparent);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.2),
+    0 18px 60px -28px rgb(0 0 0 / 0.7);
+  backdrop-filter: blur(10px) saturate(140%);
+  opacity: 0;
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease;
+}
+
+.landing-showcase-video-wrap:hover .landing-showcase-video-overlay {
+  opacity: 0.35;
+}
+
+.landing-showcase-video-wrap:hover .landing-showcase-video-play {
+  opacity: 1;
+}
+
+[data-theme='light'] .landing-showcase-video-overlay {
+  /* Keep the vignette readable in light mode too (if someone flips themes) */
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 0%, transparent 40%, rgb(0 0 0 / 0.16) 110%),
+    linear-gradient(to bottom, rgb(0 0 0 / 0.08), transparent 40%, rgb(0 0 0 / 0.18));
+}
+
+[data-theme='light'] .landing-showcase-video-play {
+  background: color-mix(in oklab, var(--app-bg) 82%, transparent);
+}
+
 .landing-showcase-dots {
   display: flex;
   flex-shrink: 0;

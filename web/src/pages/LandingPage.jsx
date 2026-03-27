@@ -1,4 +1,5 @@
 import {
+  ArrowsOutIcon,
   ArrowRightIcon,
   ChartLineUpIcon,
   ListBulletsIcon,
@@ -7,7 +8,7 @@ import {
   ShareNetworkIcon,
 } from '@phosphor-icons/react';
 import BrandMark from '@/components/BrandMark';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useThemeStore } from '@/store/useThemeStore';
 
 const features = [
@@ -163,6 +164,9 @@ function ShowcaseRow({
   reverse,
   imagePriority,
 }) {
+  const isVideo = typeof src === 'string' && src.toLowerCase().includes('.mp4');
+  const mediaLabel = alt || 'Product demo media';
+
   return (
     <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:gap-y-0">
       <div className={['min-w-0', reverse ? 'lg:order-2' : ''].join(' ')}>
@@ -185,17 +189,40 @@ function ShowcaseRow({
             </span>
           </div>
           <div className="flex justify-center bg-[color-mix(in_oklab,var(--app-fg)_6%,var(--app-bg))]">
-            <img
-              src={src}
-              alt={alt}
-              width={width}
-              height={height}
-              sizes="(max-width: 1024px) 100vw, min(1024px, calc(100vw - 3rem))"
-              loading={imagePriority === 'high' ? 'eager' : 'lazy'}
-              fetchPriority={imagePriority === 'high' ? 'high' : undefined}
-              decoding="async"
-              className="landing-gallery-img m-0 block h-auto w-full max-w-[1024px] object-contain object-top"
-            />
+            {isVideo ? (
+              <div className="landing-showcase-video-wrap">
+                <video
+                  src={src}
+                  width={width}
+                  height={height}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  aria-label={mediaLabel}
+                  className="landing-showcase-video"
+                />
+                <div className="landing-showcase-video-overlay" aria-hidden>
+                  <div className="landing-showcase-video-play">
+                    <PlayIcon size={18} weight="fill" className="text-app-fg" />
+                    <span className="text-app-fg">Watch demo</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <img
+                src={src}
+                alt={alt}
+                width={width}
+                height={height}
+                sizes="(max-width: 1024px) 100vw, min(1024px, calc(100vw - 3rem))"
+                loading={imagePriority === 'high' ? 'eager' : 'lazy'}
+                fetchPriority={imagePriority === 'high' ? 'high' : undefined}
+                decoding="async"
+                className="landing-gallery-img m-0 block h-auto w-full max-w-[1024px] object-contain object-top"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -207,12 +234,31 @@ export default function LandingPage({ onOpenWorkspace }) {
   const theme = useThemeStore((s) => s.theme);
   const setTheme = useThemeStore((s) => s.setTheme);
   const prevThemeRef = useRef(theme);
+  const [isHeroVideoExpanded, setIsHeroVideoExpanded] = useState(false);
 
   // Landing page is dark-mode only. We still restore the previous theme when leaving `/`.
   useEffect(() => {
     if (prevThemeRef.current !== 'dark') setTheme('dark');
     return () => setTheme(prevThemeRef.current);
   }, [setTheme]);
+
+  useEffect(() => {
+    if (!isHeroVideoExpanded) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isHeroVideoExpanded]);
+
+  useEffect(() => {
+    if (!isHeroVideoExpanded) return;
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setIsHeroVideoExpanded(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isHeroVideoExpanded]);
 
   return (
     <div className="min-h-screen bg-app-bg text-app-fg">
@@ -300,13 +346,16 @@ export default function LandingPage({ onOpenWorkspace }) {
                 </span>
               ))}
             </div>
+
             <h1 className="mt-6 m-0 text-[2.75rem] font-semibold tracking-[-0.045em] leading-[1.05] text-app-fg sm:text-6xl sm:font-bold sm:leading-[1.02] md:text-[3.75rem] [font-variation-settings:'opsz'_28] md:[font-variation-settings:'opsz'_32]">
               Make agent runs legible.
             </h1>
+
             <p className="mx-auto mt-8 max-w-2xl text-lg leading-[1.65] text-app-fg-muted sm:text-xl">
               AgenticLens turns Claude Agent SDK exports into a live workspace—flow, tree, timeline,
               replay, and inspector—so you see what happened before you reread the file.
             </p>
+
             <div className="flex flex-col items-center justify-center gap-3 mt-14 sm:flex-row sm:gap-4 sm:mt-16">
               <button
                 type="button"
@@ -323,6 +372,7 @@ export default function LandingPage({ onOpenWorkspace }) {
                 See the UI
               </a>
             </div>
+
             <div className="flex flex-wrap items-center justify-center gap-2 mx-auto mt-10">
               {['Claude Agent SDK', 'JSONL', 'Client-side parse'].map((label) => (
                 <span
@@ -333,6 +383,7 @@ export default function LandingPage({ onOpenWorkspace }) {
                 </span>
               ))}
             </div>
+
             <div className="max-w-lg px-5 py-4 mx-auto text-left landing-hero-snippet mt-14">
               <p className="m-0 font-mono text-[11px] font-medium uppercase tracking-wider text-app-label">
                 One file → every lens
@@ -351,8 +402,97 @@ export default function LandingPage({ onOpenWorkspace }) {
                 <span className="text-app-fg-muted">replay</span>
               </p>
             </div>
+
+            {/* Hero demo video (placed at the bottom like the reference landing pages) */}
+            <div className="flex justify-center mt-12">
+              <div className="w-full max-w-6xl px-3">
+                <div className="overflow-hidden landing-showcase-shell">
+                  <div className="landing-showcase-chrome">
+                    <div className="landing-showcase-dots" aria-hidden>
+                      <span className="landing-showcase-dot" />
+                      <span className="landing-showcase-dot" />
+                      <span className="landing-showcase-dot" />
+                    </div>
+                    <span className="min-w-0 flex-1 truncate text-center font-mono text-[11px] text-app-fg-muted sm:text-left">
+                      AgenticLens Demo
+                    </span>
+                  </div>
+                  <div className="flex justify-center bg-[color-mix(in_oklab,var(--app-fg)_6%,var(--app-bg))]">
+                    <div className="landing-showcase-video-wrap landing-hero-video-wrap">
+                      <button
+                        type="button"
+                        className="landing-showcase-expand-btn"
+                        onClick={() => setIsHeroVideoExpanded(true)}
+                        aria-label="AgenticLens Demo"
+                      >
+                        <ArrowsOutIcon size={16} weight="bold" aria-hidden />
+                      </button>
+                      <video
+                        src="https://agenticlens-assets.vercel.app/gallery/demo.mp4"
+                        width={1024}
+                        height="auto"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        aria-label="AgenticLens end-to-end product demo video"
+                        className="landing-showcase-video landing-showcase-video--fill landing-hero-demo-video"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
+
+        {isHeroVideoExpanded && (
+          <div
+            className="landing-video-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="AgenticLens demo video expanded"
+          >
+            <button
+              type="button"
+              className="landing-video-modal-close"
+              onClick={() => setIsHeroVideoExpanded(false)}
+              aria-label="Close demo video"
+            >
+              Close
+            </button>
+            <div className="landing-video-modal-content">
+              <div className="overflow-hidden landing-showcase-shell landing-video-modal-shell">
+                <div className="landing-showcase-chrome">
+                  <div className="landing-showcase-dots" aria-hidden>
+                    <span className="landing-showcase-dot" />
+                    <span className="landing-showcase-dot" />
+                    <span className="landing-showcase-dot" />
+                  </div>
+                  <span className="min-w-0 flex-1 truncate text-center font-mono text-[11px] text-app-fg-muted sm:text-left">
+                    AgenticLens Demo
+                  </span>
+                </div>
+                <div className="bg-[color-mix(in_oklab,var(--app-fg)_6%,var(--app-bg))]">
+                  <div className="landing-showcase-video-wrap landing-video-modal-video-wrap">
+                    <video
+                      src="https://agenticlens-assets.vercel.app/gallery/demo.mp4"
+                      width={1024}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      aria-label="AgenticLens end-to-end product demo video"
+                      className="landing-showcase-video landing-showcase-video--modal"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Pillars — Turborepo "Scale your workflows" density */}
         <section

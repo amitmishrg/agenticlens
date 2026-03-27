@@ -36,6 +36,14 @@ The app starts and opens in your browser.
 
 You can also launch and upload files/folders directly in the UI.
 
+## Product Demo
+
+Watch the full walkthrough:
+
+- [AgenticLens Demo Video (MP4)](https://agenticlens-assets.vercel.app/gallery/demo.mp4)
+
+[![Watch AgenticLens Demo](https://agenticlens-assets.vercel.app/gallery/flow-canvas.png)](https://agenticlens-assets.vercel.app/gallery/demo.mp4)
+
 ## Screenshots
 
 ### Flow Canvas
